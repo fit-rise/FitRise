@@ -4,6 +4,7 @@ const Home = () => {
     return( 
         <View>
             <Text>Home</Text>
+            <Text>커밋 확인</Text>
         </View>
     )
 }
