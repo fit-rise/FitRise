@@ -16,27 +16,73 @@ async function processUserInput(userProfile) {
   try {
     // OpenAI API에서 응답 생성
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4-1106-preview",
       messages: [
-     {
-      role: "system",
-      content: "You are an AI personal trainer. Provide a personalized exercise plan for the user based on their profile and structure it into a JSON object with the specified format. Ensure that the 'exercisePlan' is an array with objects for each day, and each 'Day' object contains an array of exercises, with each exercise having 'exercise', 'sets', and 'reps' as keys."
-    },
+       {
+          role: "system",
+          content: "You are an AI personal trainer. json"
+        },
         {
           role: "user",
           content: JSON.stringify(userProfile)
-        },
-        {
-          role: "assistant",
-          content:  `The plan will be structured into a JSON object with 'workoutDays' representing the total number of days to work out in a week, and 'exercisePlan' which includes each workout session labeled from 'Day 1' to 'Day ${userProfile.weeklyExerciseFrequency}'. Each day will include the name of the exercise, the number of sets, and the number of reps.`
-        },      
-        // The assistant's response message will be generated based on previous messages.
+        },     
       ],
-      
+      response_format : {
+        "type" : "json_object"
+      },
+      functions: [
+        {
+          name: "exercise_routine",
+          description: "개인 맞춤형 운동 루틴 추천",
+          parameters: {
+            type: "object",
+            properties: {
+              exercisePlan : {
+                type: "array",
+                items:{
+                  type:"object",
+                  properties: {
+                    day: {
+                      type: "string",
+                      description: `'1' to '${userProfile.weeklyExerciseFrequency}'`
+                    },
+                    exercises : {
+                      type: "array",
+                      items:{
+                        type: "object",
+                        properties: {
+                          name: {
+                            type: "string",
+                            description: "운동 이름"
+                          },
+                          sets: {
+                            type: "string",
+                            description: "운동 세트 수"
+                          },
+                          reps: {
+                            type:"string",
+                            description:"운동 세트 당 횟수"
+                          }
+                        }
+                      }                 
+                    }                
+                  }               
+                }
+              }
+            }  
+            ,
+            required: ["exercisePlan"]
+
+          }
+          
+        }
+      ],
+      function_call:{name: "exercise_routine"}
+       
     });
 
     // AI 모델이 생성한 응답 추출
-    const completion_text = completion.choices[0].message.content;
+    const completion_text = completion.choices[0].message.function_call.arguments;
     console.log(completion_text);
     
     return completion_text;
