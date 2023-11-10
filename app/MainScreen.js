@@ -1,6 +1,8 @@
 import React,{ useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import Checkbox from 'expo-checkbox';
+import {Stack, useRouter} from "expo-router";
+
 
 import { Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,11 +16,12 @@ const MainScreen = () => {
   ];
 
   const [isChecked, setChecked] = useState(false);
+  const router = useRouter()
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Ionicons name="book" size={24} color="black" onPress={() => {/* 운동사전 이동 로직 */}} />
+        <Ionicons name="book" size={24} color="black" onPress={() => router.push('/ExerciseDictionary')} />
       </View>
 
       <View style={styles.characterContainer}>
@@ -48,19 +51,19 @@ const MainScreen = () => {
 
       <View style={styles.tabBar}>
         <View style={styles.tabBarIcon}>
-          <Ionicons name="home-outline" size={24} color="black" onPress={() => {/* 홈 탭 로직 */}} />
+          <Ionicons name="home-outline" size={24} color="black" onPress={() => router.push('/MainScreen')} />
           <Text>홈</Text>
         </View>
         <View style={styles.tabBarIcon}>
-          <Ionicons name="trophy-outline" size={24} color="black" onPress={() => {/* 랭킹 탭 로직 */}} />
+          <Ionicons name="trophy-outline" size={24} color="black" onPress={() => router.push('/RankingScreen')} />
           <Text>랭킹</Text>
         </View>
         <View style={styles.tabBarIcon}>
-          <Ionicons name="calendar-outline" size={24} color="black" onPress={() => {/* 달력 탭 로직 */}} />
+          <Ionicons name="calendar-outline" size={24} color="black" onPress={() => router.push('/CalendarScreen')} />
           <Text>달력</Text>
         </View>
         <View style={styles.tabBarIcon}>
-          <Ionicons name="person-outline" size={24} color="black" onPress={() => {/* 프로필 탭 로직 */}} />
+          <Ionicons name="person-outline" size={24} color="black" onPress={() => router.push('/AnalysisScreen')} />
           <Text>프로필</Text>
         </View>
       </View>
