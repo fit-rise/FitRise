@@ -5,7 +5,7 @@ import { LineChart } from 'react-native-chart-kit';
 const AnalysisScreen = () => {
   // 임의의 데이터
   const data = {
-    labels: ["January", "February", "March", "Apri", "May", "June"],
+    labels: ["January", "February", "March", "April", "May", "June"],
     datasets: [
       {
         data: [65, 59, 80, 81, 56, 55],

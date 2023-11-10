@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+//alert 창 누른 없앤 후에 넘어갈 수 있도록 Alert 컴포넌트 사용
+import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import {Stack, useRouter} from "expo-router";
+
+
 
 const InformationInput = () => {
   const [height, setHeight] = useState('');
@@ -9,8 +13,17 @@ const InformationInput = () => {
   const [goal, setGoal] = useState('weight_loss'); // 운동 목표 상태 추가
   const [comment, setComment] = useState('');
 
+  const router = useRouter()
   const handlePress = () => {
-    alert('정보가 제출되었습니다.');
+    // Alert.alert를 사용하여 확인 버튼이 눌렸을 때의 행동을 정의
+    Alert.alert(
+      '제출 확인', // Alert의 제목
+      '정보가 제출되었습니다.', // Alert의 내용
+      [
+        {text: 'OK', onPress: () => router.push('/MainScreen')}, // OK 버튼을 눌렀을 때 router.push를 호출
+      ],
+      {cancelable: false},
+    );
   };
 
   return (
