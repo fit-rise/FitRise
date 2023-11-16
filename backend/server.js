@@ -1,10 +1,13 @@
 const express = require('express');
+const { PrismaClient } = require('@prisma/client');
 const app = express();
 const port = 3000;
 
+app.use(express.json()) // body parsing 관련
+app.use(express.urlencoded({ extended: true })) // body parsing관련
 // gpt.js 모듈을 가져옴
 const gpt = require('./gpt');
-
+const prisma = new PrismaClient({});
 // 사용자 정보를 저장할 객체
 const userProfile = {
 
@@ -54,3 +57,62 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+//db 관련 crud 추가부분
+app.post("/Input", async (req,res)=>{
+  const q = req.body
+  //가져온 데이터로 chatgpt 결과 생성후 아래 DB에 저장
+  const response = await gpt.processUserInput(userProfile)
+  console.log(response)
+  const responseJson = JSON.parse(response)
+  console.log("dddddddd")
+  console.log(responseJson)
+  
+  const UserData = {
+    height : q.height , 
+    weight : q.weight,
+    ex_level : q.ex_level, 
+    ex_goal : q.ex_goal,
+    name : q.name,
+    plans: {
+      create: [
+        {
+          workoutDays: responseJson.workoutDays,
+          days: {
+            create: responseJson.exercisePlan.map((day, index) => ({
+              day: `Day ${index + 1}`,
+              exercises: {
+                create: day[`Day ${index + 1}`].map(exercise => ({
+                  exercise: exercise.exercise,
+                  sets: exercise.sets,
+                  reps: exercise.reps
+                }))
+              }
+            }))
+          }
+        }
+      ]
+    }
+  };
+  
+  await prisma.users.create({
+    data: UserData,
+    include: {
+      plans : {  
+        include: {
+          days: {
+            include: {
+              exercises: true
+            }
+          }
+        }
+      }
+    }
+  });
+  res.send("정보입력완료")
+})
+
+app.post('/profile', function (req, res, next) {
+  console.log(req.body)
+  res.json(req.body)
+})
