@@ -4,25 +4,44 @@ import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import {Stack, useRouter} from "expo-router";
 import { useEffect } from 'react';
- import {setNickname} from './setNickname'
-
+import { setNickname } from './storage/setNickname';
+import {IP_URL}from "@env"
 
 
 const InformationInput = () => {
+ 
   const [name, setName] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [exerciseLevel, setExerciseLevel] = useState('beginner'); // 운동 수준 상태 추가
   const [goal, setGoal] = useState('weight_loss'); // 운동 목표 상태 추가
   const [comment, setComment] = useState('');
-   const [stoageValue, setStoageValue] = useState('');
+   const [stoageValue, setStoageValue] = useState('');//스토리지 관련 스테이터스
 
-  
+ 
   const router = useRouter()
 
   const handlePress = async() => {
-    
-    try{
+    try{  
+      
+      fetch(`${IP_URL}/UserInfoData`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+            Accept: "application / json",
+        },
+        body: JSON.stringify({
+          name: name,
+          height: height,
+          weight:weight,
+          exerciseLevel:exerciseLevel,
+          goal:goal,
+          comment:comment,
+
+        }),
+      }).then((res)=>res.json()).then((json)=>console.log(json))
+     
+
     // Alert.alert를 사용하여 확인 버튼이 눌렸을 때의 행동을 정의
     Alert.alert(
       '제출 확인', // Alert의 제목
@@ -31,6 +50,7 @@ const InformationInput = () => {
         {text: 'OK', onPress: () => router.push('/MainScreen')}, // OK 버튼을 눌렀을 때 router.push를 호출
       ],
       {cancelable: false},
+      
     );
      await setNickname('key',name);//닉네임을 스토리지에 저장하기위한 함수호출
      confirmAsyncValue();
