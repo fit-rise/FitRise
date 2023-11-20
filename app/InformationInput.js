@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import {Stack, useRouter} from "expo-router";
-
+import  axios ,  { isCancel ,  AxiosError }  from  'axios' ;
 
 
 const InformationInput = () => {
@@ -15,16 +15,19 @@ const InformationInput = () => {
 
   const router = useRouter()
   const handlePress = () => {
-    // Alert.alert를 사용하여 확인 버튼이 눌렸을 때의 행동을 정의
-    Alert.alert(
-      '제출 확인', // Alert의 제목
-      '정보가 제출되었습니다.', // Alert의 내용
-      [
-        {text: 'OK', onPress: () => router.push('/MainScreen')}, // OK 버튼을 눌렀을 때 router.push를 호출
-      ],
-      {cancelable: false},
-    );
+    if (Platform.OS === 'web') {
+      window.alert('정보가 제출되었습니다.');
+      router.push('/MainScreen');
+    } else {
+      Alert.alert(
+        '제출 확인',
+        '정보가 제출되었습니다.',
+        [{text: 'OK', onPress: () => router.push('/MainScreen')}],
+        {cancelable: false}
+      );
+    }
   };
+  
 
   return (
     <View style={styles.container}>

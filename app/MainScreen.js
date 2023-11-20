@@ -1,23 +1,38 @@
-import React,{ useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import Checkbox from 'expo-checkbox';
-import {Stack, useRouter} from "expo-router";
+import { Stack, useRouter } from "expo-router";
 
-
-import { Card } from 'react-native-paper';
+import { ActivityIndicator, Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { images } from '../constants';
 
 const MainScreen = () => {
-  // 예시 데이터
-  const exercises = [
-    { id: 1, name: 'Push Ups', sets: 3, reps: 10 },
-    { id: 2, name: 'Pull Ups', sets: 2, reps: 8 },
-  ];
 
+  const [exercise, setExercise] = useState(null);
   const [isChecked, setChecked] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const router = useRouter()
 
+  //plans,exp 정보 요청
+  console.log(exercise);
+  useEffect(() => {
+    setisLoading(true);
+    fetch('http://localhost:3000/checklist', {
+      method: "post",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: "엄득용",
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        setExercise(result);
+        setisLoading(false);
+      });
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -31,24 +46,33 @@ const MainScreen = () => {
           <Text style={styles.experienceText}>XP: 200 / 500</Text>
         </View>
       </View>
-
-      <ScrollView style={styles.exerciseList}>
-        {exercises.map((exercise) => (
-          <Card key={exercise.id} style={styles.card}>
-            <Card.Title title={exercise.name} />
-            <Card.Content>
-              <View style={styles.cardContent}>
-                <Text>{exercise.sets} 세트, {exercise.reps}회</Text>
-                <Checkbox
-                  value={isChecked}
-                  onValueChange={setChecked}
-                  color={isChecked ? '#4630EB' : undefined}/>
+      {isLoading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <ScrollView style={styles.exerciseList}>
+          {exercise?.map((data) => (
+            data.plans.map((plan) => (
+              <View key={plan.id}>
+                <Text>{plan.day}</Text>
+                {plan.exercises.map((ex) => (
+                  <Card key={ex.id} style={styles.card}>
+                    <Card.Title title={ex.exercise} />
+                    <Card.Content>
+                      <View style={styles.cardContent}>
+                        <Text>{ex.sets} 세트, {ex.reps}회</Text>
+                        <Checkbox
+                          value={isChecked}
+                          onValueChange={setChecked}
+                          color={isChecked ? '#4630EB' : undefined} />
+                      </View>
+                    </Card.Content>
+                  </Card>
+                ))}
               </View>
-            </Card.Content>
-          </Card>
-        ))}
-      </ScrollView>
-
+            ))
+          ))}
+        </ScrollView>
+      )}
       <View style={styles.tabBar}>
         <View style={styles.tabBarIcon}>
           <Ionicons name="home-outline" size={24} color="black" onPress={() => router.push('/MainScreen')} />
