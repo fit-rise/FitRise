@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Button, Text, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import {Stack, useRouter} from "expo-router";
+
 import info_styles from "../components/info.style"
 import Info_TextInput from '../components/Info_TextInput'
 
@@ -12,6 +13,7 @@ const InformationInput = () => {
   const router = useRouter()
 
   const handlePress = () => {
+
     // Alert.alert를 사용하여 확인 버튼이 눌렸을 때의 행동을 정의
     Alert.alert(
       '제출 확인', // Alert의 제목
@@ -20,10 +22,29 @@ const InformationInput = () => {
         {text: 'OK', onPress: () => router.push('/MainScreen')}, // OK 버튼을 눌렀을 때 router.push를 호출
       ],
       {cancelable: false},
+      
     );
-  };
+     await setNickname('key',name);//닉네임을 스토리지에 저장하기위한 함수호출
+     confirmAsyncValue();
+  }catch(e){
+    console.log(e)
+  }
+  
+};
+
+const confirmAsyncValue = async () => { //닉네임이 스토리지에 잘 저장 되있나 호출하는 함수 
+  const result = await setNickname('key');
+  setStoageValue(result);
+  
+  
+};
+useEffect(() => {//스토리지 확인용 *추후 삭제
+   confirmAsyncValue();
+});
+
 
   return (
+
     <View style={info_styles.container}>
         <Text style={info_styles.header}>초기 설정</Text>
         <View style={info_styles.inputGroup}>
