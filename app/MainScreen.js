@@ -1,15 +1,12 @@
 import React,{ useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView,Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import {Stack, useRouter} from "expo-router";
 
-import { Ionicons } from '@expo/vector-icons';
+
 import { Card } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 import { images } from '../constants';
-import TabBar from '../components/TabBar'
-
-const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
-
 
 const MainScreen = () => {
   // 예시 데이터
@@ -23,17 +20,16 @@ const MainScreen = () => {
 
   return (
     <View style={styles.container}>
-    <View style={styles.header}>
-      <View style={styles.experienceBar}>
-        <View style={styles.experienceFill} /* 현재 경험치에 따라 너비 조정 */ />
-        <Text style={styles.experienceText}>경험치: 200 / 500</Text>
+      <View style={styles.header}>
+        <Ionicons name="book" size={24} color="black" onPress={() => router.push('/ExerciseDictionary')} />
       </View>
-      <Ionicons name="book" size={24} color="pink" onPress={() => router.push('/ExerciseDictionary')} />
-    </View>
 
       <View style={styles.characterContainer}>
-        <Image source={images.background} resizeMode="stretch" style={styles.imageStyle} />
         <Image source={images.level_1} resizeMode="cover" style={styles.characterImage} />
+        <View style={styles.experienceBar}>
+          <View style={styles.experienceFill} /* 현재 경험치에 따라 너비 조정 */ />
+          <Text style={styles.experienceText}>XP: 200 / 500</Text>
+        </View>
       </View>
 
       <ScrollView style={styles.exerciseList}>
@@ -52,7 +48,25 @@ const MainScreen = () => {
           </Card>
         ))}
       </ScrollView>
-      <TabBar router = {router}/>
+
+      <View style={styles.tabBar}>
+        <View style={styles.tabBarIcon}>
+          <Ionicons name="home-outline" size={24} color="black" onPress={() => router.push('/MainScreen')} />
+          <Text>홈</Text>
+        </View>
+        <View style={styles.tabBarIcon}>
+          <Ionicons name="trophy-outline" size={24} color="black" onPress={() => router.push('/RankingScreen')} />
+          <Text>랭킹</Text>
+        </View>
+        <View style={styles.tabBarIcon}>
+          <Ionicons name="calendar-outline" size={24} color="black" onPress={() => router.push('/CalendarScreen')} />
+          <Text>달력</Text>
+        </View>
+        <View style={styles.tabBarIcon}>
+          <Ionicons name="person-outline" size={24} color="black" onPress={() => router.push('/AnalysisScreen')} />
+          <Text>프로필</Text>
+        </View>
+      </View>
     </View>
   );
 };
@@ -62,30 +76,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingTop: 10,
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    paddingTop: 20,
+    paddingRight: 20,
+    alignItems: 'flex-end',
   },
   characterContainer: {
     height: '35%', // 높이를 조정해 캐릭터 이미지에 맞게 설정
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:20
   },
   characterImage: {
-    width: screenWidth * 0.3,
-    height: screenHeight * 0.2,
-    zIndex: 1,
+    width: 200,
+    height: 200,
+    // 캐릭터 이미지에 맞는 크기 조정
   },
   experienceBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   experienceFill: {
-    backgroundColor: 'lime',
+    backgroundColor: 'blue',
     width: '50%', // 현재 경험치에 따라 너비를 조정해야 함
     height: 10,
   },
@@ -103,10 +113,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  imageStyle: {
-    width: screenWidth,
-    height: screenHeight * 0.32,
-    position: 'absolute',
+  tabBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderColor: '#e1e1e1',
   },
 });
 
