@@ -42,8 +42,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
-    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
-    "prisma": "^5.5.2"
+    "@babel/plugin-proposal-export-namespace-from": "^7.18.9"
   },
   "resolutions": {
     "metro": "^0.73.7",
