@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Analysis {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model CalenderDay {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  day    String
+  userId String @db.ObjectId
+}
+
+model Exercise {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  exercise     String
+  reps         BigInt
+  sets         BigInt
+  workoutDayId String @db.ObjectId
+}
+
+model Plans {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model Socket {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model WorkoutDay {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  day    String
+  userId String @db.ObjectId
+}
+
+model WorkoutPlan {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model analysis {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  bmi    BigInt
+  date   String
+  weight BigInt
+}
+
+model doExercise {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  CalenderDayId String @db.ObjectId
+  exercise      String
+  reps          BigInt
+  sets          BigInt
+}
+
+model users {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  ex_goal  String
+  ex_level String
+  exp      BigInt
+  height   BigInt
+  name     String
+  tier     BigInt
+  weight   BigInt
+}

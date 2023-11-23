@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Button, Alert } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { Stack, useRouter } from "expo-router";
-
+import {IP_URL}from "@env"
 import { ActivityIndicator, Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { images } from '../constants';
@@ -33,8 +33,8 @@ const MainScreen = () => {
     const newExp = exercise[0].exp + totalExp;
 
     // 여기서 서버에 업데이트 요청
-    fetch('http://localhost:3000/MainScreen/food', {
-      method: "post",
+    fetch(`${IP_URL}/MainScreen/food`, {
+      method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },

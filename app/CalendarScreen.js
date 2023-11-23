@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-
+import {IP_URL}from "@env"
 const CalendarScreen = () => {
   const [selectedDay, setSelectedDay] = useState('');
   const [isLoading, setisLoading] = useState(false);
@@ -14,8 +14,8 @@ const CalendarScreen = () => {
   //끝낸운동들 fetch
   useEffect(() => {
     setisLoading(true);
-    fetch('http://localhost:3000/CalendarScreen/doexercise', {
-      method: "post",
+    fetch(`${IP_URL}/CalendarScreen/doexercise`, {
+      method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },

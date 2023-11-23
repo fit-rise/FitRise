@@ -7,11 +7,11 @@ const port = 50123;
 app.use(express.json());
 app.use(cors())
 app.use(bodyParser.urlencoded({ extends: true }))
-
+const prisma = new PrismaClient({});
 
 // gpt.js 모듈을 가져옴
 const gpt = require('./gpt');
-const prisma = new PrismaClient({});
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
@@ -36,7 +36,9 @@ app.post('/checklist', ckeckListAPI.postChecklist)
 
 
 const CalendarScreen =require('./CalendarScreen')//켈린더 스크린 api
-app.post('/CalendarScreen/doexercise',CalendarScreen.postCalendarScreen)
+app.post('/CalendarScreen/doexercise',(res,req)=>{
+
+})
 
 const MainScreen = require('./MainScreen')//메인 스크린 api
 app.post('/MainScreen/food', MainScreen.postMainScreen)
