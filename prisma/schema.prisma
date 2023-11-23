@@ -18,7 +18,7 @@ model users {
   ex_goal String
   exp Int? @default(0)
   plans WorkoutDay[]
-  calender CalenderDay[]
+  calendar CalendarDay[]
 }
 
 model WorkoutDay {
@@ -38,7 +38,7 @@ model Exercise {
   workoutDayId String @db.ObjectId
 }
 
-model CalenderDay {
+model CalendarDay {
   id  String @id @default(auto()) @map("_id") @db.ObjectId
   day         String
   doexercises  doExercise[]
@@ -51,8 +51,8 @@ model doExercise {
   exercise String
   sets Int
   reps Int
-  CalenderDay  CalenderDay @relation(fields: [CalenderDayId], references: [id])
-  CalenderDayId String @db.ObjectId
+  CalendarDay  CalendarDay @relation(fields: [CalendarDayId], references: [id])
+  CalendarDayId String @db.ObjectId
 }
 
 enum Level {
