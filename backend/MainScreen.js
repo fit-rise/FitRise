@@ -19,7 +19,7 @@ exports.postMainScreen = async function(req,res){
           }
         });
         if (!calendarDay) {
-          calendarDay = await prisma.calenderDay.create({
+          calendarDay = await prisma.calendarDay.create({
             data: {
               day: today,
               userId: req.body.id,
@@ -39,7 +39,7 @@ exports.postMainScreen = async function(req,res){
                 exercise: exercise.exercise,
                 sets: exercise.sets,
                 reps: exercise.reps,
-                CalenderDayId: calendarDay.id
+                CalendarDayId: calendarDay.id
               }
             });
             //체크된 운동 삭제

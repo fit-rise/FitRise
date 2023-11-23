@@ -19,7 +19,7 @@ exports.postCalendarScreen = async function(req,res){
             name: q.name,
           },
           select: {
-            calender: {
+            calendar: {
               select: {
                 day: true,
                 doexercises: {
