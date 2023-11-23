@@ -13,11 +13,6 @@ const InformationInput = () => {
   const [stoageValue, setStoageValue] = useState('');//스토리지 관련 스테이터스
   const router = useRouter()
   
-  
-  
-
-
-
   const handlePressNickcopyCheck = () =>{
     fetch()
   }

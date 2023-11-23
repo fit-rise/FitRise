@@ -11,6 +11,7 @@ export const setNickname = async (key, value) => {
   }
 };
 
+
 export const getItem = async (key) => {
   try {
     const res = await AsyncStorage.getItem(key);
