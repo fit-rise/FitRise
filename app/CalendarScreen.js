@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import {Stack, useRouter} from "expo-router";
+import TabBar from '../components/TabBar'
 
 const mockExerciseData = {
   '2023-11-07': [{ name: '푸시업', duration: '30분' }, { name: '스쿼트', duration: '20분' }],
   '2023-11-08': [{ name: '런지', duration: '20분' }],
-  // ... 여기에 더 많은 데이터를 추가할 수 있습니다.
 };
 
 const CalendarScreen = () => {
   const [selectedDay, setSelectedDay] = useState('');
+  const router = useRouter()
 
   // 선택된 날짜에 운동이 있었는지 확인하고, 있으면 마킹합니다.
   const markedDates = Object.keys(mockExerciseData).reduce((acc, curr) => {
@@ -38,6 +40,7 @@ const CalendarScreen = () => {
         keyExtractor={(item, index) => index.toString()}
         style={styles.exerciseList}
       />
+      <TabBar router = {router}/>
     </View>
   );
 };
@@ -58,6 +61,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   exerciseList: {
+    flex:1,
     marginTop: 20,
   },
 });
