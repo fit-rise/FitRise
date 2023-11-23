@@ -1,18 +1,18 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-var cors = require('cors')
 const { PrismaClient } = require('@prisma/client');
 const app = express();
-const port = 50123;
-app.use(express.json());
+const port = 3000;
+const cors = require('cors')
+app.use(express.json()) // body parsing 관련
 app.use(cors())
-app.use(bodyParser.urlencoded({ extends: true }))
+app.use(express.urlencoded({ extended: true })) // body parsing관련
 const prisma = new PrismaClient({});
 
 
-exports.postCalendarScreen = async function(res,req){
-  console.log("!11111")
+exports.postCalendarScreen = async function(req,res){
+  
     try{
+      con
         const q = req.body
         const ex = await prisma.users.findMany({
           where: {

@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extends: true }))
 const prisma = new PrismaClient({});
 
 
-exports.postMainScreen = async function(res,req){
+exports.postMainScreen = async function(req,res){
     try{
         const today = new Date().toISOString().split('T')[0];
         let calendarDay = await prisma.calenderDay.findFirst({

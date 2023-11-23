@@ -10,10 +10,11 @@ app.use(bodyParser.urlencoded({ extends: true }))
 const prisma = new PrismaClient({});
 
 
-exports.postChecklist = async function(res,req){
+exports.postChecklist = async function(req,res){
     
     try{
-        const q = req.body
+    const q = req.body
+    console.log(req.body.name)
     const ex = await prisma.users.findMany({
       where: {
         name: q.name,

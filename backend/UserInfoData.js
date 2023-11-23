@@ -1,4 +1,16 @@
-exports.postUserInfoData = async function (res,req){
+const express = require('express');
+const bodyParser = require('body-parser');
+var cors = require('cors')
+const { PrismaClient } = require('@prisma/client');
+const app = express();
+const port = 50123;
+app.use(express.json());
+app.use(cors())
+app.use(bodyParser.urlencoded({ extends: true }))
+const prisma = new PrismaClient({});
+
+
+exports.postUserInfoData = async function (req,res){
     try{
         const q = req.body
         const response = await gpt.processUserInput(userProfile)
