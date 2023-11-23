@@ -134,16 +134,16 @@ app.post('/checklist', async (req, res) => {
   })
   res.json(ex)
 })
-//exp 추가 && 해당 exercise삭제 && calender에 운동추가
+//exp 추가 && 해당 exercise삭제 && calendar에 운동추가
 app.post('/MainScreen/food', async (req, res) => {
   const today = new Date().toISOString().split('T')[0];
-  let calendarDay = await prisma.calenderDay.findFirst({
+  let calendarDay = await prisma.calendarDay.findFirst({
     where: {
       day: today
     }
   });
   if (!calendarDay) {
-    calendarDay = await prisma.calenderDay.create({
+    calendarDay = await prisma.calendarDay.create({
       data: {
         day: today,
         userId: req.body.id,
@@ -163,7 +163,7 @@ app.post('/MainScreen/food', async (req, res) => {
           exercise: exercise.exercise,
           sets: exercise.sets,
           reps: exercise.reps,
-          CalenderDayId: calendarDay.id
+          CalendarDayId: calendarDay.id
         }
       });
       //체크된 운동 삭제
@@ -213,7 +213,7 @@ app.post('/MainScreen/food', async (req, res) => {
 
   res.json(user);
 });
-//했던 운동들 날짜리스트 반환 calender
+//했던 운동들 날짜리스트 반환 calendar
 app.post('/CalendarScreen/doexercise', async (req, res) => {
   const q = req.body
   const ex = await prisma.users.findMany({
@@ -221,7 +221,7 @@ app.post('/CalendarScreen/doexercise', async (req, res) => {
       name: q.name,
     },
     select: {
-      calender: {
+      calendar: {
         select: {
           day: true,
           doexercises: {
