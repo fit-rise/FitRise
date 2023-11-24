@@ -9,6 +9,10 @@ import Info_TextInput from '../components/Info_TextInput'
 const InformationInput = () => {
   const [exerciseLevel, setExerciseLevel] = useState('beginner'); // 운동 수준 상태 추가
   const [goal, setGoal] = useState('weight_loss'); // 운동 목표 상태 추가
+  const [inputHeight, seHeight] = useState(''); // 키 입력값
+  const [inputWeight, setWeight] = useState(''); //몸무게 입력값
+  const [inputExercise, setExercise] = useState(''); // 운동 회수
+  const [inputNotice, setNotice] = useState(''); // 운동 회수
   const router = useRouter()
 
   const handlePress = () => {
@@ -31,6 +35,8 @@ const InformationInput = () => {
             <Info_TextInput
                     placeholder="키 입력"
                     keyboardType="numeric"
+                    onChangeText={seHeight}
+                    value={inputHeight}
                 />
             <Text style={info_styles.unit}>cm</Text>
         </View>
@@ -40,6 +46,8 @@ const InformationInput = () => {
             <Info_TextInput
             placeholder="몸무게 입력"
             keyboardType="numeric"
+            onChangeText={setWeight}
+            value={inputWeight}
             />
             <Text style={info_styles.unit}>kg</Text>
         </View>
@@ -75,6 +83,8 @@ const InformationInput = () => {
             <Info_TextInput
               placeholder="주당 운동 횟수(ex)주 3회)"
               keyboardType="numeric"
+              onChangeText={setExercise}
+              value={inputExercise}
             />
             <Text style={info_styles.unit}>회</Text>
         </View>
@@ -83,6 +93,8 @@ const InformationInput = () => {
             <Info_TextInput
               placeholder="제약사항 입력(부상 등)"
               keyboardType="default"
+              onChangeText={setNotice}
+              value={inputNotice}
             />
         </View>
       
