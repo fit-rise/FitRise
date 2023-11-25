@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String?
+  email String? //@unique
+  age   Int?
+  height Int
+  weight Int
+  tier String
+  ex_level Level @default(beginner)
+  ex_goal String
+  exp Int? @default(0)
+  plans WorkoutDay[]
+  calender CalenderDay[]
+  analysis Analysis[]
+}
+
+model WorkoutDay {
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  day         String
+  exercises   Exercise[]
+  user    users    @relation(fields: [userId], references: [id])
+  userId  String   @db.ObjectId
+}
+
+model Exercise {
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  exercise    String
+  sets        Int
+  reps        Int
+  workoutDay  WorkoutDay @relation(fields: [workoutDayId], references: [id])
+  workoutDayId String @db.ObjectId
+}
+
+model CalenderDay {
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  day         String
+  doexercises  doExercise[]
+  user    users    @relation(fields: [userId], references: [id])
+  userId  String   @db.ObjectId
+}
+
+model doExercise {
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  exercise String
+  sets Int
+  reps Int
+  CalenderDay  CalenderDay @relation(fields: [CalenderDayId], references: [id])
+  CalenderDayId String @db.ObjectId
+}
+
+model Analysis {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  date String
+  weight Int
+  bmi Int
+  userId String @map("user_id") @db.ObjectId
+  user  users   @relation(fields: [userId], references: [id])
+}
+
+
+enum Level {
+  beginner
+  intermediate 
+  advanced
+}
