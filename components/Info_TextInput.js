@@ -1,21 +1,13 @@
-// Info_TextInput.js
-import React, { useState } from 'react';
+import React from 'react';
 import { TextInput, View } from 'react-native';
 import info_styles from "./info.style";
 
-const Info_TextInput = ({ placeholder, keyboardType }) => {
-    const [text, setText] = useState('');
-
-    const onChangeText = (inputText) => {
-        setText(inputText);
-    }
-
+const Info_TextInput = ({ placeholder, keyboardType, onChangeText }) => {
     return (
         <View style={info_styles.input}>
             <TextInput
                 placeholder={placeholder}
-                onChangeText={onChangeText}
-                value={text}
+                onChangeText={onChangeText} // 상위 컴포넌트로부터 받은 onChangeText 사용
                 keyboardType={keyboardType}
             />
         </View>

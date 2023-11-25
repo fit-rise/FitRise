@@ -24,17 +24,6 @@ const InformationInput = () => {
     );
 };
 
-const confirmAsyncValue = async () => { //닉네임이 스토리지에 잘 저장 되있나 호출하는 함수 
-  const result = await setNickname('key');
-  setStoageValue(result);
-  
-  
-};
-useEffect(() => {//스토리지 확인용 *추후 삭제
-   confirmAsyncValue();
-});
-
-
   return (
     <View style={info_styles.container}>
         <Text style={info_styles.header}>초기 설정</Text>
