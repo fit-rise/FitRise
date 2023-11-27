@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 //alert 창 누른 없앤 후에 넘어갈 수 있도록 Alert 컴포넌트 사용
-import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
+import { View, Button, Text, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import {Stack, useRouter} from "expo-router";
-import  axios ,  { isCancel ,  AxiosError }  from  'axios' ;
-
+import info_styles from "../components/info.style"
+import Info_TextInput from '../components/Info_TextInput'
 
 const InformationInput = () => {
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
   const [exerciseLevel, setExerciseLevel] = useState('beginner'); // 운동 수준 상태 추가
   const [goal, setGoal] = useState('weight_loss'); // 운동 목표 상태 추가
-  const [comment, setComment] = useState('');
-
+  const [inputHeight, seHeight] = useState(''); // 키 입력값
+  const [inputWeight, setWeight] = useState(''); //몸무게 입력값
+  const [inputExercise, setExercise] = useState(''); // 운동 회수
+  const [inputNotice, setNotice] = useState(''); // 운동 회수
   const router = useRouter()
+
   const handlePress = () => {
     if (Platform.OS === 'web') {
       window.alert('정보가 제출되었습니다.');
@@ -30,37 +31,36 @@ const InformationInput = () => {
   
 
   return (
-    <View style={styles.container}>
-        <Text style={styles.header}>초기 설정</Text>
-        <View style={styles.inputGroup}>
-            <Text style={styles.label}>키</Text>
-            <TextInput
-            style={styles.input}
-            placeholder="키 입력"
-            keyboardType="numeric"
-            onChangeText={setHeight}
-            value={height}
-            />
-            <Text style={styles.unit}>cm</Text>
+    <View style={info_styles.container}>
+        <Text style={info_styles.header}>초기 설정</Text>
+        <View style={info_styles.inputGroup}>
+            <Text style={info_styles.label}>키</Text>
+            <Info_TextInput
+                    placeholder="키 입력"
+                    keyboardType="numeric"
+                    onChangeText={seHeight}
+                    value={inputHeight}
+                />
+            <Text style={info_styles.unit}>cm</Text>
         </View>
       
-        <View style={styles.inputGroup}>
-            <Text style={styles.label}>몸무게</Text>
-            <TextInput
-            style={styles.input}
+        <View style={info_styles.inputGroup}>
+            <Text style={info_styles.label}>몸무게</Text>
+            <Info_TextInput
             placeholder="몸무게 입력"
             keyboardType="numeric"
             onChangeText={setWeight}
-            value={weight}
+            value={inputWeight}
             />
-            <Text style={styles.unit}>kg</Text>
+            <Text style={info_styles.unit}>kg</Text>
         </View>
       
-        <View style={{flexDirection:'row', alignItems:'center', justifyContent: 'space-between'}}>
-            <Text style={styles.label}>운동 수준</Text>
+        <View style={info_styles.picker_container}>
+            <Text style={info_styles.label}>운동 수준</Text>
             <Picker
                 selectedValue={exerciseLevel}
-                style={styles.picker}
+                style={info_styles.picker}
+                itemStyle={{fontSize:14}}
                 onValueChange={(itemValue, itemIndex) => setExerciseLevel(itemValue)}>
                 <Picker.Item label="초보" value="beginner" />
                 <Picker.Item label="중급" value="intermediate" />
@@ -68,11 +68,12 @@ const InformationInput = () => {
             </Picker>
         </View>
 
-        <View style={{flexDirection:'row', alignItems:'center', justifyContent: 'space-between'}}>
-            <Text style={styles.label}>운동 목표</Text>
+        <View style={info_styles.picker_container}>
+            <Text style={info_styles.label}>운동 목표</Text>
             <Picker
                 selectedValue={goal}
-                style={styles.picker}
+                style={info_styles.picker}
+                itemStyle={{fontSize:14}}
                 onValueChange={(itemValue, itemIndex) => setGoal(itemValue)}>
                 <Picker.Item label="체중 감량" value="weight_loss" />
                 <Picker.Item label="근육 증가" value="muscle_gain" />
@@ -80,14 +81,23 @@ const InformationInput = () => {
             </Picker>
         </View>
 
-      
-        <View style={styles.inputGroup}>
-            <Text style={styles.label}>제약 사항</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="제약사항 입력(부상 등)"
-                onChangeText={setComment}
-                value={comment}
+        <View style={info_styles.inputGroup}>
+            <Text style={info_styles.label}>운동 횟수</Text>
+            <Info_TextInput
+              placeholder="주당 운동 횟수(ex)주 3회)"
+              keyboardType="numeric"
+              onChangeText={setExercise}
+              value={inputExercise}
+            />
+            <Text style={info_styles.unit}>회</Text>
+        </View>
+        <View style={info_styles.inputGroup}>
+            <Text style={info_styles.label}>제약 사항</Text>
+            <Info_TextInput
+              placeholder="제약사항 입력(부상 등)"
+              keyboardType="default"
+              onChangeText={setNotice}
+              value={inputNotice}
             />
         </View>
       
@@ -97,32 +107,3 @@ const InformationInput = () => {
 };
 
 export default InformationInput
-
-const styles = StyleSheet.create({
-    container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    justifyContent: 'center',
-    },
-    header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-    },
-    inputGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    },
-    label: {
-    width: 70, // 라벨 너비 고정
-    },
-    input: {
-    flex: 1,
-    },
-    picker: {
-        height: 50,
-        marginBottom: 20,
-      },
-})

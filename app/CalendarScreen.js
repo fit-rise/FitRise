@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-
+import {Stack, useRouter} from "expo-router";
+import TabBar from '../components/TabBar'
 const CalendarScreen = () => {
   const [selectedDay, setSelectedDay] = useState('');
   const [isLoading, setisLoading] = useState(false);
   const [Exdata, setExdata] = useState([])
+  const router = useRouter()
   // const mockExerciseData = {
   //   '2023-11-07': [{ name: '푸시업', duration: '30분' }, { name: '스쿼트', duration: '20분' }],
   //   '2023-11-08': [{ name: '런지', duration: '20분' }],
@@ -69,6 +71,7 @@ const CalendarScreen = () => {
         keyExtractor={(item, index) => index.toString()}
         style={styles.exerciseList}
       />
+      <TabBar router = {router}/>
     </View>
   );
 };
@@ -89,6 +92,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   exerciseList: {
+    flex:1,
     marginTop: 20,
   },
 });
