@@ -9,10 +9,18 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extends: true }))
 const prisma = new PrismaClient({});
 
+const userProfile = {
 
+  height: 180,
+  weight: 70,
+  level: "advanced", // 운동 수준
+  exerciseGoal: "Strengthening shoulders", // 운동 목표
+  weeklyExerciseFrequency: 4 // 주 운동 횟수
+};
 exports.postUserInfoData = async function (req,res){
     try{
         const q = req.body
+        const gpt = require('./gpt')
         const response = await gpt.processUserInput(userProfile)
         const responseJson = JSON.parse(response)
       
@@ -35,6 +43,7 @@ exports.postUserInfoData = async function (req,res){
               }))
             }
           };
+
           await prisma.users.create({
             data: UserData,
             include: {

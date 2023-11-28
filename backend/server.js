@@ -40,4 +40,6 @@ app.post('/CalendarScreen/doexercise',CalendarScreen.postCalendarScreen)
 
 const MainScreen = require('./MainScreen')//메인 스크린 api
 app.post('/MainScreen/food', MainScreen.postMainScreen)
+
+
   

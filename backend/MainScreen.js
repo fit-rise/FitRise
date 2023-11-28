@@ -13,13 +13,13 @@ const prisma = new PrismaClient({});
 exports.postMainScreen = async function(req,res){
     try{
         const today = new Date().toISOString().split('T')[0];
-        let calendarDay = await prisma.calenderDay.findFirst({
+        let calendarDay = await prisma.calendarDay.findFirst({
           where: {
             day: today
           }
         });
         if (!calendarDay) {
-          calendarDay = await prisma.calenderDay.create({
+          calendarDay = await prisma.calendarDay.create({
             data: {
               day: today,
               userId: req.body.id,
@@ -39,7 +39,7 @@ exports.postMainScreen = async function(req,res){
                 exercise: exercise.exercise,
                 sets: exercise.sets,
                 reps: exercise.reps,
-                CalenderDayId: calendarDay.id
+                CalendarDayId: calendarDay.id
               }
             });
             //체크된 운동 삭제

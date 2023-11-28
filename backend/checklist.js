@@ -9,9 +9,8 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extends: true }))
 const prisma = new PrismaClient({});
 
-
 exports.postChecklist = async function(req,res){
-    
+    console.log(req.body.name)
     try{
     const q = req.body
     console.log(req.body.name)

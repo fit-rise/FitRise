@@ -7,64 +7,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Analysis {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-}
-
-model CalenderDay {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  day    String
-  userId String @db.ObjectId
-}
-
-model Exercise {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  exercise     String
-  reps         BigInt
-  sets         BigInt
-  workoutDayId String @db.ObjectId
-}
-
-model Plans {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-}
-
-model Socket {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+model users {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String?
+  email String? //@unique
+  age   Int?
+  height Int
+  weight Int
+  ex_level Level @default(beginner)
+  ex_goal String
+  exp Int? @default(0)
+  plans WorkoutDay[]
+  calendar CalendarDay[]
 }
 
 model WorkoutDay {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  day    String
-  userId String @db.ObjectId
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  day         String
+  exercises   Exercise[]
+  user    users    @relation(fields: [userId], references: [id])
+  userId  String   @db.ObjectId
 }
 
-model WorkoutPlan {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+model Exercise {
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  exercise    String
+  sets        Int
+  reps        Int
+  workoutDay  WorkoutDay @relation(fields: [workoutDayId], references: [id])
+  workoutDayId String @db.ObjectId
 }
 
-model analysis {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  bmi    BigInt
-  date   String
-  weight BigInt
+model CalendarDay {
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  day         String
+  doexercises  doExercise[]
+  user    users    @relation(fields: [userId], references: [id])
+  userId  String   @db.ObjectId
 }
 
 model doExercise {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
-  CalenderDayId String @db.ObjectId
-  exercise      String
-  reps          BigInt
-  sets          BigInt
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  exercise String
+  sets Int
+  reps Int
+  CalendarDay  CalendarDay @relation(fields: [CalendarDayId], references: [id])
+  CalendarDayId String @db.ObjectId
 }
 
-model users {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  ex_goal  String
-  ex_level String
-  exp      BigInt
-  height   BigInt
-  name     String
-  tier     BigInt
-  weight   BigInt
+enum Level {
+  beginner
+  intermediate
+  advanced
 }

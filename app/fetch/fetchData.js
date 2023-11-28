@@ -1,8 +1,13 @@
 import {IP_URL}from "@env"
 import { useState } from "react"
 
-const [getData,setGetData ]= useState()
-const fetch = async(method,url,data) =>{
+
+const fetchData = async(method,url,data) =>{
+
+    const [getData,setGetData ]= useState()
+    
+    console.log("1111111111")
+    console.log(method,url,data)
     
 try{
     fetch(`${IP_URL}/${url}`,{
@@ -22,7 +27,7 @@ try{
 
 
 }
-export default fetch 
+export default fetchData 
 // name: name,
 // height: height,
 // weight:weight,
