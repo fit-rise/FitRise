@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Button, Alert, Dimensions } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, Button, Animated, PanResponder, TouchableOpacity, Dimensions } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { Stack, useRouter } from "expo-router";
 
@@ -16,7 +16,11 @@ const MainScreen = () => {
   const [exercise, setExercise] = useState([]);
   const [isLoading, setisLoading] = useState(false);
   const [checkedStates, setCheckedStates] = useState({});
+  const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+  const [containerLayout, setContainerLayout] = useState({ width: 0, height: 0 });
+
   const router = useRouter()
+
   //완료버튼 클릭시
   const handlePress = () => {
     setisLoading(true);
@@ -64,7 +68,7 @@ const MainScreen = () => {
   //plans,exp 정보 요청
   useEffect(() => {
     setisLoading(true);
-    fetch('http://localhost:3000/checklist', {
+    fetch('http://10.0.2.2:3000/checklist', { // 또는 로컬 IP 사용
       method: "post",
       headers: {
         'Content-Type': 'application/json'
@@ -77,8 +81,67 @@ const MainScreen = () => {
       .then((result) => {
         setExercise(result);
         setisLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setisLoading(false);
       });
   }, []);
+  useEffect(() => {
+    // 원하는 x, y 좌표로 초기 위치 설정
+    hero.setValue({ x: 150, y: 100 });
+  }, []);
+  // 캐릭터 초기 좌표설정
+  const hero = useRef(new Animated.ValueXY()).current;
+  //사용자의 터치 드래그 설정
+
+  const panResponder = PanResponder.create({
+    //터치시작
+    onStartShouldSetPanResponder: () => true,
+    //터치하고있을떄
+    onPanResponderGrant: () => {
+      setStartPos({ x: hero.x._value, y: hero.y._value });
+    },
+    //드래그중
+    onPanResponderMove: (e, gestureState) => {
+      const newX = startPos.x + gestureState.dx;
+      const newY = startPos.y + gestureState.dy;
+      hero.setValue({ x: newX, y: newY });
+    },
+    //드래그종료
+    onPanResponderRelease: (e, gestureState) => {
+      Animated.spring(hero.y, {
+        toValue: 100,
+        tension: 0,
+        useNativeDriver: false
+      }).start();
+      if (hero.x._value > screenWidth / 1.1) {
+        // 조건을 만족하면 원래 위치로 이동
+        Animated.spring(hero, {
+          toValue: { x: 300, y: startPos.y },
+          useNativeDriver: false
+        }).start();
+      } else if (hero.x._value < -50) { // 또는 원하는 최소 x값으로 설정
+        Animated.spring(hero, {
+          toValue: { x: 0, y: startPos.y },
+          useNativeDriver: false
+        }).start();
+      }
+    }
+  });
+  // 현재 경험치에 따라 적절한 캐릭터 이미지를 선택하는 함수
+  const getCurrentCharacterImage = (exp) => {
+    if (exp < 100) {
+      return images.stage1;
+    } else if (exp < 200) {
+      return images.stage2;
+    } else if (exp < 300) {
+      return images.stage3;
+    } else {
+      return images.stage4;
+    }
+    // 추가적인 레벨을 여기에 정의할 수 있습니다.
+  };
   return (
     <View style={styles.container}>
       {isLoading ? (
@@ -92,7 +155,15 @@ const MainScreen = () => {
           <Ionicons name="book" size={24} color="pink" onPress={() => router.push('/ExerciseDictionary')} />
           <View style={styles.characterContainer}>
             <Image source={images.background} resizeMode="stretch" style={styles.imageStyle} />
-            <Image source={images.jelly} resizeMode="cover" style={styles.characterImage} />
+            <Animated.View
+              {...panResponder.panHandlers}
+              style={[hero.getLayout(), { position: 'absolute' }]}>
+              <Image
+                source={getCurrentCharacterImage(exercise[0]?.exp)}
+                resizeMode="contain"
+                style={styles.characterImage}
+              />
+            </Animated.View>
           </View>
           <ScrollView style={styles.exerciseList}>
             {exercise?.map((data) => (
@@ -127,7 +198,7 @@ const MainScreen = () => {
         </>
       )}
     </View>
-  );  
+  );
 };
 
 const styles = StyleSheet.create({
@@ -155,8 +226,8 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   characterImage: {
-    width: screenWidth * 0.3,
-    height: screenHeight * 0.2,
+    width: screenWidth * 0.2,
+    height: screenHeight * 0.15,
     zIndex: 1,
   },
   experienceBar: {

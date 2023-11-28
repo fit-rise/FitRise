@@ -6,8 +6,11 @@ import green from "../assets/images/green.gif";
 import red from "../assets/images/red.gif";
 import jelly from "../assets/images/jelly.gif";
 import splash from "../assets/images/splash.png";
-
+import stage1 from "../assets/images/stage1.png";
+import stage2 from "../assets/images/stage2.png";
+import stage3 from "../assets/images/stage3.png";
+import stage4 from "../assets/images/stage4.png";
 
 export default {
-    level_1,pushup,test,background, green, red, jelly, splash
+    level_1,pushup,test,background, green, red, jelly, splash,stage1,stage2,stage3,stage4
 };

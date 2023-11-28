@@ -16,7 +16,7 @@ const CalendarScreen = () => {
   //끝낸운동들 fetch
   useEffect(() => {
     setisLoading(true);
-    fetch('http://localhost:3000/CalendarScreen/doexercise', {
+    fetch('http://10.0.2.2:3000/CalendarScreen/doexercise', {
       method: "post",
       headers: {
         'Content-Type': 'application/json'
