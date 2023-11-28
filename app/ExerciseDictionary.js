@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Stack, useRouter} from "expo-router";
 import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import useExercises from '../Hook/useExercises';
@@ -6,17 +7,23 @@ import useExercises from '../Hook/useExercises';
 const categories = ['Cardio', 'Olympic_weightlifting', 'Plyometrics', 'Powerlifting', 'Stretching', 'Strongman'];
 
 const ExerciseDictionary = () => {
+  const router = useRouter()
+
+  //useState & Hook
   const [searchQuery, setSearchQuery] = useState('');
   const [exerciseType, setExerciseType] = useState('cardio');
   const { exercises, loading, error } = useExercises(exerciseType);
 
+  // 액티비티 인디케이터
   if (loading) return <ActivityIndicator size="large" color='blue' />;
   if (error) return <Text>Error: {error.message}</Text>;
 
   const renderExerciseItem = ({ item }) => (
-    <View style={styles.listItem}>
-      <Text style={styles.listItemText}>{item.name}</Text>
-    </View>
+    <TouchableOpacity onPress={() => router.push('/ExerciseGuide')}>
+      <View style={styles.listItem}>
+        <Text style={styles.listItemText}>{item.name}</Text>
+      </View>
+    </TouchableOpacity>
   );
 
   return (
