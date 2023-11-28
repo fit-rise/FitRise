@@ -6,8 +6,9 @@ import green from "../assets/images/green.gif";
 import red from "../assets/images/red.gif";
 import jelly from "../assets/images/jelly.gif";
 import splash from "../assets/images/splash.png";
+import exercise from "../assets/images/pushup.gif";
 
 
 export default {
-    level_1,pushup,test,background, green, red, jelly, splash
+    level_1,pushup,test,background, green, red, jelly, splash,exercise
 };
