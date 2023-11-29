@@ -1,57 +1,96 @@
 import React from 'react';
+import { useRouter,useGlobalSearchParams, useLocalSearchParams } from 'expo-router';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-// 유튜브 영상을 표시하기 위해 필요한 라이브러리를 임포트해야 합니다. (예: react-native-youtube)
 import { images } from '../constants';
 
 const ExerciseGuide = () => {
-  // 가상의 데이터, 실제로는 API로부터 받아와야 합니다.
+  const router = useRouter();
+
+  // ExerciseDictionary에서 넘겨준 값
+  const { name,instructions,muscle } = useLocalSearchParams();
+  console.log(name)
+
   const exerciseData = {
-    name: '푸시업',
+    name: name,
     imageUrl: images.pushup,
-    description: '푸시업은 상체 근력을 키우는데 아주 좋은 운동입니다. 팔꿈치를 구부리면서 ...',
-    youtubeVideoId: 'abc123def' // 실제 유튜브 영상 ID가 들어가야 합니다.
+    description: instructions,
+    muscle: muscle,
+    youtubeVideoId: 'abc123def' // 실제 유튜브 영상 ID
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>{exerciseData.name}</Text>
-      <Image
-        source={images.pushup}
-        style={styles.image}
-      />
-      <Text style={styles.description}>{exerciseData.description}</Text>
-      {/* 여기에 유튜브 영상을 표시하는 컴포넌트를 추가해야 합니다. */}
-      <Image
-        source={images.pushup}
-        style={styles.image}
-      />
-    </ScrollView>
+  <ScrollView style={styles.container}>
+    <Text style={styles.title}>{exerciseData.name}</Text>
+    <View style={styles.horizontalView}>
+      <Text style={styles.muscleText}>운동 부위 : </Text>
+      <Text style={styles.muscleText}>{exerciseData.muscle}</Text>
+    </View>
+    <Image source={images.pushup} style={styles.image} />
+
+    <View style={styles.descriptionContainer}>
+      <ScrollView nestedScrollEnabled={true}>
+            <Text style={styles.description}>{exerciseData.description}</Text>
+      </ScrollView>
+    </View>
+  </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    padding: 20,
+    backgroundColor: '#f5f5f5', // 배경색 추가
   },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
+    color: '#333', // 타이틀 색상
     textAlign: 'center',
+    marginVertical: 20,
+  },
+  horizontalView: {
+    flexDirection: 'row', // 가로 방향으로 요소 정렬
+    alignItems: 'center', // 세로축 중앙 정렬
+    marginBottom: 10, // 여백 추가
+    justifyContent:'center' //가운데 정렬
+  },
+  muscleText:{
+    fontSize: 18,
+    fontWeight:'bold',
+    color: '#333',
+    marginRight: 5, // 오른쪽 여백 추가  
+  },
+  descriptionContainer: {
+    backgroundColor: '#eaeaea',
+    padding: 15,
+    borderRadius: 10,
     marginVertical: 10,
+    maxHeight: 200, // 최대 높이 설정
+  },
+  description: {
+    fontSize: 18,
+    color: '#333',
+    textAlign: 'justify', // 양쪽 정렬
+    lineHeight: 24, // 줄 간격
   },
   image: {
     width: '100%',
-    height: 200, // 또는 적절한 높이 설정
-    resizeMode: 'contain',
-    marginVertical: 10,
+    height: 250, // 이미지 높이 조정
+    resizeMode: 'resize',
+    marginVertical: 20,
+    borderRadius: 10, // 이미지 모서리 둥글게
+    borderWidth: 1, // 테두리
+    borderColor: '#ddd', // 테두리 색상
   },
-  description: {
-    fontSize: 16,
-    textAlign: 'left',
-    marginBottom: 20,
+  // 유튜브 영상 스타일 추가
+  videoContainer: {
+    height: 200, // 유튜브 영상 높이
+    borderRadius: 10,
+    overflow: 'hidden', // 모서리 둥글게 처리
+    marginVertical: 20,
   },
-  // 유튜브 영상 스타일도 추가해야 합니다.
 });
+
 
 export default ExerciseGuide;

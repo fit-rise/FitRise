@@ -18,13 +18,24 @@ const ExerciseDictionary = () => {
   if (loading) return <ActivityIndicator size="large" color='blue' />;
   if (error) return <Text>Error: {error.message}</Text>;
 
-  const renderExerciseItem = ({ item }) => (
-    <TouchableOpacity onPress={() => router.push('/ExerciseGuide')}>
+  const renderExerciseItem = ({ item }) => {
+  
+    return(
+    <TouchableOpacity onPress={() => {
+      //name, instructions(설명), muscle(쓰는 근육 부위), 
+      console.log(item)
+      console.log("name:",item.name)
+      router.push({pathname:'/ExerciseGuide',
+                   params: {name:item.name, instructions:item.instructions, muscle: item.muscle} })
+    }
+
+    }>
       <View style={styles.listItem}>
         <Text style={styles.listItemText}>{item.name}</Text>
+        <Text style={styles.listItemText}>{item.difficulty}</Text>
       </View>
     </TouchableOpacity>
-  );
+  )};
 
   return (
     <View style={styles.container}>
