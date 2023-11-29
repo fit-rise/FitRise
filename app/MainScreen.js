@@ -59,21 +59,23 @@ const MainScreen = () => {
   };
   //plans,exp 정보 요청
   useEffect(() => {
-    setisLoading(true);
-    fetch('http://localhost:3000/checklist', {
-      method: "post",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: "엄득용",
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        setExercise(result);
-        setisLoading(false);
-      });
+
+    
+     setisLoading(true);
+    // fetch('http://localhost:3000/checklist', {
+    //   method: "post",
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     name: "엄득용",
+    //   }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     setExercise(result);
+    //     setisLoading(false);
+    //   });
   }, []);
   return (
     <View style={styles.container}>

@@ -29,60 +29,68 @@ const InformationInput = () => {
    try{
 
     const inputUserData = {
-    name: name, 
-    height: inputHeight, 
-    weight: inputWeight,
-    Exercise: inputExercise,
-    Notice: inputNotice,
-    ex_goal: goal,
-    ex_level: exerciseLevel,
-    Notice: inputNotice 
+   
+  
   }
-  console.log("헨들 시작2")
+  console.log(inputUserData)
+  
   fetch(`${IP_URL}/UserInfoData`,{
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
-        Accept: "application / json",
     },
     body: JSON.stringify({
-      inputUserData
-    }),
-  }).then((res)=>(res.json())).then((json)=>console.log(json))
+      name: name, 
+      height: inputHeight, 
+      weight: inputWeight,
+      Exercise: inputExercise,
+      Notice: inputNotice,
+      ex_goal: goal,
+      ex_level: exerciseLevel,
+      Notice: inputNotice 
+    }
+    )
+  }).then((res)=>(res.json())).then((json)=>{
+
+    console.log(json)
+   // Alert.alert를 사용하여 확인 버튼이 눌렸을 때의 행동을 정의
+   Alert.alert(
+    '제출 확인', // Alert의 제목
+    '정보가 제출되었습니다.', // Alert의 내용
+    [
+      {text: 'OK', onPress: () => router.push('/MainScreen')}, // OK 버튼을 눌렀을 때 router.push를 호출
+    ],
+    {cancelable: false},
+  );
+  setNickname('key',name);//닉네임을 스토리지에 저장하기위한 함수호출
+  confirmAsyncValue();
+  console.log(stoageValue)
   
-    // Alert.alert를 사용하여 확인 버튼이 눌렸을 때의 행동을 정의
-    Alert.alert(
-      '제출 확인', // Alert의 제목
-      '정보가 제출되었습니다.', // Alert의 내용
-      [
-        {text: 'OK', onPress: () => router.push('/MainScreen')}, // OK 버튼을 눌렀을 때 router.push를 호출
-      ],
-      {cancelable: false},
-    );
-    await setNickname('key',name);//닉네임을 스토리지에 저장하기위한 함수호출
-    confirmAsyncValue();
-    
+  })  
    }catch(e){
+    console.log(e)
 
    }
   };
   const confirmAsyncValue = async () => { //닉네임이 스토리지에 잘 저장 되있나 호출하는 함수 
     const result = await setNickname('key');
     setStoageValue(result);
+    console.log(stoageValue)
     
     
   };
   useEffect(() => {
-    // try{
-    //   const name = confirmAsyncValue();
-    //   if(name != NULL){//스토리지에 닉네임이 있으면 
-    //    router.push('/MainScreen')
-    //   }else{
-
-    //    }
-    // }catch(e){
-    //   console.log(e)
-    // }
+     try{
+       const name = confirmAsyncValue();
+       if(name != null){//스토리지에 닉네임이 있으면 
+        console.log("useEffect if : "+name)
+       // router.push('/MainScreen')
+       }else{
+        Alert.alert("정보를 입력해주세요")
+        }
+     }catch(e){
+       console.log(e)
+     }
  },[]);
   return (
        <View style={info_styles.container}>
