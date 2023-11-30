@@ -6,6 +6,7 @@ import { IP_URL } from "@env"
 import { ActivityIndicator, Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { images } from '../constants';
+import TabBar from '../components/TabBar'
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -198,24 +199,7 @@ const MainScreen = () => {
 
         </>
       )}
-      <View style={styles.tabBar}>
-        <View style={styles.tabBarIcon}>
-          <Ionicons name="home-outline" size={24} color="black" onPress={() => router.push('/MainScreen')} />
-          <Text>홈</Text>
-        </View>
-        <View style={styles.tabBarIcon}>
-          <Ionicons name="trophy-outline" size={24} color="black" onPress={() => router.push('/RankingScreen')} />
-          <Text>랭킹</Text>
-        </View>
-        <View style={styles.tabBarIcon}>
-          <Ionicons name="calendar-outline" size={24} color="black" onPress={() => router.push('/CalendarScreen')} />
-          <Text>달력</Text>
-        </View>
-        <View style={styles.tabBarIcon}>
-          <Ionicons name="person-outline" size={24} color="black" onPress={() => router.push('/AnalysisScreen')} />
-          <Text>프로필</Text>
-        </View>
-      </View>
+      <TabBar router = {router}/>
     </View>
   );
 };
@@ -281,13 +265,6 @@ const styles = StyleSheet.create({
     width: screenWidth,
     height: screenHeight * 0.32,
     position: 'absolute',
-  },
-  tabBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 10,
-    borderTopWidth: 1,
-    borderColor: '#e1e1e1',
   },
 });
 
