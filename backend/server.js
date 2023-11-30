@@ -4,10 +4,9 @@ var cors = require('cors')
 const { PrismaClient } = require('@prisma/client');
 const app = express();
 const port = 3000;
-const cors = require('cors')
 app.use(express.json()) // body parsing 관련
 app.use(cors())
-app.use(bodyParser.urlencoded({ extends: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 const prisma = new PrismaClient({});
 
 // gpt.js 모듈을 가져옴
@@ -182,7 +181,6 @@ app.post('/analysis', async(req, res) => {
   }
  
 })
-
 
 
 app.listen(port, () => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Button, Alert } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { Stack, useRouter } from "expo-router";
-import {IP_URL}from "@env"
+import { IP_URL } from "@env"
 import { ActivityIndicator, Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { images } from '../constants';
@@ -59,23 +59,21 @@ const MainScreen = () => {
   };
   //plans,exp 정보 요청
   useEffect(() => {
-
-    
-     setisLoading(true);
-    // fetch('http://localhost:3000/checklist', {
-    //   method: "post",
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     name: "엄득용",
-    //   }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((result) => {
-    //     setExercise(result);
-    //     setisLoading(false);
-    //   });
+    setisLoading(true);
+    fetch('http://10.0.2.2:3000/checklist', {
+      method: "post",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: "엄득용",
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        setExercise(result);
+        setisLoading(false);
+      });
   }, []);
   return (
     <View style={styles.container}>

@@ -3,10 +3,9 @@ const bodyParser = require('body-parser');
 var cors = require('cors')
 const { PrismaClient } = require('@prisma/client');
 const app = express();
-const port = 50123;
 app.use(express.json());
 app.use(cors())
-app.use(bodyParser.urlencoded({ extends: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 const prisma = new PrismaClient({});
 
 

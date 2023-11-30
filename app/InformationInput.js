@@ -77,6 +77,7 @@ const InformationInput = () => {
     
   };
   useEffect(() => {
+    router.push('/MainScreen')
      try{
        const name = confirmAsyncValue();
        if(name != null){//스토리지에 닉네임이 있으면 

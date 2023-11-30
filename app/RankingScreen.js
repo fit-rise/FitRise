@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList, StyleSheet, Dimensions } from 'react-nativ
 import {Stack, useRouter} from "expo-router";
 import TabBar from '../components/TabBar'
 import { images } from '../constants';
-
+import {IP_URL}from "@env"
 const RankingScreen = () => {
   const [userRankings, setUserRankings] = useState([]);
   const [currentUser, setCurrentUser] = useState({ ranking: null, tier: '', exp: 0 });
@@ -27,7 +27,7 @@ useEffect(() => {
   const fetchData = async () => {
     try {
 
-      const response = await fetch('http://localhost:3000/rank', {
+      const response = await fetch(`${IP_URL}/rank`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

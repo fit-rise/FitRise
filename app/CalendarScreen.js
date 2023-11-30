@@ -25,7 +25,7 @@ const CalendarScreen = () => {
     })
       .then((response) => response.json())
       .then((result) => {
-        setExdata(result[0]?.calender || []);
+        setExdata(result[0]?.calendar || []);
 // 첫 번째 사용자의 calendar 데이터만 사용합니다.
         setExdata(result[0]?.calendar || []);        setisLoading(false);
       });

@@ -8,7 +8,7 @@ import ScreenHeaderBtn from '../components/ScreenHeaderBtn'
 import info_styles from "../components/info.style"
 import Info_TextInput from '../components/Info_TextInput'
 import { Button } from 'react-native-paper';
-
+import {IP_URL}from "@env"
 const AnalysisScreen = () => {
 
   console.log("AnalysisScreen 렌더링 시작");
@@ -30,7 +30,7 @@ const [loading, setLoading] = useState(true);
     console.log("useEffect 호출됨");
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/analysis', {
+        const response = await fetch(`${IP_URL}/analysis`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
