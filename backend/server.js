@@ -13,7 +13,6 @@ const prisma = new PrismaClient({});
 const gpt = require('./gpt');
 
 const { MongoClient } = require('mongodb')
-// 사용자 정보를 저장할 객체
 
 // 랭킹 집계
 async function calculateRanking(name,userTier) {
@@ -182,11 +181,9 @@ app.post('/analysis', async(req, res) => {
  
 })
 
-
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-// 사용자 정보를 저장할 객체
 
 app.get('/', (req, res)=>{
   console.log(req)
@@ -210,4 +207,3 @@ app.post('/CalendarScreen/doexercise',CalendarScreen.postCalendarScreen)
 
 const MainScreen = require('./MainScreen')//메인 스크린 api
 app.post('/MainScreen/food', MainScreen.postMainScreen)
-
