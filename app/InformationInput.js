@@ -15,14 +15,11 @@ const InformationInput = () => {
   const [inputNotice, setNotice] = useState(''); // 운동 회수
   const [stoageValue, setStoageValue] = useState('');//스토리지 관련 스테이터스
   const [name,setName] = useState('');
-
-
   const router = useRouter()
   
   const NickcopyCheck = () =>{
     fetch()
   }
-
 
   const handlePress = async() => {
     

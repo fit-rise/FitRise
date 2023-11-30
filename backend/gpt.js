@@ -75,8 +75,6 @@ async function processUserInput(userProfile) {
             required: ["exercisePlan"]
 
           }
-          
-          
         }
       ],
       function_call:{name: "exercise_routine"}

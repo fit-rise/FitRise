@@ -1,6 +1,6 @@
-import React,{useState} from 'react';
+import React,{useState , useEffect } from 'react';
 import {useRouter} from "expo-router";
-import { View, Text, Dimensions, StyleSheet, Modal} from 'react-native';
+import { View, Text, Dimensions, StyleSheet, Modal, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { LineChart } from 'react-native-chart-kit';
 import TabBar from '../components/TabBar'
@@ -10,12 +10,104 @@ import Info_TextInput from '../components/Info_TextInput'
 import { Button } from 'react-native-paper';
 
 const AnalysisScreen = () => {
+
+  console.log("AnalysisScreen 렌더링 시작");
+ // const [data, setData] = useState(null);
+ const [chartData, setChartData] = useState({
+  labels: [],
+  datasets: [{ data: [] }]
+});
+const [loading, setLoading] = useState(true);
+  const [weight, setWeight] = useState('');
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
   const [modalVisible, setModalVisible] = useState(false);
   const [exerciseLevel, setExerciseLevel] = useState('beginner');
   const [goal, setGoal] = useState('weight_loss');
   const router = useRouter()
+
+  useEffect(() => {
+    console.log("useEffect 호출됨");
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/analysis', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: '655de6c451a5a1fdd749aff1' }) // 사용자 ID 설정
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const analysisData = await response.json();
+        console.log('분석 데이터 도착'+analysisData)
+        const transformed = transformData(analysisData);
+        setChartData(transformed);
+        // 차트에 사용할 데이터 형식으로 변환 필요
+      } catch (error) {
+        console.error('Fetching data failed:', error);
+      } finally {
+        setLoading(false);
+      }
+
+
+    };
+  
+    fetchData();
+  }, []);
+
+  // 데이터 변환 로직
+const transformData = (analysisData) => {
+  const labels = analysisData.map(item => item.date);
+  const weightData = analysisData.map(item => item.weight);
+  const bmiData = analysisData.map(item => item.bmi);
+
+  return {
+    labels: labels,
+    datasets: [
+      {
+        data: weightData,
+        color: (opacity = 1) => `rgba(74, 144, 226, ${opacity})`, // 파란색 계열
+        strokeWidth: 2
+      },
+      {
+        data: bmiData,
+        color: (opacity = 1) => `rgba(246, 116, 95, ${opacity})`, // 주황색 계열
+        strokeWidth: 2
+      }
+    ],
+    legend: ["체중 변화","BMI 지수 변화"] // 범례
+  };
+};
+
+
+  const submitWeight = async () => {
+    console.log('몸무게 전송'+weight)
+    try {
+
+      const response = await fetch('http://localhost:3000/weight', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ weight: weight }) // 입력된 몸무게를 JSON 형식으로 전송
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      // 성공적인 응답 처리 로직 (예: 알림 띄우기)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  /*
 
   const weightData = [65, 59, 80, 81, 56, 55];
   const bmiData = [30, 26, 36, 37, 24, 23];
@@ -36,8 +128,9 @@ const AnalysisScreen = () => {
       }
     ],
     legend: ["체중 변화","BMI 지수 변화"]
-  };
+  };*/
 
+  
   const chartConfig = {
     backgroundGradientFrom: "#fff", // 밝은 배경
     backgroundGradientTo: "#fff", // 밝은 배경
@@ -57,24 +150,37 @@ const AnalysisScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> 
+
       <View style={styles.container}>
         <Text style={styles.headerText}>나의 신체변화</Text>
+        {loading ? (
+      <ActivityIndicator size="large" color="#0000ff" />
+    ) : (
+      chartData && chartData.labels.length > 0 && (
         <LineChart
-          data={data}
+          data={chartData}
           width={screenWidth}
           height={screenHeight * 0.40}
           chartConfig={chartConfig}
           bezier // 부드러운 곡선 표시
         />
+      )
+    )}
+       
         <View style={info_styles.inputGroup}>
-            <Text style={info_styles.label} style={{margin:10}}>몸무게</Text>
+            <Text style={info_styles.label}>몸무게</Text>
             <Info_TextInput
                     placeholder="몸무게 입력"
                     keyboardType="numeric"
+                    onChangeText={text => setWeight(text)} // 입력된 텍스트를 weight 상태로 설정
                 />
             <Text style={info_styles.unit}>Kg</Text>
-            <Button style={{backgroundColor: 'skyblue', margin:10}}> 입력 </Button>
+            <Button 
+              style={{backgroundColor: 'skyblue', margin:10}}
+              onPress={submitWeight} // 버튼 클릭 시 submitWeight 함수 실행
+            
+            > 입력 </Button>
         </View>
         <Button 
           style={{backgroundColor: 'skyblue', margin:10}}
