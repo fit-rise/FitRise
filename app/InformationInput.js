@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 //alert 창 누른 없앤 후에 넘어갈 수 있도록 Alert 컴포넌트 사용
-import { View, Button, Text, Alert } from 'react-native';
+import { View, Button, Text, Alert,SafeAreaView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import {Stack, useRouter} from "expo-router";
 import info_styles from "../components/info.style"
@@ -28,7 +28,8 @@ const InformationInput = () => {
   };
 
   return (
-    <View style={info_styles.container}>
+    <SafeAreaView style={info_styles.container}>
+    <View style={info_styles.content_container}>
         <Text style={info_styles.header}>초기 설정</Text>
         <View style={info_styles.inputGroup}>
             <Text style={info_styles.label}>키</Text>
@@ -100,6 +101,7 @@ const InformationInput = () => {
       
       <Button title="완료" onPress={handlePress} />
     </View>
+    </SafeAreaView>
   );
 };
 

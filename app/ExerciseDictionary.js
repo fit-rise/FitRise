@@ -32,7 +32,7 @@ const ExerciseDictionary = () => {
     }>
       <View style={styles.listItem}>
         <Text style={styles.listItemText}>{item.name}</Text>
-        <Text style={styles.listItemText}>{item.difficulty}</Text>
+        <Text style={styles.listItemText}>강도 : {item.difficulty}</Text>
       </View>
     </TouchableOpacity>
   )};
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    backgroundColor:"#F4FFF9"
   },
   headerText: {
     fontSize: 24,
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
   },
   categoryButton: {
     padding: 10,
-    backgroundColor: '#81fcf0',
+    backgroundColor: '#7DCEA0',
     borderRadius: 20,
     height: 40,
     marginLeft: 5,

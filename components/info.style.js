@@ -2,7 +2,11 @@ import { StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../constants";
 
 const info_styles = StyleSheet.create({
-    container: {
+    container:{
+        flex:1,
+        backgroundColor:"#DFEFDF"
+    },
+    content_container: {
         flex: 1,
         paddingHorizontal: 20,
         justifyContent: 'flex-start',
@@ -17,7 +21,7 @@ const info_styles = StyleSheet.create({
     inputGroup: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 30,
+        marginBottom: 20,
         marginTop:10,
         },
     label: {
@@ -40,6 +44,7 @@ const info_styles = StyleSheet.create({
         flexDirection:'row',
          alignItems:'center',
          justifyContent: 'space-between',
+         marginBottom: 25,
     }
     
 })

@@ -32,7 +32,7 @@ const RankingScreen = () => {
         <View style={styles.topSection}>
           <Text style={styles.rankingText}>현재 순위: {currentUser.ranking}</Text>
           <Image 
-            source={images.level_1}
+            source={images.gold_medal}
             style={{ width: 100, height: 100}}
             resizeMode="stretch"
           />
