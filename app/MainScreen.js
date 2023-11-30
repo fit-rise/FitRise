@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Button, Animated, PanResponder, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, Button, Animated, PanResponder, TouchableOpacity, Dimensions,ImageBackground } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { Stack, useRouter } from "expo-router";
 
@@ -41,7 +41,7 @@ const MainScreen = () => {
     const newExp = exercise[0].exp + totalExp;
 
     // 여기서 서버에 업데이트 요청
-    fetch('http://localhost:3000/MainScreen/food', {
+    fetch('http://10.0.2.2:3000/MainScreen/food', {
       method: "post",
       headers: {
         'Content-Type': 'application/json'
@@ -148,12 +148,13 @@ const MainScreen = () => {
         <ActivityIndicator size="large" />
       ) : (
         <>
+          <View style={styles.characterContainer}>
+          <ImageBackground source={images.background_sky} resizeMode="cover" style={styles.imageStyle}>
           <View style={styles.experienceBar}>
             <View style={[styles.experienceFill, { width: `${(exercise[0]?.exp / 500) * 100}%`/* 여기에 경험치에 따른 너비 계산 로직 */ }]} />
             <Text style={styles.experienceText}>경험치: {exercise[0]?.exp} / 500</Text>
           </View>
           <Ionicons name="book" size={24} color="pink" onPress={() => router.push('/ExerciseDictionary')} />
-          <View style={styles.characterContainer}>
             <Image source={images.background} resizeMode="stretch" style={styles.imageStyle} />
             <Animated.View
               {...panResponder.panHandlers}
@@ -164,6 +165,7 @@ const MainScreen = () => {
                 style={styles.characterImage}
               />
             </Animated.View>
+            </ImageBackground>
           </View>
           <ScrollView style={styles.exerciseList}>
             {exercise?.map((data) => (

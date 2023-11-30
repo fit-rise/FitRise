@@ -10,7 +10,8 @@ import stage1 from "../assets/images/stage1.png";
 import stage2 from "../assets/images/stage2.png";
 import stage3 from "../assets/images/stage3.png";
 import stage4 from "../assets/images/stage4.png";
+import background_sky from "../assets/images/background_sky.png"
 
 export default {
-    level_1,pushup,test,background, green, red, jelly, splash,stage1,stage2,stage3,stage4
+    level_1,pushup,test,background, green, red, jelly, splash,stage1,stage2,stage3,stage4,background_sky
 };
