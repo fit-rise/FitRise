@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { useRouter } from 'expo-router';
 const categories = ['모든 운동', '상체', '하체', '코어', '유산소', '스트레칭'];
 
 // 가상의 운동 데이터입니다. 실제 앱에서는 API를 통해 받아올 데이터입니다.
@@ -12,13 +12,30 @@ const exercises = [
 ];
 
 const ExerciseDictionary = () => {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const renderExerciseItem = ({ item }) => (
-    <View style={styles.listItem}>
-      <Text style={styles.listItemText}>{item.name}</Text>
-    </View>
-  );
+  const renderExerciseItem = ({ item }) => {
+  
+
+    const handlePress = () => {
+      console.log(item.name)
+      // 'ExerciseGuide' 경로로 이동하면서, 선택된 운동의 이름을 파라미터로 전달
+    // router.push('/ExerciseGuide');
+     router.push({ pathname: 'ExerciseGuide', params: { exerciseName: item.name } });
+      // router.push(`/ExerciseGuide/${item.name}`)
+
+    };
+
+    return (
+      <TouchableOpacity
+        style={styles.listItem}
+        onPress={handlePress}
+      >
+        <Text style={styles.listItemText}>{item.name}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>

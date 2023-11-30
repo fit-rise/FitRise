@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState , useEffect} from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-// 유튜브 영상을 표시하기 위해 필요한 라이브러리를 임포트해야 합니다. (예: react-native-youtube)
-import { images } from '../constants';
+import { useRouter,useLocalSearchParams,useNavigation  } from 'expo-router';
+import YoutubePlayer from 'react-native-youtube-iframe';
+import { images } from '../constants'; 
 
 const ExerciseGuide = () => {
   // 가상의 데이터, 실제로는 API로부터 받아와야 합니다.
@@ -12,19 +13,51 @@ const ExerciseGuide = () => {
     youtubeVideoId: 'abc123def' // 실제 유튜브 영상 ID가 들어가야 합니다.
   };
 
+  const router = useRouter();
+  const  { exerciseName}  = useLocalSearchParams();
+  console.log('exerciseName : '+exerciseName)
+  // 라우터 파라미터에서 운동 이름을 추출
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    fetchYoutubeVideos(exerciseName);
+  }, [exerciseName]);
+
+  const fetchYoutubeVideos = async (query) => {
+    const API_KEY = 'AIzaSyDxrHO2kXoQvRfaRPX6e2E9817yFKJxT_c'; // YouTube Data API 키
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&chart=mostPopular&maxResults=3&regionCode=kr&q=${encodeURIComponent(query)}&type=video&key=${API_KEY}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      setVideos(data.items);
+    } catch (error) {
+      console.error('Error fetching YouTube videos:', error);
+    }
+ };
+
+
+
+
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>{exerciseData.name}</Text>
+       <Text style={styles.title}>{exerciseData.name}</Text>
       <Image
         source={images.pushup}
         style={styles.image}
       />
       <Text style={styles.description}>{exerciseData.description}</Text>
-      {/* 여기에 유튜브 영상을 표시하는 컴포넌트를 추가해야 합니다. */}
-      <Image
-        source={images.pushup}
-        style={styles.image}
-      />
+      
+      {videos.map((video, index) => (
+        <View key={index} style={styles.videoContainer}>
+          <YoutubePlayer
+            height={405}
+            width={720}
+            videoId={video.id.videoId} // YouTube 동영상 ID
+          />
+        </View>
+      ))}
+
     </ScrollView>
   );
 };
@@ -51,7 +84,10 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginBottom: 20,
   },
-  // 유튜브 영상 스타일도 추가해야 합니다.
+  videoContainer:{
+    marginBottom:20,
+    alignItems: 'center'
+  }
 });
 
 export default ExerciseGuide;

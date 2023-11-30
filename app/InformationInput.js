@@ -76,6 +76,8 @@ const InformationInput = () => {
             <Info_TextInput
               placeholder="주당 운동 횟수(ex)주 3회)"
               keyboardType="numeric"
+              onChangeText={setExercise}
+              value={inputExercise}
             />
             <Text style={info_styles.unit}>회</Text>
         </View>
@@ -84,6 +86,8 @@ const InformationInput = () => {
             <Info_TextInput
               placeholder="제약사항 입력(부상 등)"
               keyboardType="default"
+              onChangeText={setNotice}
+              value={inputNotice}
             />
         </View>
       
