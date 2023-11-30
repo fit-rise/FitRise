@@ -10,7 +10,7 @@ import TabBar from '../components/TabBar'
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-
+//env 체크
 const MainScreen = () => {
 
   const [exercise, setExercise] = useState([]);
