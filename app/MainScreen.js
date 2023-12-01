@@ -7,7 +7,7 @@ import { ActivityIndicator, Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { images } from '../constants';
 import TabBar from '../components/TabBar'
-
+import * as Progress from 'react-native-progress';
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 //env 체크
@@ -142,6 +142,44 @@ const MainScreen = () => {
     }
     // 추가적인 레벨을 여기에 정의할 수 있습니다.
   };
+  // 현재 경험치에 따라 현재 스테이지와 그 스테이지에서의 경험치 비율을 반환하는 함수
+  const calculateStageProgress = (currentExp) => {
+    let MaxExp;
+    let MinExp;
+    let stage;
+    if (currentExp < 100) {
+      stage = 1;
+      MaxExp = 100;
+      MinExp = 0;
+    } else if (currentExp < 200) {
+      stage = 2;
+      MaxExp = 200;
+      MinExp = 100;
+    } else if (currentExp < 300) {
+      stage = 3;
+      MaxExp = 300;
+      MinExp = 200;
+    } else {
+      stage = 4;
+      MaxExp = 500; // 여기서 최대 경험치를 정의할 수 있습니다.
+      MinExp = 300;
+    }
+    // 현재 스테이지에서의 경험치 비율 계산
+    const stageProgress = (currentExp - MinExp) / (MaxExp - MinExp);
+    //스테이지별 exp
+    const stageExp = currentExp - MinExp;
+    //스테이지별 채워야하는 EXP
+    const stageMaxExp = MaxExp - MinExp;
+    if (typeof currentExp === "number") {
+    //stage:현재단계  stageprogress:현재 단계 진행률 stagemaxexp:현재단계 최대xp
+      return { stage, stageProgress, stageMaxExp, stageExp };
+    } else{
+      return null
+    }
+  };
+
+  const expData = calculateStageProgress(exercise[0]?.exp);
+
   return (
     <View style={styles.container}>
       {isLoading ? (
@@ -150,10 +188,12 @@ const MainScreen = () => {
         <>
           <View style={styles.characterContainer}>
             <ImageBackground source={images.background_sky} resizeMode="cover" style={styles.imageStyle}>
-              <View style={styles.experienceBar}>
-                <View style={[styles.experienceFill, { width: `${(exercise[0]?.exp / 500) * 100}%`/* 여기에 경험치에 따른 너비 계산 로직 */ }]} />
-                <Text style={styles.experienceText}>경험치: {exercise[0]?.exp} / 500</Text>
-              </View>
+              {expData && (
+                <View style={styles.experienceBar}>
+                  <Progress.Bar progress={expData.stageProgress} width={250} style={styles.progressBar} color='#000' animated={true} />
+                  <Text style={styles.experienceText}>경험치: {expData.stageExp} / {expData.stageMaxExp}</Text>
+                </View>
+              )}
               <Ionicons name="book" size={24} color="black" onPress={() => router.push('/ExerciseDictionary')} />
               <Image source={images.background} resizeMode="stretch" style={styles.imageStyle} />
               <Animated.View
@@ -199,7 +239,7 @@ const MainScreen = () => {
 
         </>
       )}
-      <TabBar router = {router}/>
+      <TabBar router={router} />
     </View>
   );
 };
@@ -241,11 +281,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  experienceFill: {
-    backgroundColor: 'blue',
-    width: '50%', // 현재 경험치에 따라 너비를 조정해야 함
-    height: 10,
-  },
   experienceText: {
     width: 200,
     paddingLeft: 10,
@@ -265,6 +300,12 @@ const styles = StyleSheet.create({
     width: screenWidth,
     height: screenHeight * 0.32,
     position: 'absolute',
+  },
+  progressBar: {
+    height: 10, // 프로그레스바의 높이
+    borderRadius: 10, // 프로그레스바의 모서리를 둥글게
+    borderWidth: 2, // 프로그레스바의 테두리 두께
+    borderColor: "#000", // 프로그레스바의 테두리 색상
   },
 });
 
