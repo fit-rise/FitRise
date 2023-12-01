@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {Stack, useRouter} from "expo-router";
-import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, TextInput, StyleSheet, FlatList,
+        TouchableOpacity, ScrollView, ActivityIndicator,Image } from 'react-native';
+import { icons } from '../constants';
 import useExercises from '../Hook/useExercises';
 
 const categories = ['Cardio', 'Olympic_weightlifting', 'Plyometrics', 'Powerlifting', 'Stretching', 'Strongman'];
@@ -11,8 +12,22 @@ const ExerciseDictionary = () => {
 
   //useState & Hook
   const [searchQuery, setSearchQuery] = useState('');
+  //검색 결과 담을 useState
+  const [filteredExercises, setFilteredExercises] = useState([]);
   const [exerciseType, setExerciseType] = useState('cardio');
   const { exercises, loading, error } = useExercises(exerciseType);
+
+  // 검색 함수
+  const handleSearch = () => {
+    const filtered = exercises.filter(exercises =>
+      exercises.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredExercises(filtered);
+  };
+
+  useMemo(() => {
+    setFilteredExercises(exercises);
+  }, [exercises]);
 
   // 액티비티 인디케이터
   if (loading) return <ActivityIndicator size="large" color='blue' />;
@@ -40,6 +55,7 @@ const ExerciseDictionary = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>운동사전</Text>
+
       <View style={styles.searchContainer}>
         <TextInput
           placeholder="운동 검색"
@@ -47,8 +63,11 @@ const ExerciseDictionary = () => {
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
-        <Ionicons name="search" size={20} style={styles.searchIcon} />
+        <TouchableOpacity onPress={handleSearch}>
+          <Image source={icons.search} style={styles.searchIcon} />
+        </TouchableOpacity>
       </View>
+      
       <ScrollView 
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -66,7 +85,7 @@ const ExerciseDictionary = () => {
       </ScrollView>
 
       <FlatList
-        data={exercises}
+        data={filteredExercises}
         keyExtractor={item => item.name.toString()}
         renderItem={renderExerciseItem}
       />
@@ -95,7 +114,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   searchIcon: {
-    marginHorizontal: 5,
+    width: 35, // 아이콘의 너비 설정
+    height: 35, // 아이콘의 높이 설정
+    resizeMode: 'contain', // 이미지의 비율을 유지
   },
   searchInput: {
     flex: 1,

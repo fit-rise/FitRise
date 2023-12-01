@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 250, // 이미지 높이 조정
-    resizeMode: 'resize',
+    resizeMode: 'contain',
     marginVertical: 20,
     borderRadius: 10, // 이미지 모서리 둥글게
     borderWidth: 1, // 테두리

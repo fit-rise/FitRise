@@ -35,7 +35,7 @@ const MainScreen = () => {
 
       <View style={styles.characterContainer}>
         <Image source={images.char_background} resizeMode="stretch" style={styles.imageStyle} />
-        <Image source={images.level_1} resizeMode="cover" style={styles.characterImage} />
+        <Image source={images.level_4} resizeMode="cover" style={styles.characterImage} />
       </View>
     <ImageBackground source={images.card_background} style={styles.scrollViewBackground}>
       <ScrollView style={styles.exerciseList}>
