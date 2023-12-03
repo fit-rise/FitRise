@@ -17,7 +17,6 @@ const MainScreen = () => {
   const [isLoading, setisLoading] = useState(false);
   const [checkedStates, setCheckedStates] = useState({});
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-  const [containerLayout, setContainerLayout] = useState({ width: 0, height: 0 });
 
   const router = useRouter()
 

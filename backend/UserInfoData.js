@@ -30,11 +30,11 @@ exports.postUserInfoData = async function (req,res){
             ex_goal: q.ex_goal,
             name: q.name,
             plans: {
-              create: responseJson.exercisePlan.map((day, index) => ({
-                day: `Day ${index + 1}`,
+              create: responseJson.exercisePlan.map((plan) => ({
+                day: `Day ${plan.day}`,
                 exercises: {
-                  create: day[`Day ${index + 1}`].map(exercise => ({
-                    exercise: exercise.exercise,
+                  create: plan.exercises.map(exercise => ({
+                    exercise: exercise.name, // 'name' 필드로 변경됨
                     sets: exercise.sets,
                     reps: exercise.reps
                   }))
@@ -53,12 +53,12 @@ exports.postUserInfoData = async function (req,res){
               }
             }
           });
-        
+        res.status(200).send("유저생성완료");
       }catch(e){
         console.log(e)
         res.status(500).send(e);
       }
-    
+  
 }
 
 exports.getNameCheck = async function(res,req){

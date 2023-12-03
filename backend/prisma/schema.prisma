@@ -14,6 +14,7 @@ model users {
   age   Int?
   height Int
   weight Int
+  frequency Int?
   tier Int @default(1)
   ex_level Level @default(beginner)
   ex_goal String

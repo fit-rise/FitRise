@@ -9,7 +9,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const prisma = new PrismaClient({});
 
 exports.postCalendarScreen = async function (req, res) {
-  console.log("!11111")
   try {
     const q = req.body
     console.log(q.name);
@@ -32,7 +31,6 @@ exports.postCalendarScreen = async function (req, res) {
         }
       }
     })
-    console.log("!222222")
     res.status(200).json(ex);
   } catch (e) {
     console.log(e)
