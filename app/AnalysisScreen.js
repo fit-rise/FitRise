@@ -23,40 +23,71 @@ const [loading, setLoading] = useState(true);
   const screenHeight = Dimensions.get('window').height;
   const [modalVisible, setModalVisible] = useState(false);
   const [exerciseLevel, setExerciseLevel] = useState('beginner');
+  const [weightSubmitted, setWeightSubmitted] = useState(false); // 몸무게가 제출되었는지 추적하는 상태
   const [goal, setGoal] = useState('weight_loss');
   const router = useRouter()
 
-  useEffect(() => {
-    console.log("useEffect 호출됨");
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${IP_URL}/analysis`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId: '655de6c451a5a1fdd749aff1' }) // 사용자 ID 설정
-        });
-  
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-  
-        const analysisData = await response.json();
-        console.log('분석 데이터 도착'+analysisData)
-        const transformed = transformData(analysisData);
-        setChartData(transformed);
-        // 차트에 사용할 데이터 형식으로 변환 필요
-      } catch (error) {
-        console.error('Fetching data failed:', error);
-      } finally {
-        setLoading(false);
+  // 차트 데이터 가져오기
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${IP_URL}/AnalysisScreen/analysis`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: '655de6c451a5a1fdd749aff1' }) // 사용자 ID 설정
+      });
+
+      if (!response.ok) {
+        throw new Error('analysis : Network response was not ok');
       }
 
+      const analysisData = await response.json();
+      console.log('분석 데이터 도착'+analysisData)
+      const transformed = transformData(analysisData);
+      setChartData(transformed);
+      // 차트에 사용할 데이터 형식으로 변환 필요
+    } catch (error) {
+      console.error('Fetching data failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    };
-  
+   // 오늘 몸무게 입력했는지 확인하기
+  const checkWeightSubmission = async () => {
+    try {
+      // 오늘 날짜 구하기
+      const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD' 형식
+      const response = await fetch(`${IP_URL}/AnalysisScreen/checkWeight`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          userId: '655de6c451a5a1fdd749aff1',
+          date: today
+        }) // 사용자 ID와 오늘 날짜를 함께 전송
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      // 오늘 날짜에 해당하는 데이터가 있는지 확인
+      if (result && result.length > 0) {
+        setWeightSubmitted(true); // 이미 데이터가 있으면 '입력 완료' 상태로 설정
+      }
+    } catch (error) {
+      console.error('Error checking weight submission:', error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("useEffect 호출됨"); 
     fetchData();
+    checkWeightSubmission();
   }, []);
 
   // 데이터 변환 로직
@@ -88,7 +119,7 @@ const transformData = (analysisData) => {
     console.log('몸무게 전송'+weight)
     try {
 
-      const response = await fetch('http://localhost:3000/weight', {
+      const response = await fetch(`${IP_URL}/AnalysisScreen/weight`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,38 +128,17 @@ const transformData = (analysisData) => {
       });
   
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('weight : Network response was not ok');
       }
   
-      // 성공적인 응답 처리 로직 (예: 알림 띄우기)
+      // 몸무게 입력 후 그래프 새로고침
+      setWeightSubmitted(true);
+      fetchData();
+
     } catch (error) {
       console.error(error);
     }
   };
-
-
-  /*
-
-  const weightData = [65, 59, 80, 81, 56, 55];
-  const bmiData = [30, 26, 36, 37, 24, 23];
-
-  // 임의의 데이터
-  const data = {
-    labels: ["January", "February", "March", "April", "May", "June"],
-    datasets: [
-      {
-        data: weightData,
-        color: (opacity = 1) => `rgba(74, 144, 226, ${opacity})`, // 파란색 계열
-        strokeWidth: 2
-      },
-      {
-        data: bmiData, // 추가된 BMI 데이터
-        color: (opacity = 1) => `rgba(246, 116, 95, ${opacity})`, // 다른 색상 계열 (예: 주황색)
-        strokeWidth: 2
-      }
-    ],
-    legend: ["체중 변화","BMI 지수 변화"]
-  };*/
 
   
   const chartConfig = {
@@ -168,20 +178,24 @@ const transformData = (analysisData) => {
       )
     )}
        
-        <View style={info_styles.inputGroup}>
+       {weightSubmitted ? (
+          <Text style={styles.inputCompleteText}>입력 완료</Text>
+        ) : (
+          <View style={info_styles.inputGroup}>
             <Text style={info_styles.label}>몸무게</Text>
             <Info_TextInput
-                    placeholder="몸무게 입력"
-                    keyboardType="numeric"
-                    onChangeText={text => setWeight(text)} // 입력된 텍스트를 weight 상태로 설정
-                />
+              placeholder="몸무게 입력"
+              keyboardType="numeric"
+              onChangeText={text => setWeight(text)}
+            />
             <Text style={info_styles.unit}>Kg</Text>
             <Button 
               style={{backgroundColor: 'skyblue', margin:10}}
-              onPress={submitWeight} // 버튼 클릭 시 submitWeight 함수 실행
-            
+              onPress={submitWeight}
             > 입력 </Button>
-        </View>
+          </View>
+          )}
+
         <Button 
           style={{backgroundColor: 'skyblue', margin:10}}
           onPress={() => setModalVisible(true)}> 정보 재설정 
@@ -305,6 +319,13 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center"
+  },
+  inputCompleteText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#4a90e2', // 적절한 색상 선택
+    padding: 16,
+    textAlign: 'center',
   },
 });
 
