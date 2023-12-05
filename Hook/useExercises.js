@@ -14,7 +14,6 @@ const useExercises = (type) => {
           params: { 
             type: type,
             language:'ko',
-            limit:'30',
           },
           headers: { 
             'X-RapidAPI-Key': 'c77c44f3demsh76b07e577878210p1cafecjsnba5f1c286597',

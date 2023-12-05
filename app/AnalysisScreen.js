@@ -4,7 +4,7 @@ import { View, Text, Dimensions, StyleSheet, Modal} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { LineChart } from 'react-native-chart-kit';
 import TabBar from '../components/TabBar'
-import ScreenHeaderBtn from '../components/ScreenHeaderBtn'
+import ScreenHeaderBtn from '../components/button/ScreenHeaderBtn'
 import info_styles from "../components/info.style"
 import Info_TextInput from '../components/Info_TextInput'
 import { Button } from 'react-native-paper';
@@ -66,6 +66,7 @@ const AnalysisScreen = () => {
           height={screenHeight * 0.40}
           chartConfig={chartConfig}
           bezier // 부드러운 곡선 표시
+          style={{borderRadius:10}}
         />
         <View style={info_styles.inputGroup}>
             <Text style={info_styles.label} style={{margin:10}}>몸무게</Text>
@@ -151,7 +152,7 @@ const AnalysisScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff', // 밝은 배경색
+    backgroundColor: '#DFEFDF', // 밝은 배경색
   },
   btn_container: {
     flex : 1,

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import {Stack, useRouter} from "expo-router";
 import TabBar from '../components/TabBar'
+import * as Font from "expo-font";
 
 const mockExerciseData = {
   '2023-11-07': [{ name: '푸시업', duration: '30분' }, { name: '스쿼트', duration: '20분' }],
@@ -12,6 +13,22 @@ const mockExerciseData = {
 const CalendarScreen = () => {
   const [selectedDay, setSelectedDay] = useState('');
   const router = useRouter()
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        "jua": require("../assets/fonts/Jua-Regular.ttf"),
+      });
+      setIsReady(true); // 폰트 로드 후 isReady를 true로 설정
+    };
+
+    loadFonts(); // 폰트 로드 함수 호출
+  }, []);
+
+  if (!isReady) {
+    return <View style={styles.container}><Text>Loading...</Text></View>; // 로딩 중임을 알림
+  }
 
   // 선택된 날짜에 운동이 있었는지 확인하고, 있으면 마킹합니다.
   const markedDates = Object.keys(mockExerciseData).reduce((acc, curr) => {
@@ -33,13 +50,17 @@ const CalendarScreen = () => {
           setSelectedDay(day.dateString);
         }}
         markedDates={markedDates}
+        style={{borderRadius:10,margin:10}}
       />
-      <FlatList
+      <View style={styles.listContainer}>
+        <Text style={styles.headerText}>오늘의 성과</Text>
+        <FlatList
         data={mockExerciseData[selectedDay]}
         renderItem={renderExerciseItem}
         keyExtractor={(item, index) => index.toString()}
         style={styles.exerciseList}
-      />
+        />
+      </View>
       <TabBar router = {router}/>
     </View>
   );
@@ -49,6 +70,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 10,
+    backgroundColor:'#DFEFDF',
   },
   listItem: {
     flexDirection: 'row',
@@ -57,12 +79,31 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   listItemText: {
+    fontFamily:"jua",
     fontWeight: 'bold',
     marginRight: 10,
+    color:"#555"
+  },
+  headerText: {
+    fontFamily:"jua",
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#4a90e2', // 헤더의 파란색 계열
+    padding: 10,
+    textAlign: 'center',
+  },
+  listContainer:{
+    flex:1,
+    marginTop: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    margin:10,
+    borderRadius:10
   },
   exerciseList: {
     flex:1,
-    marginTop: 20,
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    margin:10,
+    borderRadius:10
   },
 });
 

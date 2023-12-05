@@ -17,17 +17,27 @@ const ExerciseDictionary = () => {
   const [exerciseType, setExerciseType] = useState('cardio');
   const { exercises, loading, error } = useExercises(exerciseType);
 
+  //검색 상태 고유키
+  const [searchKey, setSearchKey] = useState(0);
+
   // 검색 함수
   const handleSearch = () => {
-    const filtered = exercises.filter(exercises =>
-      exercises.name.toLowerCase().includes(searchQuery.toLowerCase())
+    if (searchQuery.trim() === '') {
+      setFilteredExercises(exercises);
+    } else {
+      const filtered = exercises.filter(exercise =>
+        exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredExercises(filtered);
+    }
   };
-
+  
+  
+  //의존성 배열에 포함된 값이 변경될 때만 계산된 값을 재계산
   useMemo(() => {
     setFilteredExercises(exercises);
   }, [exercises]);
+  
 
   // 액티비티 인디케이터
   if (loading) return <ActivityIndicator size="large" color='blue' />;
@@ -86,9 +96,11 @@ const ExerciseDictionary = () => {
 
       <FlatList
         data={filteredExercises}
-        keyExtractor={item => item.name.toString()}
+        extraData={filteredExercises}
+        keyExtractor={(item, index) => item.name + index}
         renderItem={renderExerciseItem}
       />
+
     </View>
   );
 };

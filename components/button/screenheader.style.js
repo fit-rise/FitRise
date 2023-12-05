@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
 
-import { COLORS, SIZES } from "../constants";
+import { COLORS, SIZES } from "../../constants";
 
-const icon_styles = StyleSheet.create({
+const styles = StyleSheet.create({
   btnContainer: {
     width: 40,
     height: 40,
+    backgroundColor: COLORS.white,
     borderRadius: SIZES.small / 1.25,
     justifyContent: "center",
     alignItems: "center",
@@ -17,4 +18,4 @@ const icon_styles = StyleSheet.create({
   }),
 });
 
-export default icon_styles;
+export default styles;

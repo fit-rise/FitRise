@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, Dimensions,ImageBackground } from 'react-native';
 import {Stack, useRouter} from "expo-router";
 import TabBar from '../components/TabBar'
 import { images } from '../constants';
@@ -28,24 +28,30 @@ const RankingScreen = () => {
 
   return (
     <View style={{flex:1}}>
-      <View style={styles.container}>
-        <View style={styles.topSection}>
-          <Text style={styles.rankingText}>현재 순위: {currentUser.ranking}</Text>
-          <Image 
-            source={images.gold_medal}
-            style={{ width: 100, height: 100}}
-            resizeMode="stretch"
+      <ImageBackground 
+        source={images.rank_background} // 배경 이미지 경로 설정
+        style={{ flex: 1 }}
+        resizeMode="cover" // 이미지의 리사이즈 모드
+      >
+        <View style={styles.container}>
+          <View style={styles.topSection}>
+            <Text style={styles.rankingText}>현재 순위: {currentUser.ranking}</Text>
+            <Image 
+              source={images.gold_medal}
+              style={{ width: 100, height: 100}}
+              resizeMode="stretch"
+            />
+          </View>
+
+          <FlatList
+            data={userRankings}
+            renderItem={renderRankingItem}
+            keyExtractor={item => item.id}
+            style={styles.rankingList}
           />
         </View>
-
-        <FlatList
-          data={userRankings}
-          renderItem={renderRankingItem}
-          keyExtractor={item => item.id}
-          style={styles.rankingList}
-        />
-      </View>
-      <TabBar router = {router}/>
+      </ImageBackground>
+        <TabBar router = {router}/>
     </View>
   );
 };
@@ -62,8 +68,9 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height * 0.3,
   },
   rankingText: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
+    color:'green'
   },
   rankingItem: {
     flexDirection: 'row',
@@ -74,6 +81,8 @@ const styles = StyleSheet.create({
   },
   rankingList: {
     flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)', // 흰색에 투명도 30%
+    borderRadius:10
   },
 });
 
