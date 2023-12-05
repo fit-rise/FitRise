@@ -56,13 +56,12 @@ async function processUserInput(userProfile) {
                             description: "운동 이름"
                           },
                           sets: {
-                            type: "string",
+                            type: "integer",
                             description: "운동 세트 수"
                           },
                           reps: {
-                            type:"string",
-                            description:"운동 세트 당 횟수"                 
-                        
+                            type:"integer",
+                            description:"운동 세트 당 횟수"                               
                           } 
                         }
                       }                 

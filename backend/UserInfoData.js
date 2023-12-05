@@ -24,24 +24,24 @@ exports.postUserInfoData = async function (req,res){
         const responseJson = JSON.parse(response)
       
         const UserData = {
-            height: q.height,
-            weight: q.weight,
-            ex_level: q.ex_level,
-            ex_goal: q.ex_goal,
-            name: q.name,
-            plans: {
-              create: responseJson.exercisePlan.map((day, index) => ({
-                day: `Day ${index + 1}`,
-                exercises: {
-                  create: day[`Day ${index + 1}`].map(exercise => ({
-                    exercise: exercise.exercise,
-                    sets: exercise.sets,
-                    reps: exercise.reps
-                  }))
-                }
-              }))
-            }
-          };
+          height: q.height,
+          weight: q.weight,
+          ex_level: q.ex_level,
+          ex_goal: q.ex_goal,
+          name: q.name,
+          plans: {
+            create: responseJson.exercisePlan.map((plan) => ({
+              day: `Day ${plan.day}`,
+              exercises: {
+                create: plan.exercises.map(exercise => ({
+                  exercise: exercise.name, // 'name' 필드로 변경됨
+                  sets: exercise.sets,
+                  reps: exercise.reps
+                }))
+              }
+            }))
+          }
+        };
 
           await prisma.users.create({
             data: UserData,
