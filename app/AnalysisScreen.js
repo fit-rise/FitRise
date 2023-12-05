@@ -4,7 +4,6 @@ import { View, Text, Dimensions, StyleSheet, Modal} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { LineChart } from 'react-native-chart-kit';
 import TabBar from '../components/TabBar'
-import ScreenHeaderBtn from '../components/button/ScreenHeaderBtn'
 import info_styles from "../components/info.style"
 import Info_TextInput from '../components/Info_TextInput'
 import { Button } from 'react-native-paper';
@@ -41,7 +40,7 @@ const AnalysisScreen = () => {
   const chartConfig = {
     backgroundGradientFrom: "#fff", // 밝은 배경
     backgroundGradientTo: "#fff", // 밝은 배경
-    decimalPlaces: 2, // 소수점 아래 두 자리
+    decimalPlaces: 1, // 소수점 아래 두 자리
     color: (opacity = 1) => `rgba(74, 144, 226, ${opacity})`, // 파란색 계열
     labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // 검정색 레이블
     style: {
@@ -159,6 +158,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
   },
   headerText: {
+    fontFamily:"jua",
     fontSize: 24,
     fontWeight: 'bold',
     color: '#4a90e2', // 헤더의 파란색 계열
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   modalText: {
+    fontFamily:"jua",
     marginBottom: 15,
     textAlign: "center",
     fontSize: 18
@@ -197,6 +198,7 @@ const styles = StyleSheet.create({
     elevation: 2
   },
   modalButtonText: {
+    fontFamily:"jua",
     color: "white",
     fontWeight: "bold",
     textAlign: "center"

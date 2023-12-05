@@ -13,6 +13,7 @@ const info_styles = StyleSheet.create({
         marginTop:60,
         },
     header: {
+        fontFamily:"jua",
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 40,
@@ -26,7 +27,8 @@ const info_styles = StyleSheet.create({
         },
     label: {
         width: 70, // 라벨 너비 고정
-        fontSize: SIZES.medium
+        fontSize: SIZES.medium,
+        fontFamily:"jua"
         },
     input: {
         flex: 1,

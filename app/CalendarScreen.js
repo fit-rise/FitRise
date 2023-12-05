@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import {Stack, useRouter} from "expo-router";
+import { useRouter} from "expo-router";
 import TabBar from '../components/TabBar'
 import * as Font from "expo-font";
 
@@ -13,22 +13,6 @@ const mockExerciseData = {
 const CalendarScreen = () => {
   const [selectedDay, setSelectedDay] = useState('');
   const router = useRouter()
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    const loadFonts = async () => {
-      await Font.loadAsync({
-        "jua": require("../assets/fonts/Jua-Regular.ttf"),
-      });
-      setIsReady(true); // 폰트 로드 후 isReady를 true로 설정
-    };
-
-    loadFonts(); // 폰트 로드 함수 호출
-  }, []);
-
-  if (!isReady) {
-    return <View style={styles.container}><Text>Loading...</Text></View>; // 로딩 중임을 알림
-  }
 
   // 선택된 날짜에 운동이 있었는지 확인하고, 있으면 마킹합니다.
   const markedDates = Object.keys(mockExerciseData).reduce((acc, curr) => {

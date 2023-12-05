@@ -50,7 +50,7 @@ const MainScreen = () => {
                 <Card.Title title={exercise.name} />
                 <Card.Content>
                   <View style={styles.cardContent}>
-                    <Text>{exercise.sets} Set, {exercise.reps}회</Text>
+                    <Text style={styles.experienceText}>{exercise.sets} Set, {exercise.reps}회</Text>
                     <Checkbox
                       value={isChecked}
                       onValueChange={setChecked}
@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
   },
   experienceText: {
     paddingLeft: 10,
+    fontFamily:"jua"
   },
   scrollViewBackground: {
     flex: 1,
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
   },
   card: {
     margin: 10,
-    backgroundColor:"#D4EFDF"
+    backgroundColor:"#D4EFDF",
   },
   cardContent: {
     flexDirection: 'row',

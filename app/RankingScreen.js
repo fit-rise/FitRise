@@ -19,10 +19,10 @@ const RankingScreen = () => {
 
   const renderRankingItem = ({ item, index }) => (
     <View style={styles.rankingItem}>
-      <Text>{index + 1}</Text>
-      <Text>{item.name}</Text>
-      <Text>{item.tier}</Text>
-      <Text>{item.xp} XP</Text>
+      <Text style={styles.listItemText}>{index + 1}</Text>
+      <Text tyle={styles.listItemText}>{item.name}</Text>
+      <Text style={styles.listItemText}>{item.tier}</Text>
+      <Text style={styles.listItemText}>{item.xp} XP</Text>
     </View>
   );
 
@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
   rankingText: {
     fontSize: 24,
     fontWeight: 'bold',
-    color:'green'
+    color:'green',
+    fontFamily:"jua"
   },
   rankingItem: {
     flexDirection: 'row',
@@ -83,6 +84,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.7)', // 흰색에 투명도 30%
     borderRadius:10
+  },
+  listItemText: {
+    fontFamily:"jua",
+    fontWeight: 'bold',
+    marginRight: 10,
+    color:"#555"
   },
 });
 

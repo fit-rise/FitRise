@@ -99,7 +99,7 @@ const InformationInput = () => {
             />
         </View>
       
-      <Button title="완료" onPress={handlePress} />
+      <Button title="완료" onPress={handlePress} style={{fontFamily:"jua"}} />
     </View>
     </SafeAreaView>
   );
