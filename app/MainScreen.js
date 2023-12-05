@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Button, Animated, PanResponder, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
+import { View, Modal, Text, StyleSheet, Image, ScrollView, Button, Animated, PanResponder, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { Stack, useRouter } from "expo-router";
 import { IP_URL } from "@env"
@@ -17,10 +17,10 @@ const MainScreen = () => {
   const [isLoading, setisLoading] = useState(false);
   const [checkedStates, setCheckedStates] = useState({});
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const router = useRouter()
 
-  //완료버튼 클릭시
+  //운동완료 확인누를시
   const handlePress = () => {
     setisLoading(true);
     let exerciseid = [];
@@ -54,6 +54,7 @@ const MainScreen = () => {
       .then((response) => response.json())
       .then((result) => {
         setExercise(result);
+        resetCheckboxes();
         setisLoading(false);
       })
   };
@@ -63,7 +64,20 @@ const MainScreen = () => {
       ...checkedStates,
       [exerciseId]: value
     });
+    // 모달을 보여주기
+    setIsModalVisible(true);
   };
+
+  //체크박스 토글 초기화
+  const resetCheckboxes = () => {
+    const newCheckedStates = { ...checkedStates };
+    Object.keys(newCheckedStates).forEach(key => {
+      newCheckedStates[key] = false;
+    });
+    setCheckedStates(newCheckedStates);
+  };
+
+  
   //plans,exp 정보 요청
   useEffect(() => {
     setisLoading(true);
@@ -170,9 +184,9 @@ const MainScreen = () => {
     //스테이지별 채워야하는 EXP
     const stageMaxExp = MaxExp - MinExp;
     if (typeof currentExp === "number") {
-    //stage:현재단계  stageprogress:현재 단계 진행률 stagemaxexp:현재단계 최대xp
+      //stage:현재단계  stageprogress:현재 단계 진행률 stagemaxexp:현재단계 최대xp
       return { stage, stageProgress, stageMaxExp, stageExp };
-    } else{
+    } else {
       return null
     }
   };
@@ -229,16 +243,36 @@ const MainScreen = () => {
               ))
             ))}
           </ScrollView>
-          <View style={styles.btnContainer}>
-            <Button
-              title="완료"
-              onPress={handlePress}
-              color="#841584" />
-          </View>
-
         </>
       )}
       <TabBar router={router} />
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={() => {
+          setIsModalVisible(!isModalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>운동을 완료하셨나요?</Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.buttonStyle} onPress={() => {
+                resetCheckboxes()
+                setIsModalVisible(false)
+              }}>
+                <Text style={styles.buttonText}>취소</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.buttonStyle} onPress={() => {
+                handlePress()
+                setIsModalVisible(false)
+              }}>
+                <Text style={styles.buttonText}>확인</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -305,6 +339,46 @@ const styles = StyleSheet.create({
     borderRadius: 10, // 프로그레스바의 모서리를 둥글게
     borderWidth: 2, // 프로그레스바의 테두리 두께
     borderColor: "#000", // 프로그레스바의 테두리 색상
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // 반투명 배경
+  },
+  modalView: {
+    width: '80%', // 모달의 너비 조정
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20, // 패딩을 줄임
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+  },
+  modalText: {
+    marginBottom: 20,
+    textAlign: 'center',
+    fontSize: 16, // 글꼴 크기 증가
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around', // 버튼 간격 조정
+    width: '100%',
+  },
+  buttonStyle: {
+    backgroundColor: '#841584', // 버튼 배경색
+    padding: 10,
+    borderRadius: 10, // 둥근 모서리
+  },
+  buttonText: {
+    color: 'white', // 텍스트 색상
   },
 });
 
