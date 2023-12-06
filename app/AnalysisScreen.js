@@ -1,14 +1,14 @@
 import React,{useState , useEffect } from 'react';
 import {useRouter} from "expo-router";
-import { View, Text, Dimensions, StyleSheet, Modal, ActivityIndicator } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, Modal,TextInput, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { LineChart } from 'react-native-chart-kit';
 import TabBar from '../components/TabBar'
-import ScreenHeaderBtn from '../components/ScreenHeaderBtn'
 import info_styles from "../components/info.style"
 import Info_TextInput from '../components/Info_TextInput'
 import { Button } from 'react-native-paper';
 import {IP_URL}from "@env"
+import { setNickname } from './storage/setNickname';
 const AnalysisScreen = () => {
 
   console.log("AnalysisScreen 렌더링 시작");
@@ -22,11 +22,17 @@ const [loading, setLoading] = useState(true);
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
   const [modalVisible, setModalVisible] = useState(false);
-  const [exerciseLevel, setExerciseLevel] = useState('beginner');
-  const [goal, setGoal] = useState('weight_loss');
+  const [inputHeight, seHeight] = useState('');//키
+  const [exerciseLevel, setExerciseLevel] = useState('beginner');//운동상태
+  const [goal, setGoal] = useState('weight_loss');//목표
+  const [inputExercise, setExercise] = useState('');//횟수
+  const [inputNotice, setNotice] = useState('');//제약사항
   const router = useRouter()
-
+  const [stoageValue, setStoageValue] = useState('');//스토리지 관련 스테이터스
   useEffect(() => {
+    confirmAsyncValue()
+
+    console.log(stoageValue)
     console.log("useEffect 호출됨");
     const fetchData = async () => {
       try {
@@ -58,6 +64,14 @@ const [loading, setLoading] = useState(true);
   
     fetchData();
   }, []);
+
+  const confirmAsyncValue = async () => { //닉네임 스토리지 호출 
+    const result = await setNickname('key');
+    setStoageValue(result);
+    console.log(stoageValue)
+    
+    
+  };
 
   // 데이터 변환 로직
 const transformData = (analysisData) => {
@@ -129,7 +143,21 @@ const transformData = (analysisData) => {
     ],
     legend: ["체중 변화","BMI 지수 변화"]
   };*/
-
+  const reSetUserData =()=> {
+    fetch(`${IP_URL}/reSetUserData`,{
+      method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+        height: inputHeight, 
+        Exercise: inputExercise,
+        Notice: inputNotice,
+        ex_goal: goal,
+        ex_level: exerciseLevel,
+        }) 
+    })
+  }
   
   const chartConfig = {
     backgroundGradientFrom: "#fff", // 밝은 배경
@@ -195,14 +223,21 @@ const transformData = (analysisData) => {
       >
             <View style={info_styles.container}>
         <Text style={info_styles.header}>정보 재설정</Text>
+        
+
+
         <View style={info_styles.inputGroup}>
             <Text style={info_styles.label}>키</Text>
-            <Info_TextInput
+            <TextInput
                     placeholder="키 입력"
                     keyboardType="numeric"
+                    onChangeText={seHeight}
+                    value={inputHeight}
                 />
             <Text style={info_styles.unit}>cm</Text>
         </View>
+      
+        
       
         <View style={info_styles.picker_container}>
             <Text style={info_styles.label}>운동 수준</Text>
@@ -232,20 +267,30 @@ const transformData = (analysisData) => {
 
         <View style={info_styles.inputGroup}>
             <Text style={info_styles.label}>운동 횟수</Text>
-            <Info_TextInput
+            <TextInput
               placeholder="주당 운동 횟수(ex)주 3회)"
               keyboardType="numeric"
+              onChangeText={setExercise}
+              value={inputExercise}
             />
             <Text style={info_styles.unit}>회</Text>
         </View>
         <View style={info_styles.inputGroup}>
             <Text style={info_styles.label}>제약 사항</Text>
-            <Info_TextInput
+            <TextInput
               placeholder="제약사항 입력(부상 등)"
               keyboardType="default"
+              onChangeText={setNotice}
+              value={inputNotice}
             />
         </View>
-        <Button style={styles.modalButton} onPress={() => setModalVisible(false)}> 설정 완료</Button>
+        <Button style={styles.modalButton} onPress={() =>{ 
+          reSetUserData()
+          setModalVisible(false)
+          
+          }                                                    
+        }>설정 완료
+        </Button>
     </View>
       </Modal>
       </View>

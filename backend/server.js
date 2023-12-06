@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 var cors = require('cors')
 const { PrismaClient } = require('@prisma/client');
 const app = express();
-const port = 3000;
+const port = 50123;
 app.use(express.json()) // body parsing 관련
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -195,7 +195,7 @@ app.get('/GPT', GPTAPI.getGPT);
 
 const UserInfoDataAPI = require('./UserInfoData')
 app.post('/UserInfoData',UserInfoDataAPI.postUserInfoData)//유저데이터 저장 api
-app.get('/:name', UserInfoDataAPI.getNameCheck);//닉네임 중복확인 api
+app.post('/name', UserInfoDataAPI.getNameCheck);//닉네임 중복확인 api
 
 
 const ckeckListAPI = require('./checklist')//체크리스트 api
@@ -207,3 +207,6 @@ app.post('/CalendarScreen/doexercise',CalendarScreen.postCalendarScreen)
 
 const MainScreen = require('./MainScreen')//메인 스크린 api
 app.post('/MainScreen/food', MainScreen.postMainScreen)
+
+const ReSetUserData = require("./reSetUserData")
+app.post("/ReSetUserData",ReSetUserData.postReSetUserData)

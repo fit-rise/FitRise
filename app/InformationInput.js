@@ -1,57 +1,66 @@
 import React, { useEffect, useState } from 'react';
 import { View, Button, Text, Alert,TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import {Stack, useRouter} from "expo-router";
+import { useRouter} from "expo-router";
 import info_styles from "../components/info.style"
-import { setNickname } from './storage/setNickname';
+import {setNickname,getItem } from './storage/setNickname';
 import {IP_URL}from "@env"
-const InformationInput = () => {
 
+
+const InformationInput = () => {
+  const [namecheck,setNameCheck] = useState(false)
   const [exerciseLevel, setExerciseLevel] = useState('beginner'); // 운동 수준 상태 추가
   const [goal, setGoal] = useState('weight_loss'); // 운동 목표 상태 추가
   const [inputHeight, seHeight] = useState(''); // 키 입력값
   const [inputWeight, setWeight] = useState(''); //몸무게 입력값
   const [inputExercise, setExercise] = useState(''); // 운동 회수
-  const [inputNotice, setNotice] = useState(''); // 운동 회수
+  const [inputNotice, setNotice] = useState(''); // 운동 제약사항
   const [stoageValue, setStoageValue] = useState('');//스토리지 관련 스테이터스
   const [name,setName] = useState('');
   const router = useRouter()
   
-  const NickcopyCheck = () =>{
-    fetch()
-  }
+
+  useEffect(() => {
+    confirmAsyncValue()
+    try{
+     if(stoageValue != ''){//스토리지에 닉네임이 있으면 
+       console.log("useEffect if : "+stoageValue)
+       router.push('/MainScreen')
+     }else{
+       Alert.alert("정보를 입력해주세요")
+       }
+   }catch(e){
+      console.log(e)
+   }
+ },[]);
+ 
 
   const handlePress = async() => {
     
    try{
-
-    const inputUserData = {
-   
-  
-  }
-  console.log(inputUserData)
-  
-  fetch(`${IP_URL}/UserInfoData`,{
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name: name, 
-      height: inputHeight, 
-      weight: inputWeight,
-      Exercise: inputExercise,
-      Notice: inputNotice,
-      ex_goal: goal,
-      ex_level: exerciseLevel,
-      Notice: inputNotice 
-    }
-    )
-  }).then((res)=>(res.json())).then((json)=>{
-
-    console.log(json)
+      if(namecheck == false){
+        Alert.alert(
+          '닉네임 중복을 확인해주세요',
+        );
+      }else{
+      fetch(`${IP_URL}/UserInfoData`,{
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+        name: name, 
+        height: inputHeight, 
+        weight: inputWeight,
+        Exercise: inputExercise,
+        Notice: inputNotice,
+        ex_goal: goal,
+        ex_level: exerciseLevel,
+        Notice: inputNotice 
+        }) 
+      }).then((res)=>(res.json())).then((json)=>{
    // Alert.alert를 사용하여 확인 버튼이 눌렸을 때의 행동을 정의
-   Alert.alert(
+    Alert.alert(
     '제출 확인', // Alert의 제목
     '정보가 제출되었습니다.', // Alert의 내용
     [
@@ -59,39 +68,53 @@ const InformationInput = () => {
     ],
     {cancelable: false},
   );
-  setNickname('key',name);//닉네임을 스토리지에 저장하기위한 함수호출
-  confirmAsyncValue();
-  console.log(stoageValue)
-  
-  })  
+ 
+ 
+  router.push('/MainScreen')
+  })}
    }catch(e){
     console.log(e)
 
    }
   };
+
   const confirmAsyncValue = async () => { //닉네임이 스토리지에 잘 저장 되있나 호출하는 함수 
-    const result = await setNickname('key');
-    setStoageValue(result);
-    console.log(stoageValue)
-    
-    
+    const result = await getItem('key');
+    setStoageValue(result);  
   };
-  useEffect(() => {
-    router.push('/MainScreen')
-     try{
-       const name = confirmAsyncValue();
-       if(name != null){//스토리지에 닉네임이 있으면 
-        console.log("useEffect if : "+name)
-       // router.push('/MainScreen')
-       }else{
-        Alert.alert("정보를 입력해주세요")
-        }
-     }catch(e){
-       console.log(e)
-     }
- },[]);
+
+
+  const NickcopyCheck = async() =>{
+    fetch(`${IP_URL}/name`,{
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name, 
+      }
+      )
+    }).then((res)=>(res.json())).then((json)=>{
+      console.log(json)
+      if(json == "user not found"){
+        setNameCheck(true)
+        console.log("중복확인")
+        Alert.alert(
+          '사용이 가능한 닉네임입니다',
+        );
+        setNickname('key',name);//닉네임을 스토리지에 저장하기위한 함수호출
+        confirmAsyncValue();//저장 확인
+      }else{
+        setNameCheck(false)
+        Alert.alert(
+          '이미 사용중인 닉네임입니다',
+        );
+        console.log("왜 여기롱와")
+      }
+    })
+  }
   return (
-       <View style={info_styles.container}>
+      <View style={info_styles.container}>
         <Text style={info_styles.header}>초기 설정</Text>
         
         <View style={info_styles.inputGroup}>

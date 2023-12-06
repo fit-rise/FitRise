@@ -4,6 +4,7 @@ import Checkbox from 'expo-checkbox';
 import { Stack, useRouter } from "expo-router";
 import { IP_URL } from "@env"
 import { ActivityIndicator, Card } from 'react-native-paper';
+import { setNickname,getItem } from './storage/setNickname';
 import { Ionicons } from '@expo/vector-icons';
 import { images } from '../constants';
 import TabBar from '../components/TabBar'
@@ -12,7 +13,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 //env 체크
 const MainScreen = () => {
-
+  const [stoageValue, setStoageValue] = useState('');//스토리지 관련 스테이터스
   const [exercise, setExercise] = useState([]);
   const [isLoading, setisLoading] = useState(false);
   const [checkedStates, setCheckedStates] = useState({});
@@ -20,7 +21,7 @@ const MainScreen = () => {
   const [containerLayout, setContainerLayout] = useState({ width: 0, height: 0 });
 
   const router = useRouter()
-
+ 
   //완료버튼 클릭시
   const handlePress = () => {
     setisLoading(true);
@@ -67,6 +68,8 @@ const MainScreen = () => {
   };
   //plans,exp 정보 요청
   useEffect(() => {
+    confirmAsyncValue()
+    console.log(stoageValue)
     setisLoading(true);
     fetch(`${IP_URL}/checklist`, { // 또는 로컬 IP 사용
       method: "post",
@@ -74,7 +77,7 @@ const MainScreen = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: "엄득용",
+        name: stoageValue,
       }),
     })
       .then((response) => response.json())
@@ -87,7 +90,15 @@ const MainScreen = () => {
         setisLoading(false);
       });
   }, []);
+
+  const confirmAsyncValue = async () => { //닉네임이 스토리지에 잘 저장 되있나 호출하는 함수 
+    const result = await setNickname('key');
+    console.log(result)
+    setStoageValue(result);
+  };
+  
   useEffect(() => {
+    confirmAsyncValue()
     // 원하는 x, y 좌표로 초기 위치 설정
     hero.setValue({ x: 150, y: 100 });
   }, []);
