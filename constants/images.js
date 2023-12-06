@@ -12,8 +12,12 @@ import stage3 from "../assets/images/stage3.png";
 import stage4 from "../assets/images/stage4.png";
 import background_sky from "../assets/images/background_sky.png"
 import exercise from "../assets/images/pushup.gif";
+import tier1 from "../assets/images/tier1.png"
+import tier2 from "../assets/images/tier2.png"
+import tier3 from "../assets/images/tier3.png"
+
 
 
 export default {
-    level_1,pushup,test,background, green, red, jelly, splash,stage1,stage2,stage3,stage4,background_sky,exercise
+    level_1,pushup,test,background, green, red, jelly, splash,stage1,stage2,stage3,stage4,background_sky,exercise,tier1,tier2,tier3
 };

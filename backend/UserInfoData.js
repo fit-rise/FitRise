@@ -53,12 +53,12 @@ exports.postUserInfoData = async function (req,res){
               }
             }
           });
-        
+        res.status(200).send("유저생성완료");
       }catch(e){
         console.log(e)
         res.status(500).send(e);
       }
-    
+  
 }
 
 exports.getNameCheck = async function(req,res){

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Button, Animated, PanResponder, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
+import { View, Modal, Text, StyleSheet, Image, ScrollView, Button, Animated, PanResponder, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { Stack, useRouter } from "expo-router";
 import { IP_URL } from "@env"
@@ -8,7 +8,7 @@ import { setNickname,getItem } from './storage/setNickname';
 import { Ionicons } from '@expo/vector-icons';
 import { images } from '../constants';
 import TabBar from '../components/TabBar'
-
+import * as Progress from 'react-native-progress';
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 //env 체크
@@ -18,11 +18,10 @@ const MainScreen = () => {
   const [isLoading, setisLoading] = useState(false);
   const [checkedStates, setCheckedStates] = useState({});
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-  const [containerLayout, setContainerLayout] = useState({ width: 0, height: 0 });
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const router = useRouter()
  
-  //완료버튼 클릭시
+  //운동완료 확인누를시
   const handlePress = () => {
     setisLoading(true);
     let exerciseid = [];
@@ -56,6 +55,7 @@ const MainScreen = () => {
       .then((response) => response.json())
       .then((result) => {
         setExercise(result);
+        resetCheckboxes();
         setisLoading(false);
       })
   };
@@ -65,7 +65,20 @@ const MainScreen = () => {
       ...checkedStates,
       [exerciseId]: value
     });
+    // 모달을 보여주기
+    setIsModalVisible(true);
   };
+
+  //체크박스 토글 초기화
+  const resetCheckboxes = () => {
+    const newCheckedStates = { ...checkedStates };
+    Object.keys(newCheckedStates).forEach(key => {
+      newCheckedStates[key] = false;
+    });
+    setCheckedStates(newCheckedStates);
+  };
+
+  
   //plans,exp 정보 요청
   useEffect(() => {
     confirmAsyncValue()
@@ -153,6 +166,44 @@ const MainScreen = () => {
     }
     // 추가적인 레벨을 여기에 정의할 수 있습니다.
   };
+  // 현재 경험치에 따라 현재 스테이지와 그 스테이지에서의 경험치 비율을 반환하는 함수
+  const calculateStageProgress = (currentExp) => {
+    let MaxExp;
+    let MinExp;
+    let stage;
+    if (currentExp < 100) {
+      stage = 1;
+      MaxExp = 100;
+      MinExp = 0;
+    } else if (currentExp < 200) {
+      stage = 2;
+      MaxExp = 200;
+      MinExp = 100;
+    } else if (currentExp < 300) {
+      stage = 3;
+      MaxExp = 300;
+      MinExp = 200;
+    } else {
+      stage = 4;
+      MaxExp = 500; // 여기서 최대 경험치를 정의할 수 있습니다.
+      MinExp = 300;
+    }
+    // 현재 스테이지에서의 경험치 비율 계산
+    const stageProgress = (currentExp - MinExp) / (MaxExp - MinExp);
+    //스테이지별 exp
+    const stageExp = currentExp - MinExp;
+    //스테이지별 채워야하는 EXP
+    const stageMaxExp = MaxExp - MinExp;
+    if (typeof currentExp === "number") {
+      //stage:현재단계  stageprogress:현재 단계 진행률 stagemaxexp:현재단계 최대xp
+      return { stage, stageProgress, stageMaxExp, stageExp };
+    } else {
+      return null
+    }
+  };
+
+  const expData = calculateStageProgress(exercise[0]?.exp);
+
   return (
     <View style={styles.container}>
       {isLoading ? (
@@ -161,10 +212,12 @@ const MainScreen = () => {
         <>
           <View style={styles.characterContainer}>
             <ImageBackground source={images.background_sky} resizeMode="cover" style={styles.imageStyle}>
-              <View style={styles.experienceBar}>
-                <View style={[styles.experienceFill, { width: `${(exercise[0]?.exp / 500) * 100}%`/* 여기에 경험치에 따른 너비 계산 로직 */ }]} />
-                <Text style={styles.experienceText}>경험치: {exercise[0]?.exp} / 500</Text>
-              </View>
+              {expData && (
+                <View style={styles.experienceBar}>
+                  <Progress.Bar progress={expData.stageProgress} width={250} style={styles.progressBar} color='#000' animated={true} />
+                  <Text style={styles.experienceText}>경험치: {expData.stageExp} / {expData.stageMaxExp}</Text>
+                </View>
+              )}
               <Ionicons name="book" size={24} color="black" onPress={() => router.push('/ExerciseDictionary')} />
               <Image source={images.background} resizeMode="stretch" style={styles.imageStyle} />
               <Animated.View
@@ -201,16 +254,36 @@ const MainScreen = () => {
               ))
             ))}
           </ScrollView>
-          <View style={styles.btnContainer}>
-            <Button
-              title="완료"
-              onPress={handlePress}
-              color="#841584" />
-          </View>
-
         </>
       )}
-      <TabBar router = {router}/>
+      <TabBar router={router} />
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={() => {
+          setIsModalVisible(!isModalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>운동을 완료하셨나요?</Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.buttonStyle} onPress={() => {
+                resetCheckboxes()
+                setIsModalVisible(false)
+              }}>
+                <Text style={styles.buttonText}>취소</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.buttonStyle} onPress={() => {
+                handlePress()
+                setIsModalVisible(false)
+              }}>
+                <Text style={styles.buttonText}>확인</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -252,11 +325,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  experienceFill: {
-    backgroundColor: 'blue',
-    width: '50%', // 현재 경험치에 따라 너비를 조정해야 함
-    height: 10,
-  },
   experienceText: {
     width: 200,
     paddingLeft: 10,
@@ -276,6 +344,52 @@ const styles = StyleSheet.create({
     width: screenWidth,
     height: screenHeight * 0.32,
     position: 'absolute',
+  },
+  progressBar: {
+    height: 10, // 프로그레스바의 높이
+    borderRadius: 10, // 프로그레스바의 모서리를 둥글게
+    borderWidth: 2, // 프로그레스바의 테두리 두께
+    borderColor: "#000", // 프로그레스바의 테두리 색상
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // 반투명 배경
+  },
+  modalView: {
+    width: '80%', // 모달의 너비 조정
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20, // 패딩을 줄임
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+  },
+  modalText: {
+    marginBottom: 20,
+    textAlign: 'center',
+    fontSize: 16, // 글꼴 크기 증가
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around', // 버튼 간격 조정
+    width: '100%',
+  },
+  buttonStyle: {
+    backgroundColor: '#841584', // 버튼 배경색
+    padding: 10,
+    borderRadius: 10, // 둥근 모서리
+  },
+  buttonText: {
+    color: 'white', // 텍스트 색상
   },
 });
 
