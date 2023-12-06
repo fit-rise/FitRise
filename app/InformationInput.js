@@ -17,7 +17,7 @@ const InformationInput = () => {
   const router = useRouter()
 
   const handlePress = () => {
-    // Alert.alert를 사용하여 확인 버튼이 눌렸을 때의 행동을 정의
+    // 확인 버튼이 눌렸을 때
     Alert.alert(
       '제출 확인', // Alert의 제목
       '정보가 제출되었습니다.', // Alert의 내용
