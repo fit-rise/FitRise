@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { IconBtn } from '../components';
 import { icons } from '../constants';
 import { useRouter } from "expo-router";
@@ -43,7 +43,7 @@ const ChatScreen = () => {
             }
             // 사용자가 입력한 메세지에 키워드 들어가 있을 때
             const response = await axios.post('https://api.openai.com/v1/engines/text-davinci-003/completions',{
-                prompt: `${messageText}에 대해 알려줘`,
+                prompt: `${messageText}`,
                 max_tokens: 500,
                 temperature: 0.2,
                 n:1,
@@ -74,7 +74,7 @@ const ChatScreen = () => {
     };
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
           <View style={styles.header}>
               <Text style={styles.headerText}>PT 쌤</Text>
               <IconBtn 
@@ -89,7 +89,7 @@ const ChatScreen = () => {
               onSend={newMessages => handleSend(newMessages)}
               user={{ _id: 1 }}
           />
-      </View>
+      </SafeAreaView>
   );  
 }
 
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       textAlign: 'center',  // 텍스트를 중앙 정렬
       marginLeft: 10,  // 아이콘과 텍스트 사이에 간격을 주기 위해
+      fontFamily:"jua"
   },
     chat: {
       flex: 1,

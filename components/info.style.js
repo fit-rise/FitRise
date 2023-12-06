@@ -6,23 +6,27 @@ const info_styles = StyleSheet.create({
         flex:1,
         backgroundColor:"#DFEFDF"
     },
+    modalContainer:{
+        flex:1,
+        backgroundColor:"#DFEFDF",
+    },
     content_container: {
         flex: 1,
         paddingHorizontal: 20,
         justifyContent: 'flex-start',
-        marginTop:60,
+        marginTop:40,
         },
     header: {
         fontFamily:"jua",
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 40,
+        marginBottom: 30,
         textAlign: 'center',
         },
     inputGroup: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 15,
         marginTop:10,
         },
     label: {
@@ -46,9 +50,16 @@ const info_styles = StyleSheet.create({
         flexDirection:'row',
          alignItems:'center',
          justifyContent: 'space-between',
-         marginBottom: 25,
-    }
-    
+         marginBottom: 35,
+    },
+    BtnStyle: {
+        backgroundColor: '#a2e78d', // 밝은 초록색으로 변경
+        padding:5,
+        borderRadius: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin:10
+      },
 })
 
 export default info_styles;

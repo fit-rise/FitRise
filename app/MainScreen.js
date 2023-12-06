@@ -47,7 +47,13 @@ const MainScreen = () => {
         <ScrollView style={styles.exerciseList}>
             {exercises.map((exercise) => (
               <Card key={exercise.id} style={styles.card}>
-                <Card.Title title={exercise.name} />
+                <Card.Title 
+                  title={exercise.name}
+                  titleStyle={{
+                    fontWeight:'bold',
+                    fontFamily:"jua",
+                    fontSize: 20}}
+                />
                 <Card.Content>
                   <View style={styles.cardContent}>
                     <Text style={styles.experienceText}>{exercise.sets} Set, {exercise.reps}회</Text>

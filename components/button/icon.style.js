@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { COLORS, SIZES } from "../../constants";
+import { SIZES } from "../../constants";
 
 const icon_styles = StyleSheet.create({
   btnContainer: {

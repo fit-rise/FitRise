@@ -23,7 +23,7 @@ const CalendarScreen = () => {
   const renderExerciseItem = ({ item }) => (
     <View style={styles.listItem}>
       <Text style={styles.listItemText}>{item.name}</Text>
-      <Text>{item.duration}</Text>
+      <Text style={styles.listItemText}>{item.duration}</Text>
     </View>
   );
 

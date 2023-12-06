@@ -68,10 +68,11 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height * 0.3,
   },
   rankingText: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
-    color:'green',
-    fontFamily:"jua"
+    color:'white',
+    fontFamily:"jua",
+    backgroundColor:"#333"
   },
   rankingItem: {
     flexDirection: 'row',
@@ -89,7 +90,8 @@ const styles = StyleSheet.create({
     fontFamily:"jua",
     fontWeight: 'bold',
     marginRight: 10,
-    color:"#555"
+    color:"#555",
+    fontSize:20
   },
 });
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 //alert 창 누른 없앤 후에 넘어갈 수 있도록 Alert 컴포넌트 사용
-import { View, Button, Text, Alert,SafeAreaView } from 'react-native';
+import { View, Text, Alert,SafeAreaView } from 'react-native';
+import {CustomBtn} from '../components'
 import { Picker } from '@react-native-picker/picker';
 import {Stack, useRouter} from "expo-router";
 import info_styles from "../components/info.style"
@@ -98,8 +99,10 @@ const InformationInput = () => {
               value={inputNotice}
             />
         </View>
-      
-      <Button title="완료" onPress={handlePress} style={{fontFamily:"jua"}} />
+        <CustomBtn 
+          title="완료" 
+          onPress={handlePress}>
+        </CustomBtn>
     </View>
     </SafeAreaView>
   );
