@@ -15,10 +15,13 @@
 
 //exp 추가 && 해당 exercise삭제 && calender에 운동추가
 app.post('/MainScreen/food', async (req, res) => {
+  console.log("dd");
+  const gpt = require('./gpt')
   const today = new Date().toISOString().split('T')[0];
   let calendarDay = await prisma.calendarDay.findFirst({
     where: {
-      day: today
+      day: today,
+      userId: req.body.id
     }
   });
   if (!calendarDay) {
@@ -34,7 +37,7 @@ app.post('/MainScreen/food', async (req, res) => {
     const exercise = await prisma.exercise.findUnique({
       where: { id: exerciseId }
     });
-
+    console.log("dd");
     // Exercise 정보를 기반으로 doExercise 추가
     if (exercise) {
       await prisma.doExercise.create({
@@ -60,6 +63,54 @@ app.post('/MainScreen/food', async (req, res) => {
       if (remainingExercises === 0) {
         await prisma.workoutDay.delete({
           where: { id: deletedExercise.workoutDayId },
+        });
+      }
+      //plans user확인
+      const user_plan = await prisma.users.findUnique({
+        where: {
+          id: req.body.id,
+        },
+        select: {
+          height: true,
+          weight: true,
+          frequency:true,
+          ex_level: true,
+          ex_goal: true,
+          plans: true, // plans도 포함
+        },
+      });
+
+      if (user_plan && user_plan.plans.length > 0) {
+        // plans 배열에 항목이 남아 있음
+        console.log("남은 plans가 있습니다.");
+      } else {
+        // 해당 사용자에게 plans가 없는 경우, 새로운 plans를 생성
+        const responseJson = JSON.parse(gpt.processUserInput({
+          height: user_plan.height,
+          weight: user_plan.weight,
+          level: user_plan.level, // 운동 수준
+          exerciseGoal: user_plan.ex_goal, // 운동 목표
+          weeklyExerciseFrequency: user_plan.frequency // 주 운동 횟수
+        }))
+        
+        const createdPlans = await prisma.users.update({
+          where: {
+            id: req.body.id,
+          },
+          data: {
+            plans: {
+              create: responseJson.exercisePlan.map((day, index) => ({
+                day: `Day ${index + 1}`,
+                exercises: {
+                  create: day[`Day ${index + 1}`].map(exercise => ({
+                    exercise: exercise.exercise,
+                    sets: exercise.sets,
+                    reps: exercise.reps
+                  }))
+                }
+              }))
+            }
+          },
         });
       }
     }
