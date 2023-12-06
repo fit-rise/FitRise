@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Button, Text, Alert,TextInput } from 'react-native';
+//alert 창 누른 없앤 후에 넘어갈 수 있도록 Alert 컴포넌트 사용
+import { View, Text, Alert,SafeAreaView,TextInput,Button } from 'react-native';
+import {CustomBtn} from '../components'
 import { Picker } from '@react-native-picker/picker';
 import { useRouter} from "expo-router";
 import info_styles from "../components/info.style"
@@ -18,6 +20,7 @@ const InformationInput = () => {
   const [name,setName] = useState('');
   const router = useRouter()
   
+
 
   useEffect(() => {
     
@@ -81,7 +84,7 @@ const InformationInput = () => {
 
 
   const NickcopyCheck = async() =>{
-    fetch(`${IP_URL}/name`,{
+    fetch(`http://localhost:50123/name`,{
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -111,7 +114,8 @@ const InformationInput = () => {
     })
   }
   return (
-      <View style={info_styles.container}>
+    <SafeAreaView style={info_styles.container}>
+    <View style={info_styles.content_container}>
         <Text style={info_styles.header}>초기 설정</Text>
         
         <View style={info_styles.inputGroup}>
@@ -149,28 +153,32 @@ const InformationInput = () => {
       
         <View style={info_styles.picker_container}>
             <Text style={info_styles.label}>운동 수준</Text>
-            <Picker
-                selectedValue={exerciseLevel}
-                style={info_styles.picker}
-                itemStyle={{fontSize:14}}
-                onValueChange={(itemValue, itemIndex) => setExerciseLevel(itemValue)}>
-                <Picker.Item label="초보" value="beginner" />
-                <Picker.Item label="중급" value="intermediate" />
-                <Picker.Item label="상급" value="advanced" />
-            </Picker>
+            <View style={{flex:1,marginBottom:115}}>
+                  <Picker
+                    selectedValue={exerciseLevel}
+                    style={info_styles.picker}
+                    itemStyle={{fontSize:14}}
+                    onValueChange={(itemValue, itemIndex) => setExerciseLevel(itemValue)}>
+                    <Picker.Item label="초보" value="beginner" />
+                    <Picker.Item label="중급" value="intermediate" />
+                    <Picker.Item label="상급" value="advanced" />
+                  </Picker>
+                </View>
         </View>
 
         <View style={info_styles.picker_container}>
             <Text style={info_styles.label}>운동 목표</Text>
-            <Picker
-                selectedValue={goal}
-                style={info_styles.picker}
-                itemStyle={{fontSize:14}}
-                onValueChange={(itemValue, itemIndex) => setGoal(itemValue)}>
-                <Picker.Item label="체중 감량" value="weight_loss" />
-                <Picker.Item label="근육 증가" value="muscle_gain" />
-                <Picker.Item label="체력 증진" value="stamina_improvement" />
-            </Picker>
+            <View style={{flex:1,marginBottom:120}}>
+              <Picker
+                  selectedValue={goal}
+                  style={info_styles.picker}
+                  itemStyle={{fontSize:14}}
+                  onValueChange={(itemValue, itemIndex) => setGoal(itemValue)}>
+                  <Picker.Item label="체중 감량" value="weight_loss" />
+                  <Picker.Item label="근육 증가" value="muscle_gain" />
+                  <Picker.Item label="체력 증진" value="stamina_improvement" />
+              </Picker>
+            </View>
         </View>
 
         <View style={info_styles.inputGroup}>
@@ -192,9 +200,12 @@ const InformationInput = () => {
               value={inputNotice}
             />
         </View>
-      
-      <Button title="완료" onPress={handlePress} />
+        <CustomBtn 
+          title="완료" 
+          onPress={handlePress}>
+        </CustomBtn>
     </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Modal, Text, StyleSheet, Image, ScrollView, Button, Animated, PanResponder, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
+import { View,Modal, Text, StyleSheet, Image, ScrollView,Animated,PanResponder,
+        TouchableOpacity,ImageBackground,Dimensions } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { useRouter } from "expo-router";
+
 import { IP_URL } from "@env"
 import { ActivityIndicator, Card } from 'react-native-paper';
 import { setNickname,getItem } from './storage/setNickname';
-import { Ionicons } from '@expo/vector-icons';
-import { images } from '../constants';
-import TabBar from '../components/TabBar'
+
+import { images,icons } from '../constants';
+import {TabBar,Character,CircleBtn} from '../components'
 import * as Progress from 'react-native-progress';
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -85,7 +87,7 @@ const MainScreen = () => {
       getItem('key').then((userdata)=>{
       setStoageValue(userdata)
       setisLoading(true);
-      fetch(`${IP_URL}/checklist`, { // 또는 로컬 IP 사용
+      fetch(`http://116.123.136.48:50123/checklist`, { // 또는 로컬 IP 사용
         method: "post",
         headers: {
           'Content-Type': 'application/json'
@@ -156,6 +158,7 @@ const MainScreen = () => {
       }
     }
   });
+
   // 현재 경험치에 따라 적절한 캐릭터 이미지를 선택하는 함수
   const getCurrentCharacterImage = (exp) => {
     if (exp < 100) {
@@ -169,6 +172,7 @@ const MainScreen = () => {
     }
     // 추가적인 레벨을 여기에 정의할 수 있습니다.
   };
+
   // 현재 경험치에 따라 현재 스테이지와 그 스테이지에서의 경험치 비율을 반환하는 함수
   const calculateStageProgress = (currentExp) => {
     let MaxExp;
@@ -214,49 +218,57 @@ const MainScreen = () => {
       ) : (
         <>
           <View style={styles.characterContainer}>
-            <ImageBackground source={images.background_sky} resizeMode="cover" style={styles.imageStyle}>
-              {expData && (
-                <View style={styles.experienceBar}>
-                  <Progress.Bar progress={expData.stageProgress} width={250} style={styles.progressBar} color='#000' animated={true} />
-                  <Text style={styles.experienceText}>경험치: {expData.stageExp} / {expData.stageMaxExp}</Text>
-                </View>
-              )}
-              <Ionicons name="book" size={24} color="black" onPress={() => router.push('/ExerciseDictionary')} />
-              <Image source={images.background} resizeMode="stretch" style={styles.imageStyle} />
-              <Animated.View
-                {...panResponder.panHandlers}
-                style={[hero.getLayout(), { position: 'absolute' }]}>
-                <Image
-                  source={getCurrentCharacterImage(exercise[0]?.exp)}
-                  resizeMode="contain"
-                  style={styles.characterImage}
-                />
-              </Animated.View>
+            <ImageBackground source={images.background_sky} resizeMode="stretch" style={styles.SkyImageStyle}>
+              <View style={styles.header}>
+                {expData && (
+                  <View style={styles.experienceBar}>
+                    <Progress.Bar progress={expData.stageProgress} width={250} style={styles.progressBar} color='#000' animated={true} />
+                    <Text style={styles.experienceText}>경험치: {expData.stageExp} / {expData.stageMaxExp}</Text>
+                  </View>
+                )}
+                <TouchableOpacity onPress={() => router.push('/ExerciseDictionary')}>
+                  <Image source={icons.exerciseDict} style={styles.Icon} />
+                </TouchableOpacity>
+              </View>
+              {/* 캐릭터 영역 */}
+              <View style={styles.characterContainer}>
+                <Image source={images.char_background} resizeMode="stretch" style={styles.imageStyle} />
+                <Character characterImage={images.level_1} />
+              </View>
             </ImageBackground>
           </View>
-          <ScrollView style={styles.exerciseList}>
-            {exercise?.map((data) => (
-              data.plans.map((plan) => (
-                <View key={plan.id}>
-                  <Text>{plan.day}</Text>
-                  {plan.exercises.map((ex) => (
-                    <Card key={ex.id} style={styles.card}>
-                      <Card.Title title={ex.exercise} />
-                      <Card.Content>
-                        <View style={styles.cardContent}>
-                          <Text>{ex.sets} 세트, {ex.reps}회</Text>
-                          <Checkbox
-                            value={checkedStates[ex.id] || false}
-                            onValueChange={(newValue) => handleCheckboxChange(ex.id, newValue)}
-                            color={checkedStates[ex.id] ? '#4630EB' : undefined} />
-                        </View>
-                      </Card.Content>
-                    </Card>
-                  ))}
-                </View>
-              ))
-            ))}
-          </ScrollView>
+
+          {/* Card 영역 */}
+          <ImageBackground source={images.card_background} style={styles.scrollViewBackground}>
+            <ScrollView style={styles.exerciseList}>
+              {exercise?.map((data) => (
+                data.plans.map((plan) => (
+                  <View key={plan.id}>
+                    <Text>{plan.day}</Text>
+                    {plan.exercises.map((ex) => (
+                      <Card key={ex.id} style={styles.card}>
+                        <Card.Title title={ex.exercise} titleStyle={{fontWeight:'bold', fontFamily:"jua",fontSize: 20}}/>
+                        <Card.Content>
+                          <View style={styles.cardContent}>
+                            <Text style={styles.experienceText}>{ex.sets} 세트, {ex.reps}회</Text>
+                            <Checkbox
+                              value={checkedStates[ex.id] || false}
+                              onValueChange={(newValue) => handleCheckboxChange(ex.id, newValue)}
+                              color={checkedStates[ex.id] ? '#186A3B' : undefined} />
+                          </View>
+                        </Card.Content>
+                      </Card>
+                    ))}
+                  </View>
+                ))
+              ))}
+            </ScrollView>
+            <CircleBtn
+              iconUrl={icons.gpt_chat} 
+              dimension='70%'
+              handlePress={() => router.push('/ChatScreen')}
+              />
+          </ImageBackground>
         </>
       )}
       <TabBar router={router} />
@@ -294,6 +306,7 @@ const MainScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:"#DFEFDF"
   },
   header: {
     paddingTop: 20,
@@ -312,12 +325,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     paddingRight: 30,
   },
-
   characterContainer: {
-    height: '35%', // 높이를 조정해 캐릭터 이미지에 맞게 설정
+    height: '30%', // 높이를 조정해 캐릭터 이미지에 맞게 설정
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20
   },
   characterImage: {
     width: screenWidth * 0.2,
@@ -331,22 +342,38 @@ const styles = StyleSheet.create({
   experienceText: {
     width: 200,
     paddingLeft: 10,
+    fontFamily:"jua"
+  },
+  scrollViewBackground: {
+    flex: 1,
   },
   exerciseList: {
     flex: 1,
   },
   card: {
     margin: 10,
+    backgroundColor:"#D4EFDF",
   },
   cardContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  SkyImageStyle: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
   imageStyle: {
     width: screenWidth,
-    height: screenHeight * 0.32,
+    height: screenHeight * 0.33,
     position: 'absolute',
+  },
+  Icon: {
+    width: 35, // 아이콘의 너비 설정
+    height: 35, // 아이콘의 높이 설정
+    resizeMode: 'contain', // 이미지의 비율을 유지
+    borderRadius: 10,
   },
   progressBar: {
     height: 10, // 프로그레스바의 높이

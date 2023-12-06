@@ -1,6 +1,6 @@
 import React, { useState , useEffect} from 'react';
 import YoutubePlayer from 'react-native-youtube-iframe';
-import { useRouter,useGlobalSearchParams, useLocalSearchParams } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { images } from '../constants';
 
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 250, // 이미지 높이 조정
-    resizeMode: 'resize',
+    resizeMode: 'contain',
     marginVertical: 20,
     borderRadius: 10, // 이미지 모서리 둥글게
     borderWidth: 1, // 테두리

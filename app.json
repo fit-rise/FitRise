@@ -1,5 +1,9 @@
 {
   "expo": {
+    "splash": {
+      "image":"/Users/woojinchoi/Mobile_Project/Fit-Rise/assets/images/splash_run.png",
+      "resizeMode":"stretch"
+    },
     "scheme": "acme",
     "web": {
       "bundler": "metro"

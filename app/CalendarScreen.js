@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import TabBar from '../components/TabBar'
+import { useRouter } from "expo-router";
+
 import { getItem } from './storage/setNickname';
 import {IP_URL}from "@env"
+
 const CalendarScreen = () => {
   const [selectedDay, setSelectedDay] = useState('');
   const [isLoading, setisLoading] = useState(false);
   const [Exdata, setExdata] = useState([])
-  // const mockExerciseData = {
-  //   '2023-11-07': [{ name: '푸시업', duration: '30분' }, { name: '스쿼트', duration: '20분' }],
-  //   '2023-11-08': [{ name: '런지', duration: '20분' }],
-  //   // ... 여기에 더 많은 데이터를 추가할 수 있습니다.
-  // };
+  const router = useRouter()
+
   //끝낸운동들 fetch
   useEffect(() => {
     setisLoading(true);
@@ -55,7 +56,7 @@ const CalendarScreen = () => {
   const renderExerciseItem = ({ item }) => (
     <View style={styles.listItem}>
       <Text style={styles.listItemText}>{item.exercise}</Text>
-      <Text>{`Sets: ${item.sets}, Reps: ${item.reps}`}</Text>
+      <Text style={styles.listItemText}>{`Sets: ${item.sets}, Reps: ${item.reps}`}</Text>
     </View>
   );
 
@@ -64,13 +65,18 @@ const CalendarScreen = () => {
       <Calendar
         onDayPress={onDayPress}
         markedDates={markedDates}
+        style={{borderRadius:10,margin:10}}
       />
-      <FlatList
-        data={selectedDayExercises}
-        renderItem={renderExerciseItem}
-        keyExtractor={(item, index) => index.toString()}
-        style={styles.exerciseList}
-      />
+      <View style={styles.listContainer}>
+        <Text style={styles.headerText}>오늘의 성과</Text>
+        <FlatList
+          data={selectedDayExercises}
+          renderItem={renderExerciseItem}
+          keyExtractor={(item, index) => index.toString()}
+          style={styles.exerciseList}
+        />
+      </View>
+      <TabBar router = {router}/>
     </View>
   );
 };
@@ -79,6 +85,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 10,
+    backgroundColor:'#DFEFDF',
   },
   listItem: {
     flexDirection: 'row',
@@ -87,11 +94,31 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   listItemText: {
+    fontFamily:"jua",
     fontWeight: 'bold',
     marginRight: 10,
+    color:"#555"
+  },
+  headerText: {
+    fontFamily:"jua",
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#4a90e2', // 헤더의 파란색 계열
+    padding: 10,
+    textAlign: 'center',
+  },
+  listContainer:{
+    flex:1,
+    marginTop: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    margin:10,
+    borderRadius:10
   },
   exerciseList: {
-    marginTop: 20,
+    flex:1,
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    margin:10,
+    borderRadius:10
   },
 });
 
