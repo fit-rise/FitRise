@@ -8,7 +8,7 @@ import info_styles from "../components/info.style"
 import Info_TextInput from '../components/Info_TextInput'
 import { Button } from 'react-native-paper';
 import {IP_URL}from "@env"
-import { setNickname } from './storage/setNickname';
+import { getItem } from './storage/setNickname';
 const AnalysisScreen = () => {
 
   console.log("AnalysisScreen 렌더링 시작");
@@ -30,20 +30,21 @@ const [loading, setLoading] = useState(true);
   const router = useRouter()
   const [stoageValue, setStoageValue] = useState('');//스토리지 관련 스테이터스
   useEffect(() => {
-    confirmAsyncValue()
-
-    console.log(stoageValue)
+    
+    const userNickName = getItem('key');
+    setStoageValue(userNickName);
+    
     console.log("useEffect 호출됨");
     const fetchData = async () => {
       try {
-        const response = await fetch(`${IP_URL}/analysis`, {
+        const response = await fetch(`${IP_URL}/AnalysisScreen/analysis`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ userId: '655de6c451a5a1fdd749aff1' }) // 사용자 ID 설정
+          body: JSON.stringify({ name: userNickName }) // 사용자 ID 설정
         });
-  
+   
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -65,13 +66,6 @@ const [loading, setLoading] = useState(true);
     fetchData();
   }, []);
 
-  const confirmAsyncValue = async () => { //닉네임 스토리지 호출 
-    const result = await setNickname('key');
-    setStoageValue(result);
-    console.log(stoageValue)
-    
-    
-  };
 
   // 데이터 변환 로직
 const transformData = (analysisData) => {

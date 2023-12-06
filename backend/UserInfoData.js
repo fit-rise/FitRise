@@ -63,7 +63,6 @@ exports.postUserInfoData = async function (req,res){
 
 exports.getNameCheck = async function(req,res){
     const p = req.body;
-    console.log(p)
     try{
     const user = await prisma.users.findMany({
       where: {

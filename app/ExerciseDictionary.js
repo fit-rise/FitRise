@@ -23,7 +23,7 @@ const ExerciseDictionary = () => {
       console.log(item)
       console.log("name:",item.name)
       router.push({pathname:'/ExerciseGuide',
-                   params: {name:item.name, instructions:item.instructions, muscle: item.muscle} })
+                  params: {name:item.name, instructions:item.instructions, muscle: item.muscle} })
     }
 
     }>

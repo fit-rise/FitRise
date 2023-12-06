@@ -4,8 +4,8 @@ const prisma = new PrismaClient({}
 // 그래프 조회
 const postAnalysis = async function (req, res) {
     try{
-
-        const userId = req.body.userId;
+      console.log(req.body)
+        const username = req.body.name;
         console.log('분석 조회'+userId)
     
         // 현재 날짜에서 7일 전의 날짜 계산
@@ -17,7 +17,7 @@ const postAnalysis = async function (req, res) {
          // 최근 일주일 간의 데이터 조회
          const analysis = await prisma.Analysis.findMany({
            where: {
-             userId: userId,
+             name: username,
              date: {
                gte: sevenDaysAgo, 
              }

@@ -11,7 +11,6 @@ const prisma = new PrismaClient({});
 exports.postCalendarScreen = async function (req, res) {
   try {
     const q = req.body
-    console.log(q.name);
     const ex = await prisma.users.findMany({
       where: {
         name: q.name,

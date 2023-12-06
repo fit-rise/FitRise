@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Modal, Text, StyleSheet, Image, ScrollView, Button, Animated, PanResponder, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
 import Checkbox from 'expo-checkbox';
-import { Stack, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { IP_URL } from "@env"
 import { ActivityIndicator, Card } from 'react-native-paper';
 import { setNickname,getItem } from './storage/setNickname';
@@ -80,28 +80,31 @@ const MainScreen = () => {
 
   
   //plans,exp 정보 요청
-  useEffect(() => {
-    confirmAsyncValue()
-    console.log(stoageValue)
-    setisLoading(true);
-    fetch(`${IP_URL}/checklist`, { // 또는 로컬 IP 사용
-      method: "post",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: stoageValue,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        setExercise(result);
-        setisLoading(false);
+  useEffect( () => {
+
+      getItem('key').then((userdata)=>{
+      setStoageValue(userdata)
+      setisLoading(true);
+      fetch(`${IP_URL}/checklist`, { // 또는 로컬 IP 사용
+        method: "post",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: userdata,
+        }),
       })
-      .catch((error) => {
-        console.error('Error:', error);
-        setisLoading(false);
-      });
+        .then((response) => response.json())
+        .then((result) => {
+          setExercise(result);
+          setisLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          setisLoading(false);
+        });
+    });
+  
   }, []);
 
   const confirmAsyncValue = async () => { //닉네임이 스토리지에 잘 저장 되있나 호출하는 함수 

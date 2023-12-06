@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const prisma = new PrismaClient({});
 
 exports.postReSetUserData = async function (req,res){
-    console.log("왔니")
+    
     try{
         console.log(req.body)
     }catch(e){

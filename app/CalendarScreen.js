@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import { getItem } from './storage/setNickname';
 import {IP_URL}from "@env"
 const CalendarScreen = () => {
   const [selectedDay, setSelectedDay] = useState('');
@@ -14,13 +15,14 @@ const CalendarScreen = () => {
   //끝낸운동들 fetch
   useEffect(() => {
     setisLoading(true);
+    const userNickName = getItem('key');
     fetch(`${IP_URL}/CalendarScreen/doexercise`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: "엄득용",
+        name: userNickName,
       }),
     })
       .then((response) => response.json())

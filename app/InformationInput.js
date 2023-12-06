@@ -6,7 +6,6 @@ import info_styles from "../components/info.style"
 import {setNickname,getItem } from './storage/setNickname';
 import {IP_URL}from "@env"
 
-
 const InformationInput = () => {
   const [namecheck,setNameCheck] = useState(false)
   const [exerciseLevel, setExerciseLevel] = useState('beginner'); // 운동 수준 상태 추가
@@ -21,7 +20,7 @@ const InformationInput = () => {
   
 
   useEffect(() => {
-    confirmAsyncValue()
+    
     try{
      if(stoageValue != ''){//스토리지에 닉네임이 있으면 
        console.log("useEffect if : "+stoageValue)
@@ -78,10 +77,7 @@ const InformationInput = () => {
    }
   };
 
-  const confirmAsyncValue = async () => { //닉네임이 스토리지에 잘 저장 되있나 호출하는 함수 
-    const result = await getItem('key');
-    setStoageValue(result);  
-  };
+ 
 
 
   const NickcopyCheck = async() =>{
@@ -105,11 +101,12 @@ const InformationInput = () => {
         setNickname('key',name);//닉네임을 스토리지에 저장하기위한 함수호출
         confirmAsyncValue();//저장 확인
       }else{
+        setNickname('key',name);
         setNameCheck(false)
         Alert.alert(
           '이미 사용중인 닉네임입니다',
         );
-        console.log("왜 여기롱와")
+        router.push('/MainScreen')
       }
     })
   }
