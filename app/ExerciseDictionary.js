@@ -4,13 +4,10 @@ import { View, Text, TextInput, StyleSheet, FlatList,
         TouchableOpacity, ScrollView, ActivityIndicator,Image } from 'react-native';
 import { icons } from '../constants';
 import useExercises from '../Hook/useExercises';
-
 const categories = ['Cardio', 'Olympic_weightlifting', 'Plyometrics', 'Powerlifting', 'Stretching', 'Strongman'];
 
 const ExerciseDictionary = () => {
   const router = useRouter()
-
-  //useState & Hook
   const [searchQuery, setSearchQuery] = useState('');
   //검색 결과 담을 useState
   const [filteredExercises, setFilteredExercises] = useState([]);
@@ -51,7 +48,7 @@ const ExerciseDictionary = () => {
       console.log(item)
       console.log("name:",item.name)
       router.push({pathname:'/ExerciseGuide',
-                   params: {name:item.name, instructions:item.instructions, muscle: item.muscle} })
+                  params: {name:item.name, instructions:item.instructions, muscle: item.muscle} })
     }
 
     }>

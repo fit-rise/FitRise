@@ -1,5 +1,4 @@
-// Info_TextInput.js
-import React, { useState } from 'react';
+import React from 'react';
 import { TextInput, View } from 'react-native';
 import info_styles from "./info.style";
 

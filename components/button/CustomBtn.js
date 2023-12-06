@@ -9,7 +9,7 @@ const CustomBtn = ({ onPress, title }) => (
 
 const btn_styles = StyleSheet.create({
   button: {
-    flex:0.3,
+    height:36,
     backgroundColor: '#a2e78d', // react-native-paper 기본 색상
     padding: 10,
     borderRadius: 30,
@@ -19,8 +19,8 @@ const btn_styles = StyleSheet.create({
   },
   text: {
     fontFamily:"jua",
-    color: '#555',
-    fontSize: 18,
+    color: "black",
+    fontSize: 16,
   },
 });
 

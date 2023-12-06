@@ -1,7 +1,9 @@
-import React from 'react';
-import { useRouter,useGlobalSearchParams, useLocalSearchParams } from 'expo-router';
+import React, { useState , useEffect} from 'react';
+import YoutubePlayer from 'react-native-youtube-iframe';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { images } from '../constants';
+
 
 const ExerciseGuide = () => {
   const router = useRouter();
@@ -15,24 +17,55 @@ const ExerciseGuide = () => {
     imageUrl: images.pushup,
     description: instructions,
     muscle: muscle,
-    youtubeVideoId: 'abc123def' // 실제 유튜브 영상 ID
+  
   };
 
-  return (
-  <ScrollView style={styles.container}>
-    <Text style={styles.title}>{exerciseData.name}</Text>
-    <View style={styles.horizontalView}>
-      <Text style={styles.muscleText}>운동 부위 : </Text>
-      <Text style={styles.muscleText}>{exerciseData.muscle}</Text>
-    </View>
-    <Image source={images.pushup} style={styles.image} />
+  const [videos, setVideos] = useState([]);
 
-    <View style={styles.descriptionContainer}>
-      <ScrollView nestedScrollEnabled={true}>
-            <Text style={styles.description}>{exerciseData.description}</Text>
-      </ScrollView>
-    </View>
-  </ScrollView>
+  useEffect(() => {
+    fetchYoutubeVideos(name);
+  }, [name]);
+
+  const fetchYoutubeVideos = async (query) => {
+    const API_KEY = 'AIzaSyDxrHO2kXoQvRfaRPX6e2E9817yFKJxT_c'; // YouTube Data API 키
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&chart=mostPopular&maxResults=3&regionCode=kr&q=${encodeURIComponent(query)}&type=video&key=${API_KEY}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      setVideos(data.items);
+    } catch (error) {
+      console.error('Error fetching YouTube videos:', error);
+    }
+ };
+
+
+  return (
+    <ScrollView style={styles.container}>
+        <Text style={styles.title}>{exerciseData.name}</Text>
+        <View style={styles.horizontalView}>
+           <Text style={styles.muscleText}>운동 부위 : </Text>
+           <Text style={styles.muscleText}>{exerciseData.muscle}</Text>
+        </View>
+        <Image source={images.pushup} style={styles.image} />
+
+        <View style={styles.descriptionContainer}>
+            <ScrollView nestedScrollEnabled={true}>
+                <Text style={styles.description}>{exerciseData.description}</Text>
+            </ScrollView>
+        </View>
+      
+      {videos.map((video, index) => (
+        <View key={index} style={styles.videoContainer}>
+          <YoutubePlayer
+            height={405}
+            width={720}
+            videoId={video.id.videoId} // YouTube 동영상 ID
+          />
+        </View>
+      ))}
+
+    </ScrollView>
   );
 };
 
@@ -90,6 +123,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden', // 모서리 둥글게 처리
     marginVertical: 20,
   },
+
 });
 
 

@@ -16,17 +16,25 @@ import rank_background from "../assets/images/Ranking_Back.png"
 
 
 //기타
-import pushup from "../assets/images/pushup.jpeg"
 import splash from "../assets/images/splash.png";
 import gold_medal from "../assets/images/gold_medal.png";
 import silver_medal from "../assets/images/silver_medal.png";
 import bronze_medal from "../assets/images/bronze_medal.png";
 
-
+//추가된 이미지
+import stage1 from "../assets/images/stage1.png";
+import stage2 from "../assets/images/stage2.png";
+import stage3 from "../assets/images/stage3.png";
+import stage4 from "../assets/images/stage4.png";
+import background_sky from "../assets/images/background_sky.png"
+import tier1 from "../assets/images/tier1.png"
+import tier2 from "../assets/images/tier2.png"
+import tier3 from "../assets/images/tier3.png"
 
 
 
 export default {
-    grass,pushup,char_background, splash,gold_medal,silver_medal,bronze_medal,
-    level_1,level_2,level_3,level_4,card_background,act_heart,act_bfly,rank_background
+    grass,char_background, splash,gold_medal,silver_medal,bronze_medal,
+    level_1,level_2,level_3,level_4,card_background,act_heart,act_bfly,rank_background,
+    stage1,stage2,stage3,stage4,background_sky,tier1,tier2,tier3
 };

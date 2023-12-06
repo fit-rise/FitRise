@@ -50,7 +50,8 @@ const info_styles = StyleSheet.create({
         flexDirection:'row',
          alignItems:'center',
          justifyContent: 'space-between',
-         marginBottom: 35,
+         marginBottom:25,
+         height:100,
     },
     BtnStyle: {
         backgroundColor: '#a2e78d', // 밝은 초록색으로 변경
