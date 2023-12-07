@@ -116,7 +116,7 @@ const MainScreen = () => {
   };
   
   useEffect(() => {
-    confirmAsyncValue()
+    //confirmAsyncValue()
     // 원하는 x, y 좌표로 초기 위치 설정
     hero.setValue({ x: 150, y: 100 });
   }, []);

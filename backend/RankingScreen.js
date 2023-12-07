@@ -76,23 +76,30 @@ async function calculateRanking(name,userTier) {
 // 랭킹 조회
 const postRank = async function (req, res) {
 
-    const userId = req.body.userId;
+    const username = req.body.name;
+    console.log('postRank : '+username)
 
-   // 해당 사용자의 티어를 조회합니다.
-   const user = await prisma.users.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      name: true,
-      tier: true,
-      exp : true
-    },
-  });
+    try{
 
-  const result = await calculateRanking(user.name,user.tier);
-  res.json(result);
+          // 해당 사용자의 티어를 조회합니다.
+      const user = await prisma.users.findFirst({
+        where: {
+          name: username,
+        },
+        select: {
+          name: true,
+          tier: true,
+          exp : true
+        },
+      });
+      console.log('user.name:'+user.name)
 
+      const result = await calculateRanking(user.name,user.tier);
+      
+      res.json(result);
+    }catch(error){
+      res.status(500).json({ error: error.message });
+    }
 
 }
 

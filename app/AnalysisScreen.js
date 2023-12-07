@@ -8,9 +8,9 @@ import info_styles from "../components/info.style"
 import Info_TextInput from '../components/Info_TextInput'
 import {IP_URL}from "@env"
 import { getItem } from './storage/setNickname';
+
 const AnalysisScreen = () => {
 
-  console.log("AnalysisScreen 렌더링 시작");
  // const [data, setData] = useState(null);
  const [chartData, setChartData] = useState({
   labels: [],
@@ -27,43 +27,71 @@ const [loading, setLoading] = useState(true);
   const [inputExercise, setExercise] = useState('');//횟수
   const [inputNotice, setNotice] = useState('');//제약사항
   const router = useRouter()
-  const [stoageValue, setStoageValue] = useState('');//스토리지 관련 스테이터스
+  const [storageValue, setStorageValue] = useState('');//스토리지 관련 스테이터스
+  const [weightSubmitted, setWeightSubmitted] = useState(false); // 몸무게가 제출되었는지 추적하는 상태
+
+
+
   useEffect(() => {
     
-    const userNickName = getItem('key');
-    setStoageValue(userNickName);
-    
+    getItem('key').then((userNickName)=>{
+
+      setStorageValue(userNickName);
+      checkWeightSubmission(userNickName);
+      setLoading(false);
     console.log("useEffect 호출됨");
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${IP_URL}/AnalysisScreen/analysis`, {
+
+      
+        console.log('AnalysisScreen : '+userNickName);
+   
+         fetch(`http://localhost:3000/AnalysisScreen/analysis`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ name: userNickName }) // 사용자 ID 설정
-        });
-   
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-  
-        const analysisData = await response.json();
-        console.log('분석 데이터 도착'+analysisData)
-        const transformed = transformData(analysisData);
-        setChartData(transformed);
-        // 차트에 사용할 데이터 형식으로 변환 필요
-      } catch (error) {
-        console.error('Fetching data failed:', error);
-      } finally {
-        setLoading(false);
-      }
-
-
-    };
-  
-    fetchData();
+          body: JSON.stringify({ name: userNickName })
+        }).then((response) => response.json())
+        .then((result) => {
+          const analysisData = result;
+          console.log('분석 데이터 도착'+JSON.stringify(analysisData))
+          const transformed = transformData(analysisData);
+          setChartData(transformed);
+          
+          setLoading(false);
+        }).catch((error) =>{
+          console.error('error : ',error)
+         
+        })
+    }) ;
+    
   }, []);
+
+  // 오늘 몸무게 입력했는지 확인하기
+  const checkWeightSubmission = (userNickName) => {
+      
+        console.log('checkWeight'+userNickName)
+        // 오늘 날짜 구하기
+        const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD' 형식
+        fetch(`${IP_URL}/AnalysisScreen/checkWeight`, {
+          method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            name: userNickName,
+            date: today
+          }) 
+        }).then((res)=>(res.json()))
+        .then((result)=>{
+          if (result && result.length > 0) {
+            // 이미 데이터가 있으면 '입력 완료' 상태로 설정
+            setWeightSubmitted(true);
+           }
+        }).catch((error)=>{
+          console.error('error : ',error)
+        })
+    };
+
 
 
   // 데이터 변환 로직
@@ -95,12 +123,12 @@ const transformData = (analysisData) => {
     console.log('몸무게 전송'+weight)
     try {
 
-      const response = await fetch('http://localhost:3000/weight', {
+      const response = await fetch(`${IP_URL}/AnalysisScreen/weight`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ weight: weight }) // 입력된 몸무게를 JSON 형식으로 전송
+        body: JSON.stringify({ name: storageValue, weight: weight }) // 입력된 몸무게를 JSON 형식으로 전송
       });
   
       if (!response.ok) {
@@ -108,6 +136,7 @@ const transformData = (analysisData) => {
       }
   
       // 성공적인 응답 처리 로직 (예: 알림 띄우기)
+      
     } catch (error) {
       console.error(error);
     }
@@ -190,22 +219,28 @@ const transformData = (analysisData) => {
       )
     )}
        
-        <View style={info_styles.inputGroup}>
-            <Text style={{width: 70, fontSize: 20, fontFamily:"jua", marginLeft:10}}>몸무게</Text>
+       {weightSubmitted ? (
+          <Text style={styles.inputCompleteText}>입력 완료</Text>
+        ) : (
+          <View style={info_styles.inputGroup}>
+
+            <Text style={info_styles.label}>몸무게</Text>
             <Info_TextInput
                     placeholder="몸무게 입력"
                     keyboardType="numeric"
                     onChangeText={text => setWeight(text)} // 입력된 텍스트를 weight 상태로 설정
                 />
-            <Text style={{width: 70, fontSize: 20, fontFamily:"jua", marginLeft:10}}>Kg</Text>
-            <CustomBtn onPress={submitWeight} title="입력"></CustomBtn>
-        </View>
-        <CustomBtn 
-          title="정보 재설정" 
-          onPress={() => setModalVisible(true)}>
-        </CustomBtn>
-
-        {/* 정보 재성정 모달 창 */}
+            <Text style={info_styles.unit}>Kg</Text>
+            <Button 
+              style={{backgroundColor: 'skyblue', margin:10}}
+              onPress={submitWeight} // 버튼 클릭 시 submitWeight 함수 실행
+            
+            > 입력 </Button>
+        </View>)}
+        <Button 
+          style={{backgroundColor: 'skyblue', margin:10}}
+          onPress={() => setModalVisible(true)}> 정보 재설정 
+        </Button>
         <Modal
           animationType="slide"
           transparent={false}
@@ -319,6 +354,27 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 18
+  },
+  modalButton: {
+    backgroundColor: "#2196F3",
+    elevation: 2
+  },
+  modalButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  inputCompleteText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#4a90e2', // 적절한 색상 선택
+    padding: 16,
+    textAlign: 'center',
   },
 });
 
