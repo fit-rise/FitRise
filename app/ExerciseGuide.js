@@ -3,7 +3,7 @@ import YoutubePlayer from 'react-native-youtube-iframe';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { images } from '../constants';
-
+import {YouTube_API_KEY}from "@env"
 
 const ExerciseGuide = () => {
   const router = useRouter();
@@ -27,8 +27,8 @@ const ExerciseGuide = () => {
   }, [name]);
 
   const fetchYoutubeVideos = async (query) => {
-    const API_KEY = 'AIzaSyDxrHO2kXoQvRfaRPX6e2E9817yFKJxT_c'; // YouTube Data API 키
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&chart=mostPopular&maxResults=3&regionCode=kr&q=${encodeURIComponent(query)}&type=video&key=${API_KEY}`;
+   
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&chart=mostPopular&maxResults=3&regionCode=kr&q=${encodeURIComponent(query)}&type=video&key=${YouTube_API_KEY}`;
 
     try {
       const response = await fetch(url);

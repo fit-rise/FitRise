@@ -84,7 +84,7 @@ const InformationInput = () => {
 
 
   const NickcopyCheck = async() =>{
-    fetch(`http://localhost:50123/name`,{
+    fetch(`${IP_URL}/name`,{
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

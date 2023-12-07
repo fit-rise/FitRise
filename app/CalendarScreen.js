@@ -3,7 +3,6 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import TabBar from '../components/TabBar'
 import { useRouter } from "expo-router";
-
 import { getItem } from './storage/setNickname';
 import {IP_URL}from "@env"
 

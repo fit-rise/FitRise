@@ -37,7 +37,7 @@ useEffect(() => {
   
       console.log('ranking'+userNickName);
 
-      fetch(`http://localhost:3000/RankingScreen/rank`, {
+      fetch(`${IP_URL}/RankingScreen/rank`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

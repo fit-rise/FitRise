@@ -1,6 +1,6 @@
 import React,{useState , useEffect } from 'react';
 import {useRouter} from "expo-router";
-import { SafeAreaView,View, Text, Dimensions, StyleSheet, Modal,ActivityIndicator} from 'react-native';
+import { SafeAreaView,View, Text,Button, Dimensions, StyleSheet, Modal,ActivityIndicator} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { LineChart } from 'react-native-chart-kit';
 import {TabBar,CustomBtn} from '../components'
@@ -35,7 +35,6 @@ const [loading, setLoading] = useState(true);
   useEffect(() => {
     
     getItem('key').then((userNickName)=>{
-
       setStorageValue(userNickName);
       checkWeightSubmission(userNickName);
       setLoading(false);
@@ -44,7 +43,7 @@ const [loading, setLoading] = useState(true);
       
         console.log('AnalysisScreen : '+userNickName);
    
-         fetch(`http://localhost:3000/AnalysisScreen/analysis`, {
+         fetch(`${IP_URL}/AnalysisScreen/analysis`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

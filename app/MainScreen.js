@@ -87,7 +87,7 @@ const MainScreen = () => {
       getItem('key').then((userdata)=>{
       setStoageValue(userdata)
       setisLoading(true);
-      fetch(`http://116.123.136.48:50123/checklist`, { // 또는 로컬 IP 사용
+      fetch(`${IP_URL}/checklist`, { // 또는 로컬 IP 사용
         method: "post",
         headers: {
           'Content-Type': 'application/json'
