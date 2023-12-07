@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 //alert 창 누른 없앤 후에 넘어갈 수 있도록 Alert 컴포넌트 사용
-import { View, Text, Alert,SafeAreaView,TextInput,Button } from 'react-native';
+import { View, Text, Alert,SafeAreaView,TextInput,Button,ActivityIndicator } from 'react-native';
 import {CustomBtn} from '../components'
 import { Picker } from '@react-native-picker/picker';
 import { useRouter} from "expo-router";
@@ -12,45 +12,46 @@ const InformationInput = () => {
   const [namecheck,setNameCheck] = useState(false)
   const [exerciseLevel, setExerciseLevel] = useState('beginner'); // 운동 수준 상태 추가
   const [goal, setGoal] = useState('weight_loss'); // 운동 목표 상태 추가
-  const [inputHeight, seHeight] = useState(''); // 키 입력값
+  const [inputHeight, setHeight] = useState(''); // 키 입력값
   const [inputWeight, setWeight] = useState(''); //몸무게 입력값
   const [inputExercise, setExercise] = useState(''); // 운동 회수
   const [inputNotice, setNotice] = useState(''); // 운동 제약사항
   const [stoageValue, setStoageValue] = useState('');//스토리지 관련 스테이터스
   const [name,setName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter()
   
 
 
   useEffect(() => {
-    
-    try{
-     if(stoageValue != ''){//스토리지에 닉네임이 있으면 
-       console.log("useEffect if : "+stoageValue)
-       router.push('/MainScreen')
-     }else{
-       Alert.alert("정보를 입력해주세요")
-       }
-   }catch(e){
-      console.log(e)
-   }
- },[]);
+    const checkStorageAndNavigate = async () => {
+      const userNickName = await getItem('key');
+      if (userNickName) { // 닉네임이 존재하면 메인 스크린으로 이동
+        router.push('/MainScreen');
+      }
+    };
+  
+    checkStorageAndNavigate();
+  }, []); 
  
 
-  const handlePress = async() => {
-    
-   try{
-      if(namecheck == false){
-        Alert.alert(
-          '닉네임 중복을 확인해주세요',
-        );
-      }else{
-      fetch(`${IP_URL}/UserInfoData`,{
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+ const handlePress = async () => {
+  if (!namecheck) {
+    Alert.alert('닉네임 중복을 확인해주세요');
+    return;
+  }
+  if (inputHeight==='' || inputWeight==='' || inputExercise==='') {
+    Alert.alert('정보를 모두 입력해주세요');
+    return;
+  }
+  setIsLoading(true);
+  try {
+    const response = await fetch(`${IP_URL}/UserInfoData`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         name: name, 
         height: inputHeight, 
         weight: inputWeight,
@@ -58,27 +59,27 @@ const InformationInput = () => {
         Notice: inputNotice,
         ex_goal: goal,
         ex_level: exerciseLevel,
-        Notice: inputNotice 
-        }) 
-      }).then((res)=>(res.json())).then((json)=>{
-   // Alert.alert를 사용하여 확인 버튼이 눌렸을 때의 행동을 정의
-    Alert.alert(
-    '제출 확인', // Alert의 제목
-    '정보가 제출되었습니다.', // Alert의 내용
-    [
-      {text: 'OK', onPress: () => router.push('/MainScreen')}, // OK 버튼을 눌렀을 때 router.push를 호출
-    ],
-    {cancelable: false},
-  );
- 
- 
-  router.push('/MainScreen')
-  })}
-   }catch(e){
-    console.log(e)
+      }) 
+    });
 
-   }
-  };
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    // 성공적으로 데이터가 제출되었음을 알림
+    Alert.alert(
+      '제출 확인',
+      '정보가 제출되었습니다.',
+      [{ text: 'OK', onPress: () => router.push('/MainScreen') }],
+      { cancelable: false }
+    );
+  } catch (e) {
+    console.error(e);
+    Alert.alert('오류', '정보 제출 중 오류가 발생했습니다.');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
  
 
@@ -109,10 +110,16 @@ const InformationInput = () => {
         Alert.alert(
           '이미 사용중인 닉네임입니다',
         );
-        router.push('/MainScreen')
       }
     })
   }
+  if (isLoading) {
+    return (
+      <View style={info_styles.centeredView}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  } else{
   return (
     <SafeAreaView style={info_styles.container}>
     <View style={info_styles.content_container}>
@@ -134,7 +141,7 @@ const InformationInput = () => {
             <TextInput
                     placeholder="키 입력"
                     keyboardType="numeric"
-                    onChangeText={seHeight}
+                    onChangeText={setHeight}
                     value={inputHeight}
                 />
             <Text style={info_styles.unit}>cm</Text>
@@ -207,6 +214,7 @@ const InformationInput = () => {
     </View>
     </SafeAreaView>
   );
+  }
 };
 
 export default InformationInput

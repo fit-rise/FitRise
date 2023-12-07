@@ -13,9 +13,9 @@ const CalendarScreen = () => {
   const router = useRouter()
 
   //끝낸운동들 fetch
-  useEffect(() => {
+  useEffect(async () => {
     setisLoading(true);
-    const userNickName = getItem('key');
+    const userNickName = await getItem('key');
     fetch(`${IP_URL}/CalendarScreen/doexercise`, {
       method: "POST",
       headers: {

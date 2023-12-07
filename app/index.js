@@ -2,10 +2,9 @@
 import { Redirect } from 'expo-router';
 
 
-const Index = ()=>{
-    return(
-        //홈화면
-        <Redirect href = "/InformationInput"/>
+const Index = () => {
+    return (
+            <Redirect href="/InformationInput" />
     )
 }
 

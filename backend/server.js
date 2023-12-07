@@ -45,5 +45,5 @@ app.post('/AnalysisScreen/checkWeight',AnalysisScreen.postCheckWeight)
 const RankingScreen = require('./RankingScreen') // 랭킹 조회 api
 app.post('/RankingScreen/rank', RankingScreen.postRank)
 const ReSetUserData = require("./reSetUserData")
-app.post("/ReSetUserData",ReSetUserData.postReSetUserData)
+app.post("/ReSetUserData",ReSetUserData.postReSetUserData) //유저정보 재설정
 

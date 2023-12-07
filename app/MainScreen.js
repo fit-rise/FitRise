@@ -7,7 +7,7 @@ import { useRouter } from "expo-router";
 import { IP_URL } from "@env"
 import { ActivityIndicator, Card } from 'react-native-paper';
 import { setNickname,getItem } from './storage/setNickname';
-
+import { useAppContext } from './AppContext';
 import { images,icons } from '../constants';
 import {TabBar,Character,CircleBtn} from '../components'
 import * as Progress from 'react-native-progress';
@@ -15,6 +15,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 //env 체크
 const MainScreen = () => {
+  const { trigger } = useAppContext();
   const [stoageValue, setStoageValue] = useState('');//스토리지 관련 스테이터스
   const [exercise, setExercise] = useState([]);
   const [isLoading, setisLoading] = useState(false);
@@ -107,7 +108,7 @@ const MainScreen = () => {
         });
     });
   
-  }, []);
+  }, [trigger]);
 
   const confirmAsyncValue = async () => { //닉네임이 스토리지에 잘 저장 되있나 호출하는 함수 
     const result = await setNickname('key');
@@ -222,7 +223,7 @@ const MainScreen = () => {
               <View style={styles.header}>
                 {expData && (
                   <View style={styles.experienceBar}>
-                    <Progress.Bar progress={expData.stageProgress} width={250} style={styles.progressBar} color='#000' animated={true} />
+                    <Progress.Bar progress={expData.stageProgress} style={styles.progressBar} color='#000' animated={true} />
                     <Text style={styles.experienceText}>경험치: {expData.stageExp} / {expData.stageMaxExp}</Text>
                   </View>
                 )}
@@ -309,9 +310,10 @@ const styles = StyleSheet.create({
     backgroundColor:"#DFEFDF"
   },
   header: {
-    paddingTop: 20,
-    paddingRight: 20,
+    paddingTop: 10,
+    paddingHorizontal: 20,
     alignItems: 'flex-end',
+    zIndex: 10,
   },
   btnContainer: {
     height: 50,
@@ -338,9 +340,10 @@ const styles = StyleSheet.create({
   experienceBar: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexGrow: 1,
   },
   experienceText: {
-    width: 200,
+    width: 100,
     paddingLeft: 10,
     fontFamily:"jua"
   },
@@ -374,12 +377,14 @@ const styles = StyleSheet.create({
     height: 35, // 아이콘의 높이 설정
     resizeMode: 'contain', // 이미지의 비율을 유지
     borderRadius: 10,
+    zIndex: 10,
   },
   progressBar: {
     height: 10, // 프로그레스바의 높이
     borderRadius: 10, // 프로그레스바의 모서리를 둥글게
     borderWidth: 2, // 프로그레스바의 테두리 두께
     borderColor: "#000", // 프로그레스바의 테두리 색상
+    flex: 1,
   },
   centeredView: {
     flex: 1,
@@ -420,7 +425,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white', // 텍스트 색상
-  },
+  }  
 });
 
 export default MainScreen;
