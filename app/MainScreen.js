@@ -87,7 +87,7 @@ const MainScreen = () => {
       getItem('key').then((userdata)=>{
       setStoageValue(userdata)
       setisLoading(true);
-      fetch(`http://116.123.136.48:50123/checklist`, { // 또는 로컬 IP 사용
+      fetch(`http://local:50123/checklist`, { // 또는 로컬 IP 사용
         method: "post",
         headers: {
           'Content-Type': 'application/json'
@@ -162,13 +162,13 @@ const MainScreen = () => {
   // 현재 경험치에 따라 적절한 캐릭터 이미지를 선택하는 함수
   const getCurrentCharacterImage = (exp) => {
     if (exp < 100) {
-      return images.stage1;
+      return images.level_1;
     } else if (exp < 200) {
-      return images.stage2;
+      return images.level_2;
     } else if (exp < 300) {
-      return images.stage3;
+      return images.level_3;
     } else {
-      return images.stage4;
+      return images.level_4;
     }
     // 추가적인 레벨을 여기에 정의할 수 있습니다.
   };
@@ -218,7 +218,7 @@ const MainScreen = () => {
       ) : (
         <>
           <View style={styles.characterContainer}>
-            <ImageBackground source={images.background_sky} resizeMode="stretch" style={styles.SkyImageStyle}>
+            <ImageBackground source={images.sky_background} resizeMode="stretch" style={styles.SkyImageStyle}>
               <View style={styles.header}>
                 {expData && (
                   <View style={styles.experienceBar}>
