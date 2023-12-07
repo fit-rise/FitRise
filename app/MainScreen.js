@@ -223,7 +223,7 @@ const MainScreen = () => {
               <View style={styles.header}>
                 {expData && (
                   <View style={styles.experienceBar}>
-                    <Progress.Bar progress={expData.stageProgress} style={styles.progressBar} color='#000' animated={true} />
+                    <Progress.Bar progress={expData.stageProgress} width={240} style={styles.progressBar} color='#000' animated={true} />
                     <Text style={styles.experienceText}>경험치: {expData.stageExp} / {expData.stageMaxExp}</Text>
                   </View>
                 )}
