@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   experienceText: {
-    width: 100,
+    width: 120,
     paddingLeft: 10,
     fontFamily:"jua"
   },
