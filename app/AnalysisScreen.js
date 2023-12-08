@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "expo-router";
-import { SafeAreaView, View, Text, Button, Dimensions, StyleSheet, Modal, ActivityIndicator } from 'react-native';
+import { SafeAreaView, View, Text, Dimensions, StyleSheet, Modal, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { LineChart } from 'react-native-chart-kit';
 import { TabBar, CustomBtn } from '../components'
@@ -12,7 +12,6 @@ import { useAppContext } from './AppContext';
 const AnalysisScreen = () => {
   const { triggerUpdate } = useAppContext();
   console.log("AnalysisScreen 렌더링 시작");
-  // const [data, setData] = useState(null);
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [{ data: [] }]
@@ -144,29 +143,6 @@ const AnalysisScreen = () => {
     }
   };
 
-
-  /*
-
-  const weightData = [65, 59, 80, 81, 56, 55];
-  const bmiData = [30, 26, 36, 37, 24, 23];
-
-  // 임의의 데이터
-  const data = {
-    labels: ["January", "February", "March", "April", "May", "June"],
-    datasets: [
-      {
-        data: weightData,
-        color: (opacity = 1) => `rgba(0, 151, 76, ${opacity})`, // 파란색 계열
-        strokeWidth: 2
-      },
-      {
-        data: bmiData, // 추가된 BMI 데이터
-        color: (opacity = 1) => `rgba(255, 54, 9, ${opacity})`, 
-        strokeWidth: 2
-      }
-    ],
-    legend: ["체중 변화","BMI 지수 변화"]
-  };*/
   const reSetUserData = async () => {
     setIsSubmitting(true);
     try {

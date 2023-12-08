@@ -14,20 +14,6 @@ const RankingScreen = () => {
   const [stoageValue, setStoageValue] = useState('');
   const [isLoading, setisLoading] = useState(false);
 
-
-  /*
-
-  // 사용자 순위 데이터
-  const userRankings = [
-    { id: '1', name: 'User1', tier: 'Gold', xp: 1200 },
-    { id: '2', name: 'User2', tier: 'Silver', xp: 1100 },
-  ];*/
-
-  /*
-  // 현재 사용자 정보
-  const currentUser = { ranking: 5, tier: 'Gold', xp: 1350 };
-*/
-
 useEffect(() => {
   getItem('key').then((userNickName)=>{
      
@@ -58,8 +44,6 @@ useEffect(() => {
       });
 
   });
- 
-
   
 }, []);
 
