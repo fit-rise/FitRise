@@ -4,20 +4,21 @@ const prisma = new PrismaClient({}
 // 그래프 조회
 const postAnalysis = async function (req, res) {
     try{
-      console.log(req.body)
+      console.log('analysis'+req.body.name)
         const username = req.body.name;
-        console.log('분석 조회'+userId)
-    
+      
         // 현재 날짜에서 7일 전의 날짜 계산
         const date = new Date();
         date.setDate(date.getDate() - 7);
         const sevenDaysAgo = date.toISOString().split('T')[0];
+ 
+
      
         
          // 최근 일주일 간의 데이터 조회
          const analysis = await prisma.Analysis.findMany({
            where: {
-             name: username,
+             userName: username,
              date: {
                gte: sevenDaysAgo, 
              }
@@ -45,12 +46,12 @@ const postWeight = async function (req, res) {
 
     const weight = parseInt(req.body.weight, 10);
 
-    const userId = "655de6c451a5a1fdd749aff1";
+    const username = req.body.name;
 
     // 유저의 키 조회
     const user = await prisma.users.findUnique({
     where: {
-        id: userId,
+        name: username,
     },
     select: {
         height: true
@@ -69,7 +70,7 @@ const postWeight = async function (req, res) {
         date: today,
         weight: weight,
         bmi: Math.round(bmi),
-        userId : userId
+        userName : username
         }
     });
 
@@ -78,14 +79,15 @@ const postWeight = async function (req, res) {
     res.status(200).json(analysis);
   }
 
+  // 오늘 몸무게 입력했는지 체크
   const postCheckWeight = async function (req, res) {
     const date  = new Date().toISOString().split('T')[0];
-    const userId = "655de6c451a5a1fdd749aff1";
+    const username = req.body.name;
 
     const record = await prisma.analysis.findMany({
         where: {
-          userId,
-          date
+          userName: username,
+          date: date
         }
       });
       if (record.length > 0) {

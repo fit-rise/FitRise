@@ -9,7 +9,7 @@ datasource db {
 
 model users {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
-  name  String?
+  name  String @unique
   email String? //@unique
   age   Int?
   height Int
@@ -63,8 +63,8 @@ model Analysis {
   date String
   weight Int
   bmi Int
-  userId String @map("user_id") @db.ObjectId
-  user  users   @relation(fields: [userId], references: [id])
+  userName String @map("user_name") 
+  user  users   @relation(fields: [userName], references: [name])
 }
 
 

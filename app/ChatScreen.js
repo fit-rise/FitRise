@@ -6,12 +6,11 @@ import { useRouter } from "expo-router";
 import React,{ useState } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import axios from 'axios';
-
+import {ChatScreen_API_KEY}from "@env"
 
 const ChatScreen = () => {
     const router = useRouter()
     const [messages, setMessages] = useState([])
-    const API_KEY = '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'
     const handleSend = async (newMessages = []) => {
         try {
             //사용자 메세지 가져옴
@@ -51,7 +50,7 @@ const ChatScreen = () => {
             }, {
                 headers:{
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${API_KEY}`
+                    'Authorization': `Bearer ${ChatScreen_API_KEY}`
                 }
             });
 

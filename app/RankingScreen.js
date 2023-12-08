@@ -1,57 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, FlatList, StyleSheet,ImageBackground } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet,ImageBackground, ActivityIndicator } from 'react-native';
 import { useRouter } from "expo-router";
 
 import TabBar from '../components/TabBar'
 import { images } from '../constants';
 import {IP_URL}from "@env"
+import { getItem } from './storage/setNickname';
+
 const RankingScreen = () => {
   const [userRankings, setUserRankings] = useState([]);
   const [currentUser, setCurrentUser] = useState({ ranking: null, tier: '', exp: 0 });
   const router = useRouter()
-
-  /*
-
-  // 사용자 순위 데이터
-  const userRankings = [
-    { id: '1', name: 'User1', tier: 'Gold', xp: 1200 },
-    { id: '2', name: 'User2', tier: 'Silver', xp: 1100 },
-  ];*/
-
-  /*
-  // 현재 사용자 정보
-  const currentUser = { ranking: 5, tier: 'Gold', xp: 1350 };
-*/
+  const [stoageValue, setStoageValue] = useState('');
+  const [isLoading, setisLoading] = useState(false);
 
 useEffect(() => {
-  const fetchData = async () => {
-    try {
+  getItem('key').then((userNickName)=>{
+     
+    setStoageValue(userNickName);
+    setisLoading(true);
+ 
+  
+      console.log('ranking'+userNickName);
 
-      const response = await fetch(`${IP_URL}/RankingScreen/rank`, {
+      fetch(`${IP_URL}/RankingScreen/rank`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        // 실제 사용자 ID로 대체하세요
-        body: JSON.stringify({ userId: '655de6c451a5a1fdd749aff1' })
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
+        body: JSON.stringify({ name: userNickName })
+      }).then((response)=>response.json())
+      .then((result) =>{
+        const data = result;
       setUserRankings(data.ranking);
       setCurrentUser({
         ranking: data.userRank.rank,
         tier: data.userRank.tier,
         exp: data.userRank.exp,
       });
-    } catch (error) {
-      console.error('Fetching rankings failed:', error);
-    }
-  };
+      setisLoading(false);
+      }).catch((error)=>{
+        console.error('error : ',error)
+      });
 
-  fetchData();
+  });
+  
 }, []);
 
   const renderRankingItem = ({ item}) => (
@@ -97,12 +90,16 @@ useEffect(() => {
           <Text style={styles.headerItem}>티어</Text>
           <Text style={styles.headerItem}>경험치</Text>
         </View>
-        <FlatList
-          data={userRankings}
-          renderItem={renderRankingItem}
-          keyExtractor={item => item.id}
-          style={styles.rankingList}
-        />
+      {isLoading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <FlatList
+            data={userRankings}
+            renderItem={renderRankingItem}
+            keyExtractor={item => item.id}
+            style={styles.rankingList}
+          />
+        )}
       </ImageBackground>
        {/* TabBar의 배경을 위한 View */}
       <View style={styles.tabBarBackground}>
