@@ -1,7 +1,7 @@
 import React, { useState , useEffect} from 'react';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView,SafeAreaView } from 'react-native';
 import { images } from '../constants';
 
 
@@ -41,39 +41,42 @@ const ExerciseGuide = () => {
 
 
   return (
-    <ScrollView style={styles.container}>
-        <Text style={styles.title}>{exerciseData.name}</Text>
-        <View style={styles.horizontalView}>
-           <Text style={styles.muscleText}>운동 부위 : </Text>
-           <Text style={styles.muscleText}>{exerciseData.muscle}</Text>
-        </View>
-        <Image source={images.pushup} style={styles.image} />
-
-        <View style={styles.descriptionContainer}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollContainer}>
+          <Text style={styles.title}>{exerciseData.name}</Text>
+          <View style={styles.horizontalView}>
+            <Text style={styles.muscleText}>운동 부위 : </Text>
+            <Text style={styles.muscleText}>{exerciseData.muscle}</Text>
+          </View>
+          <View style={styles.descriptionContainer}>
             <ScrollView nestedScrollEnabled={true}>
-                <Text style={styles.description}>{exerciseData.description}</Text>
+              <Text style={styles.description}>{exerciseData.description}</Text>
             </ScrollView>
-        </View>
-      
-      {videos.map((video, index) => (
-        <View key={index} style={styles.videoContainer}>
-          <YoutubePlayer
-            height={405}
-            width={720}
-            videoId={video.id.videoId} // YouTube 동영상 ID
-          />
-        </View>
-      ))}
-
-    </ScrollView>
+          </View>
+        
+        {videos.map((video, index) => (
+          <View key={index} style={styles.videoContainer}>
+            <YoutubePlayer
+              height={405}
+              width={720}
+              videoId={video.id.videoId} // YouTube 동영상 ID
+            />
+          </View>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  container:{
+    flex:1,
+    backgroundColor: '#DFEFDF',
+  },
+  scrollContainer: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f5f5f5', // 배경색 추가
+    backgroundColor: '#DFEFDF', // 배경색 추가
   },
   title: {
     fontSize: 32,
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
     marginRight: 5, // 오른쪽 여백 추가  
   },
   descriptionContainer: {
-    backgroundColor: '#eaeaea',
+    backgroundColor: '#fff',
     padding: 15,
     borderRadius: 10,
     marginVertical: 10,

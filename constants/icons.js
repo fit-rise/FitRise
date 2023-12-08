@@ -4,7 +4,7 @@ import tab_profile from "../assets/icons/tab_profile.png";
 import tab_rank from "../assets/icons/tab_rank.png";
 import exerciseDict from "../assets/icons/ExerciseDic-unscreen.gif";
 import search from "../assets/icons/search.png"
-import gpt_chat from "../assets/icons/Chat.png"
+import gpt_chat from "../assets/icons/chatGPT_icon.png"
 
 
 export default {

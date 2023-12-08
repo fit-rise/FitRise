@@ -217,26 +217,26 @@ const MainScreen = () => {
         <ActivityIndicator size="large" />
       ) : (
         <>
-          <View style={styles.characterContainer}>
-            <ImageBackground source={images.sky_background} resizeMode="stretch" style={styles.SkyImageStyle}>
+            <ImageBackground source={images.sky_background} resizeMode="stretch" style={styles.skyContainer}>
               <View style={styles.header}>
                 {expData && (
                   <View style={styles.experienceBar}>
                     <Progress.Bar progress={expData.stageProgress} width={250} style={styles.progressBar} color='#000' animated={true} />
                     <Text style={styles.experienceText}>경험치: {expData.stageExp} / {expData.stageMaxExp}</Text>
                   </View>
+                  
                 )}
-                <TouchableOpacity onPress={() => router.push('/ExerciseDictionary')}>
-                  <Image source={icons.exerciseDict} style={styles.Icon} />
-                </TouchableOpacity>
+                  
               </View>
               {/* 캐릭터 영역 */}
               <View style={styles.characterContainer}>
-                <Image source={images.char_background} resizeMode="stretch" style={styles.imageStyle} />
+                <Image source={images.char_background} resizeMode="cover" style={styles.imageStyle} />
                 <Character characterImage={images.level_1} />
+                <TouchableOpacity onPress={() => router.push('/ExerciseDictionary')}>
+                    <Image source={icons.exerciseDict} style={styles.Icon} />
+                  </TouchableOpacity>
               </View>
             </ImageBackground>
-          </View>
 
           {/* Card 영역 */}
           <ImageBackground source={images.card_background} style={styles.scrollViewBackground}>
@@ -265,7 +265,7 @@ const MainScreen = () => {
             </ScrollView>
             <CircleBtn
               iconUrl={icons.gpt_chat} 
-              dimension='70%'
+              dimension='60%'
               handlePress={() => router.push('/ChatScreen')}
               />
           </ImageBackground>
@@ -309,9 +309,11 @@ const styles = StyleSheet.create({
     backgroundColor:"#DFEFDF"
   },
   header: {
-    paddingTop: 20,
-    paddingRight: 20,
-    alignItems: 'flex-end',
+    paddingTop: 10,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   btnContainer: {
     height: 50,
@@ -326,9 +328,10 @@ const styles = StyleSheet.create({
     paddingRight: 30,
   },
   characterContainer: {
-    height: '30%', // 높이를 조정해 캐릭터 이미지에 맞게 설정
+    height: '35%', // 높이를 조정해 캐릭터 이미지에 맞게 설정
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop:52
   },
   characterImage: {
     width: screenWidth * 0.2,
@@ -345,7 +348,9 @@ const styles = StyleSheet.create({
     fontFamily:"jua"
   },
   scrollViewBackground: {
-    flex: 1,
+    flex: 0.8,
+    width: '100%', // 부모 컨테이너의 전체 너비를 사용
+    marginTop: -65
   },
   exerciseList: {
     flex: 1,
@@ -359,14 +364,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  SkyImageStyle: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
+  skyContainer:{
+    flex: 0.6,
+    width: '100%', // 부모 컨테이너의 전체 너비를 사용
   },
   imageStyle: {
     width: screenWidth,
-    height: screenHeight * 0.33,
+    height: screenHeight * 0.45,
     position: 'absolute',
   },
   Icon: {
@@ -374,6 +378,8 @@ const styles = StyleSheet.create({
     height: 35, // 아이콘의 높이 설정
     resizeMode: 'contain', // 이미지의 비율을 유지
     borderRadius: 10,
+    position:'absolute',
+    right:5,
   },
   progressBar: {
     height: 10, // 프로그레스바의 높이
