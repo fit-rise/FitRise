@@ -24,9 +24,10 @@ const InformationInput = () => {
 
 
   useEffect(() => {
-    const checkStorageAndNavigate = async () => {
-      const userNickName = await getItem('key');
-      if (userNickName) { // 닉네임이 존재하면 메인 스크린으로 이동
+    const checkStorageAndNavigate =  () => {
+      const userNickName =  getItem('key');
+      console.log(userNickName)
+      if (userNickName ) { // 닉네임이 존재하면 메인 스크린으로 이동
         router.push('/MainScreen');
       }
     };

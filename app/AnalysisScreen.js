@@ -35,7 +35,7 @@ const AnalysisScreen = () => {
 
 
 
-  useEffect(() => {
+  useEffect(async() => {
 
     getItem('key').then((userNickName) => {
       setStorageValue(userNickName);

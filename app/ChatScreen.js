@@ -6,7 +6,7 @@ import { useRouter } from "expo-router";
 import React,{ useState } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import axios from 'axios';
-import {ChatScreen_API_KEY}from "@env"
+import {ChatScreen_API_KEY,ChatScreen_API_KEY2}from "@env"
 
 const ChatScreen = () => {
     const router = useRouter()
@@ -42,7 +42,7 @@ const ChatScreen = () => {
                 return;
             }
             // 사용자가 입력한 메세지에 키워드 들어가 있을 때
-            const response = await axios.post('https://api.openai.com/v1/engines/text-davinci-003/completions',{
+            const response = await axios.post(ChatScreen_API_KEY2,{
                 prompt: `${messageText}`,
                 max_tokens: 500,
                 temperature: 0.2,
