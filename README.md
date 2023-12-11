@@ -1,5 +1,5 @@
 # Fit-Rise
-<img src="/assets/images/Fit_Rise_Logo.png" height="50%">
+<img src="/assets/images/Fit_Rise_Logo.png" height="30%">
 
 
 
@@ -9,10 +9,10 @@
 
 <details open="open">
   <ol>
-    <li><a href="#features"> ●기능 설명</a></li>
-    <li><a href="#stacks"> ●사용한 기술 스택 (Techniques Used) </a></li>
-    <li><a href="#install"> ●프로젝트 사용법 (Getting Started)</a></li>
-    <li><a href="#team"> ●팀 정보 (Team Information)</a></li>
+    <li><a href="#features"> 기능 설명</a></li>
+    <li><a href="#stacks"> 사용한 기술 스택 (Techniques Used) </a></li>
+    <li><a href="#install"> 프로젝트 사용법 (Getting Started)</a></li>
+    <li><a href="#team"> 팀 정보 (Team Information)</a></li>
   </ol>
 </details>
 
