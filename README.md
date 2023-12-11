@@ -1,5 +1,7 @@
 # Fit-Rise
-![Fit-Rise_Logo](/assets/images/Fit_Rise_Logo.png)
+<img src="/assets/images/Fit_Rise_Logo.png" width="200px">
+
+
 
 <br/><br/>
 
@@ -19,21 +21,21 @@
 <br/><br/>
 
 <h1 id="features"> :iphone: 1. 기능 설명 </h1>
-<br/>
+
 ### 인공지능을 통한 체크리스트
-<br/>
+
 ### 체크리스트를 통한 캐릭터 성장
-<br/>
+
 ### 운동사전
-<br/>
+
 ### 운동관련 챗봇
-<br/>
+
 ### 랭킹표
-<br/>
+
 ### 분석&&기록
-<br/>
+
 ### 정보 재설정
-<br/>
+
 
 <br/><br/>
 
@@ -52,7 +54,7 @@
 
  |[NodeJs 16.18.0](https://nodejs.org/ko/)|[Express 4.18.2](https://expressjs.com/ko/)|[MongoDB atlas](https://www.mongodb.com/)|[Prisma 5.6.0](https://www.prisma.io/)
 |:---------------------------------:|:---------------------------------:|:-----------------------:|:---------------------------------:|
-| [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/220px-Node.js_logo.svg.png" width="100%">](https://nodejs.org/ko/) | [<img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" width="100%">](https://expressjs.com/ko/) | [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/2560px-MongoDB_Logo.svg.png" width="30%">](https://www.mongodb.com/) | [<img src="https://prismalens.vercel.app/header/logo-white.svg" width="100%">](https://www.prisma.io/) |
+| [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/220px-Node.js_logo.svg.png" width="100%">](https://nodejs.org/ko/) | [<img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" width="100%">](https://expressjs.com/ko/) | [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/2560px-MongoDB_Logo.svg.png" width="50%">](https://www.mongodb.com/) | [<img src="https://prismalens.vercel.app/header/logo-white.svg.png" width="100%">](https://www.prisma.io/) |
 |  서버 구현 | E 서버 구현 |  NoSQL Database |  데이터베이스 ORM |
 
 ## 사용한 Open API
@@ -118,4 +120,3 @@ $ node server.js
 | 신은화 |   Backend    |   eunhwa0308   |  eunhwa3458@gmail.com |
 | 엄득용 |   Full-Stack |   EomDeukyong  |  emrdyd664@gmail.com  |
 | 이진우 |   Full-Stack |   nickcopy     |  golove010@gmail.com  |
-<br/><br/>
