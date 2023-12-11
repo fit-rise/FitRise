@@ -21,27 +21,36 @@
 <br/><br/>
 
 <h1 id="features"> :iphone: 1. 기능 설명 </h1>
+<br/><br/>
 
 ### 인공지능을 통한 체크리스트
-![체크리스트 생성](/assets/images/체크리스트 생성.gif)
+
+<img src="/assets/images/체크리스트 생성.gif" width="200" height="300"/>
 
 ### 체크리스트를 통한 캐릭터 성장
-![캐릭터 성장](/assets/images/캐릭터 성장.gif)
+
+<img src="/assets/images/캐릭터 성장.gif" width="200" height="300"/>
 
 ### 운동사전
-![운동사전](/assets/images/운동사전.gif)
+
+<img src="/assets/images/운동사전.gif" width="200" height="300"/>
 
 ### 운동관련 챗봇
-![운동관련챗봇](/assets/images/운동관련챗봇.gif)
+
+<img src="/assets/images/운동관련챗봇.gif" width="200" height="300"/>
 
 ### 랭킹표
-![랭킹표](/assets/images/랭킹표.gif)
+
+<img src="/assets/images/랭킹표.gif" width="200" height="300"/>
 
 ### 분석&&기록
-![캘린더화면](/assets/images/캘린더화면.gif)
+
+<img src="/assets/images/캘린더화면.gif" width="200" height="300"/>
 
 ### 정보 재설정
-![정보재설정](/assets/images/정보재설정.gif)
+
+<img src="/assets/images/정보재설정.gif" width="200" height="300"/>
+
 
 <br/><br/>
 
