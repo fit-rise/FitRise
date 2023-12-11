@@ -134,7 +134,7 @@ $ node server.js
 
 |  팀원  |     역할     |     GitHub     |         Email         |
 | :----: | :----------: | :------------: | :-------------------: |
-| 최우진 |   Frontend   |   woojin0518   |  twinsno119@gmail.com |
-| 신은화 |   Backend    |   eunhwa0308   |  eunhwa3458@gmail.com |
+| 최우진 |   Front-End  |   woojin0518   |  twinsno119@gmail.com |
+| 신은화 |   Back-End   |   eunhwa0308   |  eunhwa3458@gmail.com |
 | 엄득용 |   Full-Stack |   EomDeukyong  |  emrdyd664@gmail.com  |
 | 이진우 |   Full-Stack |   nickcopy     |  golove010@gmail.com  |
