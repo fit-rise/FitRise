@@ -1,5 +1,5 @@
 # Fit-Rise
-<img src="/assets/images/Fit_Rise_Logo.png" width="200px">
+<img src="/assets/images/Fit_Rise_Logo.png" height="50%">
 
 
 
@@ -47,14 +47,14 @@
 
  |[React-Native 0.72.5](https://ko.reactjs.org/)|
  |:-------------------:|
- [<img src = "https://reactjs.org/logo-og.png" width = 100%>](https://reactnative.dev/)|
+ [<img src = "https://reactjs.org/logo-og.png" width = 50% height="50%">](https://reactnative.dev/)|
  |Expo 앱|
 
 ## Back-end(Server,DataBase)
 
  |[NodeJs 16.18.0](https://nodejs.org/ko/)|[Express 4.18.2](https://expressjs.com/ko/)|[MongoDB atlas](https://www.mongodb.com/)|[Prisma 5.6.0](https://www.prisma.io/)
 |:---------------------------------:|:---------------------------------:|:-----------------------:|:---------------------------------:|
-| [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/220px-Node.js_logo.svg.png" width="100%">](https://nodejs.org/ko/) | [<img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" width="100%">](https://expressjs.com/ko/) | [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/2560px-MongoDB_Logo.svg.png" width="50%">](https://www.mongodb.com/) | [<img src="https://prismalens.vercel.app/header/logo-white.svg.png" width="100%">](https://www.prisma.io/) |
+| [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/220px-Node.js_logo.svg.png" width="100%">](https://nodejs.org/ko/) | [<img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" width="100%">](https://expressjs.com/ko/) | [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/2560px-MongoDB_Logo.svg.png" width="50%">](https://www.mongodb.com/) | [<img src="/assets/images/Prisma_Logo.png" width="100%">](https://www.prisma.io/) |
 |  서버 구현 | E 서버 구현 |  NoSQL Database |  데이터베이스 ORM |
 
 ## 사용한 Open API
