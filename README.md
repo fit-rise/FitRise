@@ -1,4 +1,5 @@
 # Fit-Rise
+### :ChaGPT 기반 사용자 맞춤형 운동 루틴 제공 및 캐릭터 성장 동기부여 어플리케이션
 <img src="/assets/images/Fit_Rise_Logo.png" height="350" width="100%">
 
 
