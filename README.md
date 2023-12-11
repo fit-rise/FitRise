@@ -95,13 +95,13 @@
 ```
 //FrontEnd .env
 IP_URL="Server IP"
-ChatScreen_API_KEY2="Chat Gps API"
+ChatScreen_API_KEY2="Chat Gpt API"
 ```
 
 ```
 //BackEnd .env
 DATABASE_URL="Mongodb DataBase URL"
-OPENAI_API_KEY="Chat Gps API"
+OPENAI_API_KEY="Chat Gpt API"
 ```
 <br/>
 
