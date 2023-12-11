@@ -83,9 +83,9 @@ const MainScreen = () => {
 
   
   //plans,exp 정보 요청
-  useEffect( () => {
+  useEffect( async() => {
 
-      getItem('key').then((userdata)=>{
+      userdata= await getItem('key')
       setStoageValue(userdata)
       setisLoading(true);
       fetch(`${IP_URL}/checklist`, { // 또는 로컬 IP 사용
@@ -106,7 +106,6 @@ const MainScreen = () => {
           console.error('Error:', error);
           setisLoading(false);
         });
-    });
   
   }, [trigger]);
 
@@ -163,13 +162,13 @@ const MainScreen = () => {
   // 현재 경험치에 따라 적절한 캐릭터 이미지를 선택하는 함수
   const getCurrentCharacterImage = (exp) => {
     if (exp < 100) {
-      return images.stage1;
+      return images.level_1;
     } else if (exp < 200) {
-      return images.stage2;
+      return images.level_2;
     } else if (exp < 300) {
-      return images.stage3;
+      return images.level_3;
     } else {
-      return images.stage4;
+      return images.level_4;
     }
     // 추가적인 레벨을 여기에 정의할 수 있습니다.
   };
@@ -204,7 +203,7 @@ const MainScreen = () => {
     const stageMaxExp = MaxExp - MinExp;
     if (typeof currentExp === "number") {
       //stage:현재단계  stageprogress:현재 단계 진행률 stagemaxexp:현재단계 최대xp
-      return { stage, stageProgress, stageMaxExp, stageExp };
+      return { stage, stageProgress, stageMaxExp, stageExp,currentExp };
     } else {
       return null
     }
@@ -234,7 +233,7 @@ const MainScreen = () => {
               {/* 캐릭터 영역 */}
               <View style={styles.characterContainer}>
                 <Image source={images.char_background} resizeMode="stretch" style={styles.imageStyle} />
-                <Character characterImage={images.level_1} />
+                <Character characterImage={getCurrentCharacterImage(expData?.currentExp)} />
               </View>
             </ImageBackground>
           </View>

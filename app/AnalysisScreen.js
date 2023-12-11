@@ -32,40 +32,50 @@ const AnalysisScreen = () => {
   const [storageValue, setStorageValue] = useState('');//스토리지 관련 스테이터스
   const [weightSubmitted, setWeightSubmitted] = useState(false); // 몸무게가 제출되었는지 추적하는 상태
   const [isSubmitting, setIsSubmitting] = useState(false); //로딩바
+  const [noDataMessage, setNoDataMessage] = useState('');
 
 
+  // 데이터를 불러오는 함수
+  const fetchAnalysisData = (userNickName) => {
+    checkWeightSubmission(userNickName);
+    fetch(`${IP_URL}/AnalysisScreen/analysis`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: userNickName })
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      const analysisData = result;
+      console.log('분석 데이터 도착' + JSON.stringify(analysisData))
 
-  useEffect(async() => {
+      if (analysisData.length === 0) {
+        setNoDataMessage('몸무게를 기록해 보세요.');
+      } else {
+        const transformed = transformData(analysisData);
+        setChartData(transformed);
+      }
 
+      setLoading(false);
+    })
+    .catch((error) => {
+      console.error('error : ', error);
+    });
+  };
+
+  useEffect(() => {
+    
     getItem('key').then((userNickName) => {
       setStorageValue(userNickName);
       checkWeightSubmission(userNickName);
+
+      
       setLoading(false);
-      console.log("useEffect 호출됨");
 
-
-      console.log('AnalysisScreen : ' + userNickName);
-
-      fetch(`${IP_URL}/AnalysisScreen/analysis`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: userNickName })
-      }).then((response) => response.json())
-        .then((result) => {
-          const analysisData = result;
-          console.log('분석 데이터 도착' + JSON.stringify(analysisData))
-          const transformed = transformData(analysisData);
-          setChartData(transformed);
-
-          setLoading(false);
-        }).catch((error) => {
-          console.error('error : ', error)
-
-        })
+      fetchAnalysisData(userNickName);
     });
-
+      
   }, []);
 
   // 오늘 몸무게 입력했는지 확인하기
@@ -138,7 +148,8 @@ const AnalysisScreen = () => {
       }
 
       // 성공적인 응답 처리 로직 (예: 알림 띄우기)
-
+      fetchAnalysisData(storageValue);
+  
     } catch (error) {
       console.error(error);
     }
@@ -217,8 +228,8 @@ const AnalysisScreen = () => {
         <Text style={styles.headerText}>나의 신체변화</Text>
         {loading ? (
           <ActivityIndicator size="large" color="#0000ff" />
-        ) : (
-          chartData && chartData.labels.length > 0 && (
+        ) : 
+          chartData && chartData.labels.length > 0 ? (
             <LineChart
               data={chartData}
               width={screenWidth}
@@ -227,7 +238,10 @@ const AnalysisScreen = () => {
               bezier // 부드러운 곡선 표시
               style={{ borderRadius: 10, margin: 15 }}
             />
-          )
+          ):(
+            <Text style={styles.noDataText}>{noDataMessage}</Text>
+          
+          
         )}
 
         {weightSubmitted ? (
@@ -389,6 +403,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#4a90e2', // 적절한 색상 선택
+    padding: 16,
+    textAlign: 'center',
+  },
+  noDataText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#4a90e2', // You can choose an appropriate color
     padding: 16,
     textAlign: 'center',
   },
