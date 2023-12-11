@@ -1,5 +1,5 @@
 # Fit-Rise
-<img src="/assets/images/Fit_Rise_Logo.png" height="300" width="100%">
+<img src="/assets/images/Fit_Rise_Logo.png" height="350" width="100%">
 
 
 
@@ -46,6 +46,7 @@
 ### 분석&&기록
 
 <img src="/assets/images/캘린더화면.gif" width="200" height="300"/>
+<img src="/assets/images/분석.gif" width="200" height="300"/>
 
 ### 정보 재설정
 
