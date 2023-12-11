@@ -43,7 +43,7 @@
 
 <img src="/assets/images/랭킹표.gif" width="200" height="300"/>
 
-### 분석&&기록
+### 기록&분석
 
 <img src="/assets/images/캘린더화면.gif" width="200" height="300"/><img src="/assets/images/분석.gif" width="200" height="300"/>
 
