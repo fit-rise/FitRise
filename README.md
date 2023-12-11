@@ -1,5 +1,5 @@
 # Fit-Rise
-<img src="/assets/images/Fit_Rise_Logo.png" height="50%">
+<img src="/assets/images/Fit_Rise_Logo.png" height="30%">
 
 
 
@@ -9,10 +9,10 @@
 
 <details open="open">
   <ol>
-    <li><a href="#features"> ●기능 설명</a></li>
-    <li><a href="#stacks"> ●사용한 기술 스택 (Techniques Used) </a></li>
-    <li><a href="#install"> ●프로젝트 사용법 (Getting Started)</a></li>
-    <li><a href="#team"> ●팀 정보 (Team Information)</a></li>
+    <li><a href="#features"> 기능 설명</a></li>
+    <li><a href="#stacks"> 사용한 기술 스택 (Techniques Used) </a></li>
+    <li><a href="#install"> 프로젝트 사용법 (Getting Started)</a></li>
+    <li><a href="#team"> 팀 정보 (Team Information)</a></li>
   </ol>
 </details>
 
@@ -54,12 +54,14 @@
 
  |[NodeJs 16.18.0](https://nodejs.org/ko/)|[Express 4.18.2](https://expressjs.com/ko/)|[MongoDB atlas](https://www.mongodb.com/)|[Prisma 5.6.0](https://www.prisma.io/)
 |:---------------------------------:|:---------------------------------:|:-----------------------:|:---------------------------------:|
-| [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/220px-Node.js_logo.svg.png" width="100%">](https://nodejs.org/ko/) | [<img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" width="100%">](https://expressjs.com/ko/) | [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/2560px-MongoDB_Logo.svg.png" width="50%">](https://www.mongodb.com/) | [<img src="/assets/images/Prisma_Logo.png" width="100%">](https://www.prisma.io/) |
+| [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/220px-Node.js_logo.svg.png" width="100%">](https://nodejs.org/ko/) | [<img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" width="100%">](https://expressjs.com/ko/) | [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/2560px-MongoDB_Logo.svg.png" width="50%">](https://www.mongodb.com/) | [<img src="/assets/images/Prisma_Logo.jpg" width="100%">](https://www.prisma.io/) |
 |  서버 구현 | E 서버 구현 |  NoSQL Database |  데이터베이스 ORM |
 
 ## 사용한 Open API
 -OpenAI "GPT4.0 API"
+<br/>
 -Google APIs의 “YouTube Data API v3”
+<br/>
 -Ninjas의 “exercises apis “
 
 
