@@ -96,6 +96,7 @@
 //FrontEnd .env
 IP_URL="Server IP"
 ChatScreen_API_KEY2="Chat Gpt API"
+YouTube_API_KEY="YouTube Data API v3 Key"
 ```
 
 ```
